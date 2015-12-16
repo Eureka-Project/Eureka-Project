@@ -5,17 +5,21 @@ var userSchema = mongoose.Schema({
 	username: String,
 	password: String,
 	firstname: String,
-	lastname: String
+	lastname: String,
+	date: { type: Date, default: Date.now }
 
 });
 
-var linksSchema = mongoose.Schema({
+var linkSchema = mongoose.Schema({
 	title: String,
 	baseurl: String,
-	visits: Number
+	visits: Number,
+	date: { type: Date, default: Date.now }
 
 });
 
+var user = mongoose.model('user', userSchema);
+var link = mongoose.model('link', linkSchema);
 
 
 mongoose.connect('mongodb://localhost:27017');

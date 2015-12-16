@@ -1,15 +1,13 @@
 var app = angular.module('eureka', [
   'eureka.home',
-  'eureka.signup',
+  'eureka.auth',
   'ui.router'
 ])
 
 app.config(function($stateProvider, $urlRouterProvider) {
-  //
-  // For any unmatched url, redirect to /state1
+  // For any unmatched url, redirect to /signup
   $urlRouterProvider.otherwise("/signup");
-  //
-  // Now set up the states
+  // Routing States
   $stateProvider
     .state('home', {
       url: "/home",
@@ -19,6 +17,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
     .state('signup', {
       url: "/signup",
       templateUrl: "app/views/signup.html",
-      controller: "SignupController"
+      controller: "AuthController"
+    })
+    .state('login', {
+      url: "/login",
+      templateUrl: "app/views/login.html",
+      controller: "AuthController"
     })
 });

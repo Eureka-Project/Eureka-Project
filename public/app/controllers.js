@@ -6,10 +6,9 @@ Home.controller('HomeController', ['$scope', '$http', function($scope, $http) {
 
 
 
+var Auth = angular.module('eureka.auth', [])
 
-var Signup = angular.module('eureka.signup', [])
-
-Signup.controller('SignupController', ['$scope', '$http', function($scope, $http) {
+Auth.controller('AuthController', ['$scope', '$http', function($scope, $http) {
 
 }]);
 

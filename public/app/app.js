@@ -1,6 +1,6 @@
 var app = angular.module('eureka', [
-  'eureka.home',
   'eureka.auth',
+  'eureka.home',
   'ui.router'
 ])
 

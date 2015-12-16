@@ -8,9 +8,6 @@ var helpers = require('./server/helpers.js');
 
 var app = express();
 
-// Change this url later.
-mongoose.connect('mongodb://localhost/eureka');
-
 app.set('port', (process.env.PORT || 3000));
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -22,7 +19,7 @@ var userRouter = express.Router();
 var linkRouter = express.Router();
 
 // inject our routers into their respective route files
-require('../users/userRoutes.js')(userRouter);
+require('../users/usersRoutes.js')(userRouter);
 // require('../links/linkRoutes.js')(linkRouter);
 
 app.use('/api/users', userRouter); // use user router for all user request

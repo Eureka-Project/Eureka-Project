@@ -4,10 +4,16 @@
 </nav>
 <div class="page-container">
 	<div class="results">
-		<div class="link-card" ng-repeat="link in links">
-			<h4>{{link.title}}</h4>
-			<p>{{link.source}}</p>
-			<p>{{link.url}}</p>
+		<div class="link-card" ng-repeat="link in links | orderBy: '-upvotes'">
+			<div class='voting'>
+				{{link.upvotes}}<i class="fa fa-arrow-up"></i>
+			</div>
+			<div class="link-data">
+				<a ng-href="{{link.url}}">
+					<h4>{{link.title}}</h4>
+				</a>
+				<p>{{link.source}}</p>
+			</div>
 		</div>
 	</div>
 </div>

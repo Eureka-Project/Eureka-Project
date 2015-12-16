@@ -106,6 +106,22 @@ input.ng-pristine {
 
 .link-card {
 	text-align: left;
+	padding: 1% 5%;
 }
 
+.voting {
+	width: 8%;
+	padding-top: 22px;
+	font-size: 20px;
+	float: left;
+}
+
+.link-data {
+	width: 92%;
+	float: left;
+}
+
+.link-data h4, p {
+	margin: 10px 0px;
+}
 

@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var jwt  = require('jwt-simple');
+
 var mongoose    = require('mongoose');
 
 var app = express();

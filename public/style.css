@@ -5,7 +5,7 @@ body {
 
 nav {
 	width: 100%;
-	padding: 10px;
+	padding: 10px 0px;
 	font-size: 24px;
 	font-weight: 700;
 	background-color: #f1f1f1;
@@ -18,12 +18,11 @@ nav {
 	width: 80%;
 	margin: 0px auto;
 	padding-top: 20px;
+	text-align: center;
 }
 
 form {
-	width: 40%;
 	margin: 0px auto;
-	text-align: center;
 }
 
 form input {
@@ -37,7 +36,7 @@ input:focus {
 	outline: none; 
 }
 
-form button {
+form input[type="submit"] {
 	background-color: #679df6;
 	color: #fff;
 	font-size: 16px;
@@ -48,6 +47,26 @@ form button {
 	border-radius: 3px;
 }
 
-form button:hover {
+form input[type="submit"]:hover {
 	background-color: #3b77db;
 }
+
+button {
+	background-color: #cecece;
+	color: #fff;
+	font-size: 16px;
+	padding: 8px;
+	margin: 8px;
+	width: 280px;
+	border: none;
+	border-radius: 3px;	
+}
+
+button:hover {
+	background-color: #a0a0a0;
+}
+
+
+
+
+

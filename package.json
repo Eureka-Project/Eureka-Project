@@ -1,0 +1,23 @@
+{
+  "name": "eureka-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eureka-Project/Eureka-Project.git"
+  },
+  "author": "Eureka Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Eureka-Project/Eureka-Project/issues"
+  },
+  "homepage": "https://github.com/Eureka-Project/Eureka-Project#readme",
+  "dependencies": {
+    "express": "^4.13.3",
+    "nodemon": "^1.8.1"
+  }
+}

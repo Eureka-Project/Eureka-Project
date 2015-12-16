@@ -1,1 +1,13 @@
-<h1>Eureka!</h1>
+<nav>
+	<div class="title">Eureka!</div>
+	<div class="logout" ng-click="signout()">Log Out<i class="fa fa-sign-out"></i></div>
+</nav>
+<div class="page-container">
+	<div class="results">
+		<div class="link-card" ng-repeat="link in links">
+			<h4>{{link.title}}</h4>
+			<p>{{link.source}}</p>
+			<p>{{link.url}}</p>
+		</div>
+	</div>
+</div>

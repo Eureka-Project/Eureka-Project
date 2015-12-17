@@ -17,13 +17,13 @@ nav {
 }
 
 nav .title {
-	width: 80%;
+	width: 60%;
 	float: left;
 	margin-top: 3px;
 }
 
 nav .add-link {
-	width: 10%;
+	width: 20%;
 	float: left;
 }
 
@@ -39,10 +39,10 @@ nav .add-link button:hover {
 }
 
 nav .logout {
+	width: 20%;
 	font-size: 14px;
 	float: right;
 	padding-top: 9px;
-	width: 10%;
 	cursor: pointer;
 }
 

@@ -1,9 +1,10 @@
-var Home = angular.module('eureka.home', [])
+angular.module('eureka.home', [])
 
-Home.controller('HomeController', ['$scope', '$http', '$window', '$location', function($scope, $http, $window, $location) {
-	// Uncomment out to start checking for Auth Tokens
-	var auth = $window.localStorage.getItem('com.eureka');
-	if (auth === null) $location.path('/login')
+.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Auth' ,function($scope, $http, $window, $location, Auth) {
+	// Checking If User Has Cookie
+	if (!Auth.isAuth()) $location.path('/login')
+
+	$scope.cookieData = JSON.parse($window.localStorage.getItem('eureka'));
 
 	$scope.modalShow = false;
 
@@ -16,7 +17,7 @@ Home.controller('HomeController', ['$scope', '$http', '$window', '$location', fu
 		}
 	}
 
-	$scope.username = "Tarley Fass";
+	$scope.username = $scope.cookieData.username;
 
 	$scope.links = [
 	{	date: "December 17th, 2015",
@@ -60,57 +61,6 @@ Home.controller('HomeController', ['$scope', '$http', '$window', '$location', fu
 		})
 	}
 
-	$scope.signout = function () {
-		console.log('signing out bro...')
-		localStorage.removeItem('com.eureka');
-		$location.path('/login');
-	};
+	$scope.signout = function () { Auth.signout() };
 
 }]);
-
-
-
-var Auth = angular.module('eureka.auth', [])
-
-Auth.controller('AuthController', ['$scope', '$http', function($scope, $http) {
-
-	$scope.user = {};
-
-	$scope.signup = function () {
-		console.log('user: ', $scope.user)
-		$http({
-			method: 'POST',
-			url: 'api/users/signup',
-			data: $scope.user
-		}).then(function (res) {
-			console.log('success...signing in now...');
-			localStorage.setItem('com.eureka', res.data.token);
-        	location.hash = '#/home';
-			return res;
-		}).catch(function (error) {
-			console.log(error);
-		})
-	}
-
-	$scope.login = function () {
-		console.log('user: ', $scope.user)
-		$http({
-			method: 'POST',
-			url: 'api/users/login',
-			data: $scope.user
-		}).then(function (res) {
-			console.log('success...logging in now...')
-			localStorage.setItem('com.eureka', res.data.token);
-        	location.hash = '#/home';
-			return res.data;
-		}).catch(function (error) {
-			console.log(error);
-		})
-	}
-
-	var isAuth = function () {
-		return !!localStorage.getItem('com.eureka');
-	};
-
-}]);
-

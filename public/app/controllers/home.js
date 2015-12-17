@@ -1,9 +1,8 @@
-var Home = angular.module('eureka.home', [])
+angular.module('eureka.home', [])
 
-Home.controller('HomeController', ['$scope', '$http', '$window', '$location', function($scope, $http, $window, $location) {
-	// Uncomment out to start checking for Auth Tokens
-	var auth = $window.localStorage.getItem('com.eureka');
-	if (auth === null) $location.path('/login')
+.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Auth' ,function($scope, $http, $window, $location, Auth) {
+	// Checking If User Has Cookie
+	if (!Auth.isAuth()) $location.path('/login')
 
 	$scope.modalShow = false;
 
@@ -60,45 +59,6 @@ Home.controller('HomeController', ['$scope', '$http', '$window', '$location', fu
 		})
 	}
 
-	$scope.signout = function () {
-		console.log('signing out bro...')
-		localStorage.removeItem('com.eureka');
-		$location.path('/login');
-	};
+	$scope.signout = function () { Auth.signout() };
 
 }]);
-
-
-
-angular.module('eureka.auth', [])
-
-.controller('AuthController', ['$scope', '$http', '$window', '$location', 'Auth', function($scope, $http, $window, $location, Auth) {
-
-	$scope.user = {};
-	
-	$scope.signup = function () {
-		Auth.signup($scope.user)
-		.then(function (token) {
-			console.log('success...signing in now...');
-			$window.localStorage.setItem('com.eureka', token);
-			$location.path('/home');
-		})
-		.catch(function (error) {
-		console.error(error);
-		});
-	}
-
-	$scope.login = function () {
-		Auth.login($scope.user)
-		.then(function (token) {
-			console.log('success...signing in now...');
-			$window.localStorage.setItem('com.eureka', token);
-			$location.path('/home');
-		})
-		.catch(function (error) {
-		console.error(error);
-		});
-	}
-
-}]);
-

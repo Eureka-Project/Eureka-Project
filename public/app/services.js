@@ -8,8 +8,8 @@ angular.module('eureka.services', [])
 			url: '/api/users/login',
 			data: user
 		})
-		.then(function (resp) {
-			return resp.data.token;
+		.then(function (res) {
+			return res.data;
 		});
 	};
 
@@ -20,19 +20,19 @@ angular.module('eureka.services', [])
 			url: '/api/users/signup',
 			data: user
 		})
-		.then(function (resp) {
-			return resp.data.token;
+		.then(function (res) {
+			return res.data;
 		});
 	};
 
 	var isAuth = function () {
-		return !!$window.localStorage.getItem('com.eureka');
+		return !!$window.localStorage.getItem('eureka');
 	};
 
 	var signout = function () {
 		console.log('signing out...')
-		$window.localStorage.removeItem('com.eureka');
-		$location.path('/signin');
+		$window.localStorage.removeItem('eureka');
+		$location.path('/login');
 	};
 
 	return {

@@ -46,7 +46,7 @@ module.exports = {
           next(new Error('User already exist!'));
         } else {
           // make a new user if not one
-          var create = Q.nbind(Users.create, db.User);
+          var create = Q.nbind(db.User.create, db.User);
           var newUser = {
             username: username,
             password: password,

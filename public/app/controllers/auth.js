@@ -7,7 +7,6 @@ angular.module('eureka.auth', [])
 	$scope.signup = function () {
 		Auth.signup($scope.user)
 		.then(function (data) {
-			console.log('data:', data);
 			console.log('success...signing in now...');
 			$window.localStorage.setItem('eureka', JSON.stringify(data));
 			$location.path('/home');

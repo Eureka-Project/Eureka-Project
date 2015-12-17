@@ -4,6 +4,8 @@ angular.module('eureka.home', [])
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
 
+	$scope.cookieData = JSON.parse($window.localStorage.getItem('eureka'));
+
 	$scope.modalShow = false;
 
 	$scope.changeModal = function() {
@@ -15,7 +17,7 @@ angular.module('eureka.home', [])
 		}
 	}
 
-	$scope.username = "Tarley Fass";
+	$scope.username = $scope.cookieData.username;
 
 	$scope.links = [
 	{	date: "December 17th, 2015",

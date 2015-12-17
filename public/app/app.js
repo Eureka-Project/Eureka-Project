@@ -6,7 +6,7 @@ var app = angular.module('eureka', [
 
 app.config(function($stateProvider, $urlRouterProvider) {
   // For any unmatched url, redirect to /signup
-  $urlRouterProvider.otherwise("/signup");
+  $urlRouterProvider.otherwise("/login");
   // Routing States
   $stateProvider
     .state('home', {

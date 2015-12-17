@@ -183,14 +183,6 @@ input.ng-pristine {
 	font-size: 16px;
 }
 
-.add-link-modal button {
-	background-color: #679df6;
-}
-
-.add-link-modal button:hover {
-	background-color: #3b77db;
-}
-
 .modal-background {
 	position: fixed;
 	width: 100%;

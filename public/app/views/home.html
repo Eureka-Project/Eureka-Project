@@ -1,5 +1,5 @@
 <nav>
-	<div class="add-link" ng-click="changeModal()"><button>Add Link</button></div>
+	<div class="add-link"><button ng-click="changeModal()">Add Link</button></div>
 	<div class="title">Eureka!</div>
 	<div class="logout" ng-click="signout()">{{username}}<i class="fa fa-sign-out"></i></div>
 </nav>
@@ -8,8 +8,10 @@
 	<div>
 		<i ng-click="changeModal()" class="fa fa-times-circle fa-2x"></i>
 		<h2>Gimme da link</h2>
-		<input placeholder="Paste URL..."/><br>
-		<button>Submit</button>
+		<form name="addLink">
+			<input type='url' name="urlText" placeholder="Paste URL..." ng-model="newLink"><br>
+			<input type="submit" value="Submit Link" ng-click="">
+		</form>
 	</div>
 </div>
 <div class="page-container">

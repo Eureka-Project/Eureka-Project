@@ -1,6 +1,9 @@
 var Home = angular.module('eureka.home', [])
 
-Home.controller('HomeController', ['$scope', '$http', function($scope, $http) {
+Home.controller('HomeController', ['$scope', '$http', '$window', '$location', function($scope, $http, $window, $location) {
+	// Uncomment out to start checking for Auth Tokens
+	// var auth = $window.localStorage.getItem('com.eureka');
+	// if (auth === null) $location.path('/login')
 
 	$scope.modalShow = false;
 
@@ -51,7 +54,9 @@ Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $l
 			url: 'api/users/signup',
 			data: $scope.user
 		}).then(function (res) {
-			console.log(res.data);
+			console.log('success...signing in now...')
+			$window.localStorage.setItem('com.eureka', token);
+        	$location.path('/home');
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -65,7 +70,9 @@ Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $l
 			url: 'api/users/login',
 			data: $scope.user
 		}).then(function (res) {
-			console.log(res.data);
+			console.log('success...logging in now...')
+			$window.localStorage.setItem('com.eureka', token);
+        	$location.path('/home');
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

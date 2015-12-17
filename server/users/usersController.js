@@ -2,6 +2,8 @@ var Users = require('../db/confib.js');
 var Q = require('q');
 var jwt = require('jwt-simple');
 
+var secret = 'Festus is the bestest';
+
 module.exports = {
   login: function (req, res, next) {
     var username = req.body.username;
@@ -16,7 +18,7 @@ module.exports = {
           return user.comparePasswords(password)
             .then(function(foundUser) {
               if (foundUser) {
-                var token = jwt.encode(user, 'secret');
+                var token = jwt.encode(user, secret);
                 res.json({token: token});
               } else {
                 return next(new Error('No user'));
@@ -56,7 +58,7 @@ module.exports = {
       })
       .then(function (user) {
         // create token to send back for auth
-        var token = jwt.encode(user, 'secret');
+        var token = jwt.encode(user, secret);
         res.json({token: token});
       })
       .fail(function (error) {
@@ -73,7 +75,7 @@ module.exports = {
     if (!token) {
       next(new Error('No token'));
     } else {
-      var user = jwt.decode(token, 'secret');
+      var user = jwt.decode(token, secret);
       var findUser = Q.nbind(Users.findOne, Users);
       findUser({username: user.username})
         .then(function (foundUser) {

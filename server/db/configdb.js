@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://eureka:Eureka1?@ds033175.mongolab.com:33175/eurekadb');
+mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {

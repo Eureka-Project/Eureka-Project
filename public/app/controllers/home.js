@@ -67,4 +67,8 @@ angular.module('eureka.home', [])
 
 	$scope.signout = function () { Auth.signout() };
 
+
+	// Get Links When Controller Loads
+	$scope.getLinks()
+
 }]);

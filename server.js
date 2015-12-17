@@ -19,8 +19,8 @@ var usersRouter = express.Router();
 var linksRouter = express.Router();
 
 // inject our routers into their respective route files
-require('server/users/usersRoutes.js')(usersRouter);
-require('server/links/linkRoutes.js')(linksRouter);
+require('./server/users/usersRoutes.js')(usersRouter);
+require('./server/links/linksRoutes.js')(linksRouter);
 
 app.use('/api/users', usersRouter); // use user router for all user request
 

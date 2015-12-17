@@ -61,13 +61,22 @@ nav .logout:hover {
 	text-align: center;
 }
 
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover {
+	color: #999999;
+}
+
 form {
 	margin: 0px auto;
 }
 
 form input {
 	font-size: 16px;
-	padding: 8px;
+	padding: 8px 14px;
 	margin: 8px;
 	width: 260px;
 }
@@ -82,9 +91,8 @@ form input[type="submit"] {
 	font-size: 16px;
 	padding: 8px;
 	margin: 8px;
-	width: 280px;
+	width: 290px;
 	border: none;
-	border-radius: 3px;
 }
 
 form input[type="submit"]:hover {
@@ -97,9 +105,8 @@ button {
 	font-size: 16px;
 	padding: 8px;
 	margin: 8px;
-	width: 280px;
+	width: 290px;
 	border: none;
-	border-radius: 3px;	
 }
 
 button:hover {
@@ -178,7 +185,7 @@ input.ng-pristine {
 }
 
 .add-link-modal input {
-	padding: 8px;
+	padding: 8px 14px;
 	width: 260px;
 	font-size: 16px;
 }
@@ -190,4 +197,23 @@ input.ng-pristine {
 	cursor: pointer;
 	background-color: #000;
 	opacity: 0.6;
+}
+
+.form-container {
+	background-color: #fff;
+	width: 500px;
+	margin: 0px auto;
+	border: 1px solid #e5e5e5;
+	border-radius: 5px;
+}
+
+.signup-login-button {
+	margin-bottom: 40px;
+}
+
+.date-header {
+	font-weight: 300;
+	margin: 0px;
+	padding: 5px 0px;
+	border-bottom: 1px solid #e5e5e5
 }

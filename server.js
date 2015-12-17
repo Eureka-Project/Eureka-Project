@@ -15,18 +15,18 @@ app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/public'));
 
-var userRouter = express.Router();
-var linkRouter = express.Router();
+var usersRouter = express.Router();
+var linksRouter = express.Router();
 
 // inject our routers into their respective route files
-require('../users/usersRoutes.js')(userRouter);
-// require('../links/linkRoutes.js')(linkRouter);
+require('server/users/usersRoutes.js')(usersRouter);
+require('server/links/linkRoutes.js')(linksRouter);
 
-app.use('/api/users', userRouter); // use user router for all user request
+app.use('/api/users', usersRouter); // use user router for all user request
 
 // authentication middleware used to decode token and made available on the request
-//app.use('/api/links', helpers.decode);
-// app.use('/api/links', linkRouter); // user link router for link request
+app.use('/api/links', helpers.decode);
+app.use('/api/links', linksRouter); // user link router for link request
 
 // If the url is not one of the ones above, send an error.
 app.use(helpers.errorLogger);

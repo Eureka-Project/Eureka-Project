@@ -2,8 +2,8 @@ var Home = angular.module('eureka.home', [])
 
 Home.controller('HomeController', ['$scope', '$http', '$window', '$location', function($scope, $http, $window, $location) {
 	// Uncomment out to start checking for Auth Tokens
-	// var auth = $window.localStorage.getItem('com.eureka');
-	// if (auth === null) $location.path('/login')
+	var auth = $window.localStorage.getItem('com.eureka');
+	if (auth === null) $location.path('/login')
 
 	$scope.modalShow = false;
 
@@ -60,13 +60,19 @@ Home.controller('HomeController', ['$scope', '$http', '$window', '$location', fu
 		})
 	}
 
+	$scope.signout = function () {
+		console.log('signing out bro...')
+		localStorage.removeItem('com.eureka');
+		$location.path('/login');
+	};
+
 }]);
 
 
 
 var Auth = angular.module('eureka.auth', [])
 
-Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $location, $window) {
+Auth.controller('AuthController', ['$scope', '$http', function($scope, $http) {
 
 	$scope.user = {};
 
@@ -78,7 +84,6 @@ Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $l
 			data: $scope.user
 		}).then(function (res) {
 			console.log('success...signing in now...');
-			console.log('token', res.data.token);
 			localStorage.setItem('com.eureka', res.data.token);
         	location.hash = '#/home';
 			return res;
@@ -95,8 +100,8 @@ Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $l
 			data: $scope.user
 		}).then(function (res) {
 			console.log('success...logging in now...')
-			$window.localStorage.setItem('com.eureka', token);
-        	$location.path('/home');
+			localStorage.setItem('com.eureka', res.data.token);
+        	location.hash = '#/home';
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -104,13 +109,7 @@ Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $l
 	}
 
 	var isAuth = function () {
-		return !!$window.localStorage.getItem('com.eureka');
-	};
-
-	$scope.signout = function () {
-		console.log('signing out bro...')
-		$window.localStorage.removeItem('com.eureka');
-		$location.path('/login');
+		return !!localStorage.getItem('com.eureka');
 	};
 
 }]);

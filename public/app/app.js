@@ -5,7 +5,7 @@ var app = angular.module('eureka', [
   'ui.router'
 ])
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   // For any unmatched url, redirect to /signup
   $urlRouterProvider.otherwise("/login");
   // Routing States
@@ -25,4 +25,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "app/views/login.html",
       controller: "AuthController"
     })
+    $httpProvider.interceptors.push('AttachTokens');
 });
+
+app.factory('AttachTokens', function ($window) {
+  // this is an $httpInterceptor
+  // its job is to stop all out going request
+  // then look in local storage and find the user's token
+  // then add it to the header so the server can validate the request
+  var attach = {
+    request: function (object) {
+      var jwt = JSON.parse($window.localStorage.getItem('eureka'));
+      console.log('TOKEN:', jwt.token)
+      if (jwt) {
+        object.headers['x-access-token'] = jwt.token;
+      }
+      object.headers['Allow-Control-Allow-Origin'] = '*';
+      return object;
+    }
+  };
+  return attach;
+})

@@ -22,25 +22,22 @@ nav .title {
 	margin-top: 3px;
 }
 
-nav .add-link {
+nav .search {
 	width: 20%;
 	float: left;
+	text-align:left;
 }
 
-nav .add-link button {
-	width: 80%;
-	background-color: #679df6;
-	margin: 0px;
-	font-size: 14px;
+nav .search input {
+	padding: 8px 12px;
+	font-size: 16px;
+	margin-left: 20px;
+	border-radius: 3px;
+	border: none;
 }
 
-nav .add-link button:hover {
-	background-color: #3b77db;
-}
-
-nav .logout {
+nav .nav-actions {
 	width: 20%;
-	font-size: 14px;
 	float: right;
 	padding-top: 9px;
 	cursor: pointer;
@@ -48,6 +45,27 @@ nav .logout {
 
 nav .logout:hover {
 	color: #999999;
+}
+
+nav .nav-actions p {
+	font-size: 14px;
+	float: left;
+	margin: 2px 4px;
+}
+
+nav .nav-actions i {
+	float: left;
+	margin-top: 0px;
+}
+
+
+.add-link-icon {
+	color: #679df6;
+	padding-left: 10px;
+}
+
+.add-link-icon:hover {
+	color: #3b77db;
 }
 
 .fa {

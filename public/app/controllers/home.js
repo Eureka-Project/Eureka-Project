@@ -7,7 +7,6 @@ angular.module('eureka.home', [])
 	$scope.cookieData = JSON.parse($window.localStorage.getItem('eureka'));
 
 	$scope.modalShow = false;
-
 	$scope.changeModal = function() {
 		console.log('changing modal...')
 		if ($scope.modalShow === false) {

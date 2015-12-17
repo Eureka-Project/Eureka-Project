@@ -66,6 +66,7 @@ var urlSchema = mongoose.Schema({
 	title: String,
 	baseurl: String,
 	visits: Number,
+  Upvotes: Number,
 	date: { type: Date, default: Date.now }
 
 });

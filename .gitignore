@@ -1,2 +1,3 @@
 # Files to Ignore
 node_modules
+server/db/db

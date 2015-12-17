@@ -61,6 +61,15 @@ nav .logout:hover {
 	text-align: center;
 }
 
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover {
+	color: #999999;
+}
+
 form {
 	margin: 0px auto;
 }
@@ -200,4 +209,11 @@ input.ng-pristine {
 
 .signup-login-button {
 	margin-bottom: 40px;
+}
+
+.date-header {
+	font-weight: 300;
+	margin: 0px;
+	padding: 5px 0px;
+	border-bottom: 1px solid #e5e5e5
 }

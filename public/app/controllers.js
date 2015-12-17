@@ -46,6 +46,20 @@ Home.controller('HomeController', ['$scope', '$http', '$window', '$location', fu
 		})
 	}
 
+	$scope.submitLink = function(link) {
+		console.log('submitting link...', link)
+		$http({
+			method: 'POST',
+			url: '/api/links/',
+			data: { url: link, username: $scope.username }
+		}).then(function (res) {
+			console.log('success...link added')
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 }]);
 
 

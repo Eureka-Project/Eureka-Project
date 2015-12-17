@@ -77,10 +77,11 @@ Auth.controller('AuthController', ['$scope', '$http', function($scope, $http, $l
 			url: 'api/users/signup',
 			data: $scope.user
 		}).then(function (res) {
-			console.log('success...signing in now...')
-			$window.localStorage.setItem('com.eureka', token);
-        	$location.path('/home');
-			return res.data;
+			console.log('success...signing in now...');
+			console.log('token', res.data.token);
+			localStorage.setItem('com.eureka', res.data.token);
+        	location.hash = '#/home';
+			return res;
 		}).catch(function (error) {
 			console.log(error);
 		})

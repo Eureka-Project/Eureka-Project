@@ -70,47 +70,35 @@ Home.controller('HomeController', ['$scope', '$http', '$window', '$location', fu
 
 
 
-var Auth = angular.module('eureka.auth', [])
+angular.module('eureka.auth', [])
 
-Auth.controller('AuthController', ['$scope', '$http', function($scope, $http) {
+.controller('AuthController', ['$scope', '$http', '$window', '$location', 'Auth', function($scope, $http, $window, $location, Auth) {
 
 	$scope.user = {};
-
+	
 	$scope.signup = function () {
-		console.log('user: ', $scope.user)
-		$http({
-			method: 'POST',
-			url: 'api/users/signup',
-			data: $scope.user
-		}).then(function (res) {
+		Auth.signup($scope.user)
+		.then(function (token) {
 			console.log('success...signing in now...');
-			localStorage.setItem('com.eureka', res.data.token);
-        	location.hash = '#/home';
-			return res;
-		}).catch(function (error) {
-			console.log(error);
+			$window.localStorage.setItem('com.eureka', token);
+			$location.path('/home');
 		})
+		.catch(function (error) {
+		console.error(error);
+		});
 	}
 
 	$scope.login = function () {
-		console.log('user: ', $scope.user)
-		$http({
-			method: 'POST',
-			url: 'api/users/login',
-			data: $scope.user
-		}).then(function (res) {
-			console.log('success...logging in now...')
-			localStorage.setItem('com.eureka', res.data.token);
-        	location.hash = '#/home';
-			return res.data;
-		}).catch(function (error) {
-			console.log(error);
+		Auth.login($scope.user)
+		.then(function (token) {
+			console.log('success...signing in now...');
+			$window.localStorage.setItem('com.eureka', token);
+			$location.path('/home');
 		})
+		.catch(function (error) {
+		console.error(error);
+		});
 	}
-
-	var isAuth = function () {
-		return !!localStorage.getItem('com.eureka');
-	};
 
 }]);
 

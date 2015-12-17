@@ -32,7 +32,6 @@ userSchema.methods.comparePasswords = function(candidatePassword) {
   return defer.promise;
 };
 
-
 var urlSchema = mongoose.Schema({
 	title: String,
 	baseurl: String,

@@ -1,4 +1,4 @@
-var User = require('./usersModel.js');
+var Users = require('../db/confib.js');
 var Q = require('q');
 var jwt = require('jwt-simple');
 
@@ -7,7 +7,7 @@ module.exports = {
     var username = req.body.username;
     var password = req.body.password;
 
-    var findUser = Q.nbind(User.findOne, User);
+    var findUser = Q.nbind(Users.findOne, Users);
     findUser({username: username})
       .then(function (user) {
         if (!user) {
@@ -32,8 +32,10 @@ module.exports = {
   signup: function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
+    var firstname = req.body.firstname;
+    var lastname = req.body.lastname;
 
-    var findOne = Q.nbind(User.findOne, User);
+    var findOne = Q.nbind(Users.findOne, Users);
 
     // check to see if user already exists
     findOne({username: username})
@@ -42,10 +44,12 @@ module.exports = {
           next(new Error('User already exist!'));
         } else {
           // make a new user if not one
-          var create = Q.nbind(User.create, User);
+          var create = Q.nbind(Users.create, Users);
           var newUser = {
             username: username,
-            password: password
+            password: password,
+            firstname: firstname,
+            lastname: lastname
           };
           return create(newUser);
         }
@@ -70,7 +74,7 @@ module.exports = {
       next(new Error('No token'));
     } else {
       var user = jwt.decode(token, 'secret');
-      var findUser = Q.nbind(User.findOne, User);
+      var findUser = Q.nbind(Users.findOne, Users);
       findUser({username: user.username})
         .then(function (foundUser) {
           if (foundUser) {

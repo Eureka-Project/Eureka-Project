@@ -37,7 +37,7 @@ angular.module('eureka.home', [])
 		console.log('getting links...');
 		$http({
 			method: 'GET',
-			url: '/api/links/'
+			url: '/api/links'
 		}).then(function (res) {
 			console.log(res.data);
 			return res.data;
@@ -48,10 +48,15 @@ angular.module('eureka.home', [])
 
 	$scope.submitLink = function(link) {
 		console.log('submitting link...', link)
+		var data = {};
+		data.url = link;
+		data.username = $scope.username;
+		console.log(data)
 		$http({
 			method: 'POST',
-			url: '/api/links/',
-			data: { url: link, username: $scope.username }
+			url: '/api/links',
+			headers: {'Authorization': $scope.cookieData.token },
+			data: data
 		}).then(function (res) {
 			console.log('success...link added')
 			return res.data;

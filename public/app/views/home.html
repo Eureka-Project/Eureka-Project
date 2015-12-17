@@ -1,8 +1,13 @@
 <nav>
 	<div class="search">
-		<input placeholder="Search..."/>
+		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchText )'>
+			<i class="fa fa-search"></i>
+			<input type="text" ng-model="searchText" placeholder="Search..."/>
+		</form>
 	</div>
-	<div class="title">Eureka!</div>
+	<a ng-href="#/home">
+		<div class="title">Eureka!</div>
+	</a>
 	<div class="nav-actions">
 		<div class="logout" ng-click="signout()">
 			<p>{{username}}</p>

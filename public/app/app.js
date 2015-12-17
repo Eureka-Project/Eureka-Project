@@ -15,6 +15,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: "app/views/home.html",
       controller: "HomeController"
     })
+    .state('search', {
+      url: "/search",
+      templateUrl: "app/views/search.html",
+      controller: "HomeController"
+    })
     .state('signup', {
       url: "/signup",
       templateUrl: "app/views/signup.html",
@@ -36,7 +41,6 @@ app.factory('AttachTokens', function ($window) {
   var attach = {
     request: function (object) {
       var jwt = JSON.parse($window.localStorage.getItem('eureka'));
-      console.log('TOKEN:', jwt.token)
       if (jwt) {
         object.headers['x-access-token'] = jwt.token;
       }

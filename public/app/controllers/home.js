@@ -63,9 +63,16 @@ angular.module('eureka.home', [])
 		}).catch(function (error) {
 			console.log(error);
 		})
+		$scope.addLink.$setPristine();
+		$scope.newLink = "";
+		$scope.changeModal();
 	}
 
 	$scope.signout = function () { Auth.signout() };
+
+	$scope.search = function(searchText) {
+		$location.path('/search')
+	}
 
 
 	// Get Links When Controller Loads

@@ -1,18 +1,25 @@
-module.exports = function(grunt) {
+// module.exports = function(grunt) {
 	
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
-		uglify: {
-			options: {
+// 	grunt.initConfig({
+// 		pkg: grunt.file.readJSON('package.json'),
+		
+// 		nodemon: {
+// 			dev: {
+// 				script: //place file here to run
+// 			}
+// 		},
 
-			},
-			build: {
+// 		uglify: {
+// 			options: {
 
-			}
-		}
-	});
+// 			},
+// 			build: {
 
-	grunt.loapNpmTasks();
-	grunt.registerTask();
+// 			}
+// 		}
+// 	});
 
-}:
+// 	grunt.loapNpmTasks('grunt-contrib-uglify');
+// 	grunt.registerTask('default', ['uglify']);
+
+// }:

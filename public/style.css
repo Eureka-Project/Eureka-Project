@@ -28,12 +28,27 @@ nav .search {
 	text-align:left;
 }
 
+nav .search i {
+	width: 10%;
+	float:left;
+}
+
 nav .search input {
-	padding: 8px 12px;
+	padding: 8px 4%;
 	font-size: 16px;
-	margin-left: 20px;
+	width: 70%;
+	float:left;
 	border-radius: 3px;
 	border: none;
+	margin: 0px;
+}
+
+nav .search-form {
+	background-color: #fff;
+	height: 35px;
+	margin: 3px 0px 0px 20px;
+	border-radius: 5px;
+	padding: 0px 8px;
 }
 
 nav .nav-actions {

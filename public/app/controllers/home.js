@@ -70,6 +70,10 @@ angular.module('eureka.home', [])
 
 	$scope.signout = function () { Auth.signout() };
 
+	$scope.search = function(searchText) {
+		$location.path('/search')
+	}
+
 
 	// Get Links When Controller Loads
 	$scope.getLinks()

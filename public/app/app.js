@@ -15,6 +15,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: "app/views/home.html",
       controller: "HomeController"
     })
+    .state('search', {
+      url: "/search",
+      templateUrl: "app/views/search.html",
+      controller: "HomeController"
+    })
     .state('signup', {
       url: "/signup",
       templateUrl: "app/views/signup.html",

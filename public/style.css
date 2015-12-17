@@ -250,3 +250,12 @@ input.ng-pristine {
 	padding: 5px 0px;
 	border-bottom: 1px solid #e5e5e5
 }
+
+.search-field input{
+	font-size: 26px;
+	background-color: transparent;
+	padding: 10px;
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid black;
+}

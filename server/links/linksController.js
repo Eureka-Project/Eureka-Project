@@ -23,16 +23,30 @@ module.exports = {
       });
   },
 
-  allLinks: function (req, res, next) {
-  var findAll = Q.nbind(Links.find, Links);
+  getTodaysLinks: function(req, res, next) {
+    var findAll = Q.nbind(Links.find, Links);
+    var end = new Date();
+    var start = new Date(end.getYear(), end.getMonth(), end.getDate());
+    findAll({date: {"$gte": start, "$lt": end} })
+      .then(function (links) {
+        console.log(links)
+        res.json(links);
+      })
+      .fail(function (error) {
+        next(error);
+      });
+  },
 
-  findAll({})
-    .then(function (links) {
-      res.json(links);
-    })
-    .fail(function (error) {
-      next(error);
-    });
+  allLinks: function (req, res, next) {
+    var findAll = Q.nbind(Links.find, Links);
+
+    findAll({})
+      .then(function (links) {
+        res.json(links);
+      })
+      .fail(function (error) {
+        next(error);
+      });
   },
 
   newLink: function (req, res, next) {
@@ -110,4 +124,7 @@ var util = {
   isValidUrl: function(url) {
     return url.match(rValidUrl);
   }
+
+
 };
+

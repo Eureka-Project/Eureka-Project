@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://<Eureka>:<Eureka1?>@ds033175.mongolab.com:33175/eurekadb' || 'mongodb://localhost:27017');
+mongoose.connect('mongodb://eureka:Eureka1?@ds033175.mongolab.com:33175/eurekadb');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
@@ -18,7 +18,6 @@ var userSchema = mongoose.Schema({
 
 });
 
-var User = mongoose.model('User', userSchema);
 
 var urlSchema = mongoose.Schema({
 	title: String,
@@ -28,8 +27,14 @@ var urlSchema = mongoose.Schema({
 
 });
 
-var Url = mongoose.model('Url', urlSchema);
+var models = {
 
+	Url: mongoose.model('Url', urlSchema),
+	User: mongoose.model('User', userSchema)
 
-module.exports = db;
+};
 
+module.exports = models;
+
+// 'mongodb://<Eureka>:<Eureka1?>@ds033175.mongolab.com:33175/eurekadb'
+// 'mongodb://localhost:27017'

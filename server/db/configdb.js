@@ -1,4 +1,7 @@
+
 var mongoose = require('mongoose');
+var bcrypt   = require('bcrypt-nodejs');
+var Q        = require('q');
 mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -14,9 +17,20 @@ var userSchema = mongoose.Schema({
 	firstname: String,
 	lastname: String,
 	date: { type: Date, default: Date.now },
-
-
 });
+
+userSchema.methods.comparePasswords = function(candidatePassword) {
+  var defer = Q.defer();
+  var savedPassword = this.password;
+  bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
+    if (err) {
+      defer.reject(err);
+    } else {
+      defer.resolve(isMatch);
+    }
+  });
+  return defer.promise;
+};
 
 
 var urlSchema = mongoose.Schema({

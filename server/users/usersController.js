@@ -1,4 +1,4 @@
-var db = require('../db/configdb.js');
+var Users = require('../db/configdb.js').User;
 var Q = require('q');
 var jwt = require('jwt-simple');
 
@@ -9,7 +9,7 @@ module.exports = {
     var username = req.body.username;
     var password = req.body.password;
 
-    var findUser = Q.nbind(db.User.findOne, db.User);
+    var findUser = Q.nbind(Users.findOne, Users);
     findUser({username: username})
       .then(function (user) {
         if (!user) {
@@ -37,7 +37,7 @@ module.exports = {
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
 
-    var findOne = Q.nbind(db.User.findOne, db.User);
+    var findOne = Q.nbind(Users.findOne, Users);
 
     // check to see if user already exists
     findOne({username: username})
@@ -46,7 +46,7 @@ module.exports = {
           next(new Error('User already exist!'));
         } else {
           // make a new user if not one
-          var create = Q.nbind(db.User.create, db.User);
+          var create = Q.nbind(Users.create, Users);
           var newUser = {
             username: username,
             password: password,
@@ -76,7 +76,7 @@ module.exports = {
       next(new Error('No token'));
     } else {
       var user = jwt.decode(token, secret);
-      var findUser = Q.nbind(db.User.findOne, db.User);
+      var findUser = Q.nbind(Users.findOne, Users);
       findUser({username: user.username})
         .then(function (foundUser) {
           if (foundUser) {

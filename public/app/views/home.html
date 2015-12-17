@@ -1,8 +1,17 @@
 <nav>
-	<div class="add-link"><button>Add Link</button></div>
+	<div class="add-link" ng-click="changeModal()"><button>Add Link</button></div>
 	<div class="title">Eureka!</div>
 	<div class="logout" ng-click="signout()">{{username}}<i class="fa fa-sign-out"></i></div>
 </nav>
+<div class="modal-background" ng-click="changeModal()" ng-show="modalShow"></div>
+<div class="add-link-modal" ng-show="modalShow">
+	<div>
+		<i ng-click="changeModal()" class="fa fa-times-circle fa-2x"></i>
+		<h2>Gimme da link</h2>
+		<input placeholder="Paste URL..."/><br>
+		<button>Submit</button>
+	</div>
+</div>
 <div class="page-container">
 	<div class="results">
 		<div class="link-card" ng-repeat="link in links | orderBy: '-upvotes'">

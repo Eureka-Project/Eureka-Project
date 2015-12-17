@@ -2,6 +2,17 @@ var Home = angular.module('eureka.home', [])
 
 Home.controller('HomeController', ['$scope', '$http', function($scope, $http) {
 
+	$scope.modalShow = false;
+
+	$scope.changeModal = function() {
+		console.log('changing modal...')
+		if ($scope.modalShow === false) {
+			$scope.modalShow = true;
+		} else {
+			$scope.modalShow = false;
+		}
+	}
+
 	$scope.username = "Tarley Fass";
 
 	$scope.links = [
@@ -14,7 +25,7 @@ Home.controller('HomeController', ['$scope', '$http', function($scope, $http) {
 		console.log('getting links...');
 		$http({
 			method: 'GET',
-			url: 'api/links/'
+			url: '/api/links/'
 		}).then(function (res) {
 			console.log(res.data);
 			return res.data;

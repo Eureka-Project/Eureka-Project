@@ -36,7 +36,6 @@ app.factory('AttachTokens', function ($window) {
   var attach = {
     request: function (object) {
       var jwt = JSON.parse($window.localStorage.getItem('eureka'));
-      console.log('TOKEN:', jwt.token)
       if (jwt) {
         object.headers['x-access-token'] = jwt.token;
       }

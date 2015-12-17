@@ -63,6 +63,9 @@ angular.module('eureka.home', [])
 		}).catch(function (error) {
 			console.log(error);
 		})
+		$scope.addLink.$setPristine();
+		$scope.newLink = "";
+		$scope.changeModal();
 	}
 
 	$scope.signout = function () { Auth.signout() };

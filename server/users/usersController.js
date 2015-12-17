@@ -3,7 +3,7 @@ var Q = require('q');
 var jwt = require('jwt-simple');
 
 module.exports = {
-  signin: function (req, res, next) {
+  login: function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
 

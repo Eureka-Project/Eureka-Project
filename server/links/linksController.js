@@ -29,7 +29,6 @@ module.exports = {
     var start = new Date(end.getYear(), end.getMonth(), end.getDate());
     findAll({date: {"$gte": start, "$lt": end} })
       .then(function (links) {
-        console.log(links)
         res.json(links);
       })
       .fail(function (error) {

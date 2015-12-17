@@ -14,7 +14,6 @@ angular.module('eureka.services', [])
 	};
 
 	var signup = function (user) {
-		console.log('in AUTH')
 		return $http({
 			method: 'POST',
 			url: '/api/users/signup',

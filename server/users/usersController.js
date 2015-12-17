@@ -1,4 +1,4 @@
-var Users = require('../db/confib.js');
+var Users = require('../db/configdb.js');
 var Q = require('q');
 var jwt = require('jwt-simple');
 

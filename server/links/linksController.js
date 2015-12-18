@@ -1,5 +1,6 @@
 var Q = require('q');
 var request = require('request');
+var og = require('open-graph');
 
 var Links = require('../db/configdb.js').Url;
 
@@ -112,6 +113,7 @@ module.exports = {
             }
           ],
         };
+        console.log(data)
         res.json(data);
       })
       .fail(function (error) {
@@ -146,16 +148,18 @@ module.exports = {
         if (match) {
           res.send(match);
         } else {
-          return  util.getUrlTitle(url);
+          return  util.getUrlData(url);
         }
       })
-      .then(function (title) {
-        if (title) {
+      .then(function (data) {
+        console.log(data)
+        if (data) {
           var newLink = {
             url: url,
             visits: 0,
-            base_url: req.headers.origin,
-            title: title,
+            title: data.title,
+            description: data.description,
+            image: (data.image) ? data.image.url : '',
             username: username,
             upvotes: 0
           };
@@ -201,6 +205,20 @@ var util = {
     });
     return defer.promise;
   },
+
+   getUrlData: function(url) {
+    var defer = Q.defer();
+    og(url, function(err, data) {
+      if (err) {
+        defer.reject(err);
+      } else {
+        defer.resolve(data);
+      }
+    });
+    return defer.promise;
+  },
+
+
 
   isValidUrl: function(url) {
     return url.match(rValidUrl);

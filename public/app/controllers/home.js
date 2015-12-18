@@ -72,6 +72,11 @@ angular.module('eureka.home', [])
 		$scope.changeModal();
 	}
 
+	$scope.upvote = function(linkID) {
+		console.log('submitting upvote by', $scope.username)
+		console.log('linkID: ', linkID)
+	}
+
 	$scope.search = function(searchText) {
 		Data.searchValue = searchText;
 		$location.path('/search')

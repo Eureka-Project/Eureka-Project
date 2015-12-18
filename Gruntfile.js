@@ -3,28 +3,29 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-    watch: {
-      scripts: {
-        files: [
-        	'public/app/**/*.js',
-          'public/app/controllers/**/*.js',
-          'public/app/services/**/*.js',
-          'server/**/*.js',
-          'server/db/**/*.js',
-          'server/links/**/*.js',
-    			'server/users/**/*.js',
+    // watch: {
+    //   scripts: {
+    //     files: [
+    //     	'public/app/**/*.js',
+    //       'public/app/controllers/**/*.js',
+    //       'public/app/services/**/*.js'
+    //    //    'server/**/*.js',
+    //    //    'server/db/**/*.js',
+    //    //    'server/links/**/*.js',
+    // 			// 'server/users/**/*.js',
 
-        ],
-        tasks: [
-          'concat',
-          'uglify'
-        ]
-      },
-      css: {
-        files: 'public/*.css',
-        tasks: ['cssmin']
-      }
-    },
+    //     ],
+    //     tasks: [
+    //       'concat',
+    //       'uglify'
+    //     ]
+    //   },
+
+    //   css: {
+    //     files: 'public/*.css',
+    //     tasks: ['cssmin']
+    //   }
+    // },
 
 		concat: {
 			options: {
@@ -37,16 +38,16 @@ module.exports = function(grunt) {
 			},
 
 			fuglyserver: {
-				src: ['server/helpers.js', 'server/db/configdb.js', 'server/links/linksContoller.js', 'sever/links/linksRoute.js', 'server/users/usersController.js', 'server/users/usersRoutes.js'],
+				src: ['server/helpers.js', 'server/db/configdb.js', 'server/links/linksContoller.js', 'server/links/linksRoute.js', 'server/users/usersController.js', 'server/users/usersRoutes.js'],
 				dest: 'server/dist/server.js'
 			}
 		},
 		
-		nodemon: {
-			dev: {
-				script: sever.js
-			}
-		},
+		// nodemon: {
+		// 	dev: {
+		// 		script: server.js
+		// 	}
+		// },
 
 		uglify: {
 			fuglyclient: {
@@ -56,7 +57,7 @@ module.exports = function(grunt) {
 			},
 			fuglyserver: {
 				files: {
-					'server/dist/sever.min.js': ['server/dist/server.js']
+					'server/dist/server.min.js': ['server/dist/server.js']
 				}
 			}
 		},
@@ -67,12 +68,12 @@ module.exports = function(grunt) {
         			'public/dist.style.min.css': ['public/style.css']
         		}
       		}
-    	},
-    	
-    	shell: {
-    		prodServer: {
-    		}
     	}
+    	
+    	// shell: {
+    	// 	prodServer: {
+    	// 	}
+    	// }
 
 	});
 
@@ -84,6 +85,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 
 
-	grunt.registerTask('default', ['uglify']);
+	grunt.registerTask('default', ['concat', 'uglify']);
 
-}:
+};

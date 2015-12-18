@@ -1,25 +1,51 @@
-// module.exports = function(grunt) {
+module.exports = function(grunt) {
 	
-// 	grunt.initConfig({
-// 		pkg: grunt.file.readJSON('package.json'),
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
+
+		concat: {
+			options: {
+				seperator: ';'
+			},
+			
+			fuglyclient: {
+
+			},
+
+			fuglylib: {
+
+			}
+		},
 		
-// 		nodemon: {
-// 			dev: {
-// 				script: //place file here to run
-// 			}
-// 		},
+		nodemon: {
+			dev: {
+				script: sever.js
+			}
+		},
 
-// 		uglify: {
-// 			options: {
+		uglify: {
+			fuglyclient: {
+				files: {
+					//file path here
+				}
+			},
+			fuglylib: {
+				files: { 
+					//file path here
+				}
+			}
+		},
 
-// 			},
-// 			build: {
+		cssmin: {
+      		fuglycss: {
+        		files: {
+        			//file path here
+        		}
+      		}
+    	}
+	});
 
-// 			}
-// 		}
-// 	});
+	grunt.loapNpmTasks('grunt-contrib-uglify');
+	grunt.registerTask('default', ['uglify']);
 
-// 	grunt.loapNpmTasks('grunt-contrib-uglify');
-// 	grunt.registerTask('default', ['uglify']);
-
-// }:
+}:

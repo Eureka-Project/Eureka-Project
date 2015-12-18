@@ -1,24 +1,40 @@
-var Upvote = require('../db/configdb.js').Upvote;
+var Upvote = require('../db/configdb.js').UpVote;
 var Q = require('q');
 var request = require('request');
 
 module.exports = {
+
   newUpvote: function(req, res, next) {
     console.log('here')
-    var link_id = req.body.link_id;
-    var username = req.body.username;
+    var linkid = req.body.linkid;
+    var userid = req.body.userid;
 
     var storeUpvote = Q.nbind(Upvote.create, Upvote); 
-    var upvote = {
-      username: username,
-      link_id: link_id
-    };
-    console.log('upvote', upvote)
-    // return storeUpvote(upvote);
-    res.sendStatus(201)
-    res.end();
-  }
+    var findUpvote = Q.nbind(Upvote.findOne, Upvote);
+
+    findUpvote({linkid: linkid, userid: userid})
+      .then(function (match) {
+        if (match) {
+          res.send(match);
+        } else {
+          var upvote = {
+            userid: userid,
+            linkid: linkid
+          };
+          return storeUpvote(upvote)
+        }
+      })
+      .then(function(upvote) {
+        console.log(upvote)
+        res.json(upvote)
+      })
+      .fail(function (error) {
+        next(error);
+      }); 
+  }     
 }
+
+
 console.log('sending upvote request');
 
 
@@ -46,7 +62,7 @@ var options = {
     method: 'POST'
 };
 
-// request(options, function(err,response,body) {
-//   // console.log(response);
-// });
+request(options, function(err,response,body) {
+  // console.log(response);
+});
 

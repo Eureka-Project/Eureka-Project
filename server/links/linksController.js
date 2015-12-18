@@ -23,16 +23,78 @@ module.exports = {
       });
   },
 
-  getTodaysLinks: function(req, res, next) {
+  // getTodaysLinks: function(req, res, next) {
+  //   var findAll = Q.nbind(Links.find, Links);
+  //   var end = new Date();
+  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
+  //   findAll({date: {"$gte": start, "$lt": end} })
+  //     .then(function (links) {
+  //       var data = {
+  //         links: [{
+  //           date: start,
+  //           links: links
+  //         }],
+  //       };
+  //       res.json(data);
+  //     })
+  //     .fail(function (error) {
+  //       next(error);
+  //     });
+  // },
+
+  // getLinksForDate: function(date) {
+  //   var findAll = Q.nbind(Links.find, Links);
+  //   var end = date;
+  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
+  //   findAll({date: {"$gte": start, "$lt": end} })
+  //     .then(function (links) {
+  //       var data = {
+  //         links: [{
+  //           date: start,
+  //           links: links
+  //         }],
+  //       };
+  //      return data;
+  //     })
+  //     .fail(function (error) {
+  //       console.log(error);
+  //     })
+  // },
+
+  getPreviousThreeDaysLinks: function(req, res, next) {
     var findAll = Q.nbind(Links.find, Links);
-    var end = new Date();
-    var start = new Date(end.getYear(), end.getMonth(), end.getDate());
+    var end = req.body.date || new Date();
+    var start = new Date(end.getYear(), end.getMonth(), end.getDate()-2);
     findAll({date: {"$gte": start, "$lt": end} })
       .then(function (links) {
+        var linksDayOne = []; 
+        var linksDayTwo = [];
+        var linksDayThree = [];
+        var lastDay = end.getDate();
+        for(var i=0; i<links.length; i++) {
+          var day = links[i].date.getDate();
+          if(day === lastDay) {
+            linksDayOne.push(links[i])
+          }
+          if(day === lastDay-1) {
+            linksDayTwo.push(links[i])
+          }
+          if(day === lastDay-2) {
+            linksDayThree.push(links[i])
+          }
+        }
         var data = {
           links: [{
+            date: new Date(end.getYear(), end.getMonth(), end.getDate()),
+            links: linksDayOne
+          },
+          {
+            date: new Date(end.getYear(), end.getMonth(), end.getDate()-1),
+            links: linksDayTwo
+          },
+          {
             date: start,
-            links: links
+            links: linksDayThree
           }],
         };
         res.json(data);
@@ -42,17 +104,17 @@ module.exports = {
       });
   },
 
-  allLinks: function (req, res, next) {
-    var findAll = Q.nbind(Links.find, Links);
+  // allLinks: function (req, res, next) {
+  //   var findAll = Q.nbind(Links.find, Links);
 
-    findAll({})
-      .then(function (links) {
-        res.json(links);
-      })
-      .fail(function (error) {
-        next(error);
-      });
-  },
+  //   findAll({})
+  //     .then(function (links) {
+  //       res.json(links);
+  //     })
+  //     .fail(function (error) {
+  //       next(error);
+  //     });
+  // },
 
   newLink: function (req, res, next) {
     console.log(req)
@@ -132,4 +194,5 @@ var util = {
 
 
 };
+
 

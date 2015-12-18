@@ -117,10 +117,8 @@ module.exports = {
   // },
 
   newLink: function (req, res, next) {
-    console.log(req)
     var url = req.body.url;
     var username = req.body.username;
-    console.log(req.body);
     if (!util.isValidUrl(url)) {
       return next(new Error('Not a valid url'));
     }

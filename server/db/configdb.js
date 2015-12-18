@@ -64,7 +64,8 @@ userSchema.pre('save', function (next) {
 
 var urlSchema = mongoose.Schema({
 	title: String,
-	baseurl: String,
+  url: String,
+	base_url: String,
 	visits: Number,
   upvotes: Number,
 	date: { type: Date, default: Date.now }

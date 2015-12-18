@@ -17,16 +17,21 @@ app.use(express.static(__dirname + '/public'));
 
 var usersRouter = express.Router();
 var linksRouter = express.Router();
+var upvotesRouter = express.Router();
 
 // inject our routers into their respective route files
 require('./server/users/usersRoutes.js')(usersRouter);
 require('./server/links/linksRoutes.js')(linksRouter);
+require('./server/upvotes/upvotesRoutes.js')(upvotesRouter);
 
 app.use('/api/users', usersRouter); // use user router for all user request
+
+app.use('/api/upvote', upvotesRouter);
 
 // authentication middleware used to decode token and made available on the request
 app.use('/api/links', helpers.decode);
 app.use('/api/links', linksRouter); // user link router for link request
+
 
 // If the url is not one of the ones above, send an error.
 app.use(helpers.errorLogger);

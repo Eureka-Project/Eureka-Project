@@ -1,11 +1,10 @@
 var Q = require('q');
-var request = require('request');
-var og = require('open-graph');
+// var request = require('request');
+// var og = require('open-graph');
+// var og = require('./linksUtil.js');
+var util = require('./linksUtil.js');
 
 var Links = require('../db/configdb.js').Url;
-
-var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
-
 
 module.exports = {
   findUrl: function (req, res, next, code) {
@@ -23,44 +22,6 @@ module.exports = {
         next(error);
       });
   },
-
-  // getTodaysLinks: function(req, res, next) {
-  //   var findAll = Q.nbind(Links.find, Links);
-  //   var end = new Date();
-  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   findAll({date: {"$gte": start, "$lt": end} })
-  //     .then(function (links) {
-  //       var data = {
-  //         links: [{
-  //           date: start,
-  //           links: links
-  //         }],
-  //       };
-  //       res.json(data);
-  //     })
-  //     .fail(function (error) {
-  //       next(error);
-  //     });
-  // },
-
-  // getLinksForDate: function(date) {
-  //   var findAll = Q.nbind(Links.find, Links);
-  //   var end = date;
-  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   findAll({date: {"$gte": start, "$lt": end} })
-  //     .then(function (links) {
-  //       var data = {
-  //         links: [{
-  //           date: start,
-  //           links: links
-  //         }],
-  //       };
-  //      return data;
-  //     })
-  //     .fail(function (error) {
-  //       console.log(error);
-  //     })
-  // },
 
   getPreviousThreeDaysLinks: function(req, res, next) {
     var end = req.body.date || new Date();
@@ -148,7 +109,7 @@ module.exports = {
         if (match) {
           res.send(match);
         } else {
-          return  util.getUrlData(url);
+          return util.getUrlData(url);
         }
       })
       .then(function (data) {
@@ -177,6 +138,44 @@ module.exports = {
       });
   },
 
+  // getTodaysLinks: function(req, res, next) {
+  //   var findAll = Q.nbind(Links.find, Links);
+  //   var end = new Date();
+  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
+  //   findAll({date: {"$gte": start, "$lt": end} })
+  //     .then(function (links) {
+  //       var data = {
+  //         links: [{
+  //           date: start,
+  //           links: links
+  //         }],
+  //       };
+  //       res.json(data);
+  //     })
+  //     .fail(function (error) {
+  //       next(error);
+  //     });
+  // },
+
+  // getLinksForDate: function(date) {
+  //   var findAll = Q.nbind(Links.find, Links);
+  //   var end = date;
+  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
+  //   findAll({date: {"$gte": start, "$lt": end} })
+  //     .then(function (links) {
+  //       var data = {
+  //         links: [{
+  //           date: start,
+  //           links: links
+  //         }],
+  //       };
+  //      return data;
+  //     })
+  //     .fail(function (error) {
+  //       console.log(error);
+  //     })
+  // },
+
   navToLink: function (req, res, next) {
     var link = req.navLink;
     link.visits++;
@@ -190,42 +189,3 @@ module.exports = {
   }
 
 };
-
-var util = {
-  getUrlTitle: function(url) {
-    var defer = Q.defer();
-    request(url, function(err, res, html) {
-      if (err) {
-        defer.reject(err);
-      } else {
-        var tag = /<title>(.*)<\/title>/;
-        var match = html.match(tag);
-        var title = match ? match[1] : url;
-        defer.resolve(title);
-      }
-    });
-    return defer.promise;
-  },
-
-  getUrlData: function(url) {
-    var defer = Q.defer();
-    og(url, function(err, data) {
-      if (err) {
-        defer.reject(err);
-      } else {
-        defer.resolve(data);
-      }
-    });
-    return defer.promise;
-  },
-
-
-
-  isValidUrl: function(url) {
-    return url.match(rValidUrl);
-  }
-
-
-};
-
-

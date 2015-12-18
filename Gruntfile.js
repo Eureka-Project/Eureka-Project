@@ -3,29 +3,29 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-    // watch: {
-    //   scripts: {
-    //     files: [
-    //     	'public/app/**/*.js',
-    //       'public/app/controllers/**/*.js',
-    //       'public/app/services/**/*.js'
-    //    //    'server/**/*.js',
-    //    //    'server/db/**/*.js',
-    //    //    'server/links/**/*.js',
-    // 			// 'server/users/**/*.js',
+    watch: {
+      scripts: {
+        files: [
+        	'public/app/**/*.js',
+          'public/app/controllers/**/*.js',
+          'public/app/services/**/*.js',
+          'server/**/*.js',
+          'server/db/**/*.js',
+          'server/links/**/*.js',
+    			'server/users/**/*.js',
 
-    //     ],
-    //     tasks: [
-    //       'concat',
-    //       'uglify'
-    //     ]
-    //   },
+        ],
+        tasks: [
+          'concat',
+          'uglify'
+        ]
+      },
 
-    //   css: {
-    //     files: 'public/*.css',
-    //     tasks: ['cssmin']
-    //   }
-    // },
+      css: {
+        files: 'public/*.css',
+        tasks: ['cssmin']
+      }
+    },
 
 		concat: {
 			options: {
@@ -68,12 +68,12 @@ module.exports = function(grunt) {
         			'public/dist.style.min.css': ['public/style.css']
         		}
       		}
-    	}
+    	},
     	
-    	// shell: {
-    	// 	prodServer: {
-    	// 	}
-    	// }
+    	shell: {
+    		prodServer: {
+    		}
+    	}
 
 	});
 

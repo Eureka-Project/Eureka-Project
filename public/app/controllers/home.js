@@ -4,6 +4,10 @@ angular.module('eureka.home', [])
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
 
+	// Enables user to signout
+	$scope.signout = function () { Auth.signout() };
+
+	// For the add link pop-up modal
 	$scope.modalShow = false;
 	$scope.changeModal = function() {
 		console.log('changing modal...')
@@ -14,7 +18,13 @@ angular.module('eureka.home', [])
 		}
 	}
 
-	$scope.username = Data.username;
+	// data being temporarily stored
+	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
+	$scope.token = JSON.parse($window.localStorage.getItem('eureka')).token;
+	$scope.links = undefined; // will be defined once 'getLinks' is run
+	$scope.allLinks = undefined; // will be defined once 'getLinks' is run
+	$scope.searchValue = Data.searchValue; // defined when 'search' is run
+
 
 	$scope.getLinks = function () {
 		console.log('getting links...');
@@ -27,7 +37,6 @@ angular.module('eureka.home', [])
 				date = array[0].split('-');
 				res.data.links[prop].date = date;
 			}
-			// Data.links = res.data.links;
 			$scope.links = res.data.links;
 			var results = [];
 			for (var prop in $scope.links) {
@@ -63,29 +72,13 @@ angular.module('eureka.home', [])
 		$scope.changeModal();
 	}
 
-	$scope.signout = function () { Auth.signout() };
-
-	$scope.searchValue = Data.searchValue;
-
 	$scope.search = function(searchText) {
 		Data.searchValue = searchText;
 		$location.path('/search')
 	}
 
-	$scope.getAllLinks = function(links) {
-		var results = [];
-		for (var prop in links) {
-			results = results.concat(links[prop].links)
-		}
-		console.log('all links success')
-		return results;
-	}
-
-	// Get Links When Controller Loads
+	// Get Link Information When Controller Loads
 	$scope.getLinks()
-
-	$scope.links = undefined;
-	$scope.allLinks = undefined;
 
 }]);
 

@@ -29,7 +29,6 @@ angular.module('eureka.authService', [])
 	};
 
 	var signout = function () {
-		console.log('signing out...')
 		$window.localStorage.removeItem('eureka');
 		$location.path('/login');
 	};

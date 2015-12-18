@@ -2,16 +2,11 @@ angular.module('eureka.data', [])
 
 .factory('Data', function ($http, $location, $window) {
 
+	// Enables searchValue to be stored when page changes from 'home' to 'search'
 	var searchValue = undefined;
-
-	var username = JSON.parse($window.localStorage.getItem('eureka')).username;
-
-	var token = JSON.parse($window.localStorage.getItem('eureka')).token;
 
 	return {
 		searchValue: searchValue,
-		token: token,
-		username: username,
 	}
 
 })

@@ -109,6 +109,7 @@ var urlSchema = mongoose.Schema({
   image: { type: String, default: '' },
 	visits: { type: Number, default: 0 },
   upvotes: { type: Number, default: 0 },
+  userid: { type: Number, default: 0 },
 	date: { type: Date, default: Date.now }
 
 });

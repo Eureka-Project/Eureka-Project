@@ -32,5 +32,17 @@
 		<input type="text" ng-model="searchValue" placeholder="Search..."/>
 	</div>
 	<div class="results">
+			<div class="link-card" ng-repeat="link in allLinks | filter:searchValue | orderBy: '-upvotes'">
+				<div class='voting'>
+					{{link.upvotes}}<i class="fa fa-arrow-up"></i>
+				</div>
+				<div class="link-data">
+					<a ng-href="{{link.url}}">
+						<h4>{{link.title}}</h4>
+					</a>
+					<p> link description would go here</p>
+				</div>
+			</div>
+			<p class="no-search-results" ng-show="(allLinks | filter:searchValue).length < 1">Sorry, no matching results</p>
 	</div>
 </div>

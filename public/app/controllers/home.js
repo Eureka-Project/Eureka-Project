@@ -27,9 +27,13 @@ angular.module('eureka.home', [])
 				date = array[0].split('-');
 				res.data.links[prop].date = date;
 			}
-			Data.links = res.data.links;
+			// Data.links = res.data.links;
 			$scope.links = res.data.links;
-			console.log("info: ", $scope.links);
+			var results = [];
+			for (var prop in $scope.links) {
+				results = results.concat($scope.links[prop].links)
+			}
+			$scope.allLinks = results;
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -49,6 +53,7 @@ angular.module('eureka.home', [])
 			data: data
 		}).then(function (res) {
 			console.log('success...link added')
+			$scope.getLinks();
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -67,9 +72,24 @@ angular.module('eureka.home', [])
 		$location.path('/search')
 	}
 
+	$scope.getAllLinks = function(links) {
+		var results = [];
+		for (var prop in links) {
+			results = results.concat(links[prop].links)
+		}
+		console.log('all links success')
+		return results;
+	}
+
 	// Get Links When Controller Loads
 	$scope.getLinks()
 
-	$scope.links = Data.links;
+	$scope.links = undefined;
+	$scope.allLinks = undefined;
 
 }]);
+
+
+
+
+

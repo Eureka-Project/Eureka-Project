@@ -261,3 +261,8 @@ input.ng-pristine {
 	border: none;
 	border-bottom: 1px solid black;
 }
+
+.no-search-results {
+	margin: 40px 10px;
+	text-align: left;
+}

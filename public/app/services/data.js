@@ -8,13 +8,10 @@ angular.module('eureka.data', [])
 
 	var token = JSON.parse($window.localStorage.getItem('eureka')).token;
 
-	var links = undefined;
-
 	return {
 		searchValue: searchValue,
 		token: token,
 		username: username,
-		links: links
 	}
 
 })

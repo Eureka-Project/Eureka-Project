@@ -16,14 +16,14 @@ angular.module('eureka.home', [])
 
 	$scope.username = Data.username;
 
-	$scope.links = Data.links;
-
 	$scope.getLinks = function () {
 		console.log('getting links...');
 		$http({
 			method: 'GET',
 			url: '/api/links'
 		}).then(function (res) {
+			Data.links = res.data.links;
+			$scope.links = res.data.links;
 			console.log(res.data);
 			return res.data;
 		}).catch(function (error) {
@@ -64,5 +64,7 @@ angular.module('eureka.home', [])
 
 	// Get Links When Controller Loads
 	$scope.getLinks()
+
+	$scope.links = Data.links;
 
 }]);

@@ -6,6 +6,17 @@ var util = require('./linksUtil.js');
 
 var Links = require('../db/configdb.js').Url;
 
+Date.prototype.toUTC = function() {
+  return new Date(
+    this.getUTCFullYear(),
+    this.getUTCMonth(),
+    this.getUTCDate(),
+    this.getUTCHours(),
+    this.getUTCMinutes(),
+    this.getUTCSeconds()
+  );
+};
+
 module.exports = {
   findUrl: function (req, res, next, code) {
     var findLink = Q.nbind(Links.findOne, Links);
@@ -24,7 +35,7 @@ module.exports = {
   },
 
   getPreviousThreeDaysLinks: function(req, res, next) {
-    var end = req.body.date || new Date();
+    var end = req.body.date || new Date().toUTC();
 
     // Get the year, month, and day in number format.
     var endYear = end.getFullYear();

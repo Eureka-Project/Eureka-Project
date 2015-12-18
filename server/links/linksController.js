@@ -62,40 +62,55 @@ module.exports = {
   // },
 
   getPreviousThreeDaysLinks: function(req, res, next) {
-    var findAll = Q.nbind(Links.find, Links);
     var end = req.body.date || new Date();
-    var start = new Date(end.getYear(), end.getMonth(), end.getDate()-2);
-    findAll({date: {"$gte": start, "$lt": end} })
+
+    // Get the year, month, and day in number format.
+    var endYear = end.getYear();
+    var endMonth = end.getMonth();
+    var endDate = end.getDate();
+
+    // Reverse chronological (e.g., today, yesterday, 2 days ago):
+    var dayOne = new Date(endYear, endMonth, endDate);
+    var dayTwo = new Date(endYear, endMonth, endDate - 1);
+    var dayThree = new Date(endYear, endMonth, endDate - 2);
+
+    var start = dayThree;
+
+    var findAll = Q.nbind(Links.find, Links);
+
+    findAll({ date: {"$gte": start, "$lt": end} })
       .then(function (links) {
+        // Split the links up by day created.
         var linksDayOne = []; 
         var linksDayTwo = [];
         var linksDayThree = [];
-        var lastDay = end.getDate();
-        for(var i=0; i<links.length; i++) {
+
+        for(var i = 0; i < links.length; i++) {
           var day = links[i].date.getDate();
-          if(day === lastDay) {
-            linksDayOne.push(links[i])
-          }
-          if(day === lastDay-1) {
-            linksDayTwo.push(links[i])
-          }
-          if(day === lastDay-2) {
-            linksDayThree.push(links[i])
+          if(day === endDate) {
+            linksDayOne.push(links[i]);
+          } else if(day === endDate - 1) {
+            linksDayTwo.push(links[i]);
+          } else if(day === endDate - 2) {
+            linksDayThree.push(links[i]);
           }
         }
+
         var data = {
-          links: [{
-            date: new Date(end.getYear(), end.getMonth(), end.getDate()),
-            links: linksDayOne
-          },
-          {
-            date: new Date(end.getYear(), end.getMonth(), end.getDate()-1),
-            links: linksDayTwo
-          },
-          {
-            date: start,
-            links: linksDayThree
-          }],
+          links: [
+            {
+              date: dayOne,
+              links: linksDayOne
+            },
+            {
+              date: dayTwo,
+              links: linksDayTwo
+            },
+            {
+              date: dayThree,
+              links: linksDayThree
+            }
+          ],
         };
         res.json(data);
       })

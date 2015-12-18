@@ -63,11 +63,12 @@ userSchema.pre('save', function (next) {
 
 
 var urlSchema = mongoose.Schema({
-	title: String,
+	title: { type: String, default: '' },
   url: String,
-	base_url: String,
-	visits: Number,
-  upvotes: Number,
+  description: { type: String, default: '' },
+  image: { type: String, default: '' },
+	visits: { type: Number, default: 0 },
+  upvotes: { type: Number, default: 0 },
 	date: { type: Date, default: Date.now }
 
 });

@@ -168,6 +168,7 @@ input.ng-pristine {
 .link-card {
 	text-align: left;
 	padding: 1% 5%;
+	height: 70px;
 }
 
 .voting {
@@ -184,7 +185,6 @@ input.ng-pristine {
 
 .link-data {
 	width: 92%;
-	float: left;
 }
 
 .link-data h4, p {

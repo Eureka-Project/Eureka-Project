@@ -22,9 +22,14 @@ angular.module('eureka.home', [])
 			method: 'GET',
 			url: '/api/links'
 		}).then(function (res) {
+			for (var prop in res.data.links) {
+				var array = res.data.links[prop].date.split('T');
+				date = array[0].split('-');
+				res.data.links[prop].date = date;
+			}
 			Data.links = res.data.links;
 			$scope.links = res.data.links;
-			console.log(res.data);
+			console.log("info: ", $scope.links);
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

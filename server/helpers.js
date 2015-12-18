@@ -1,5 +1,7 @@
 var jwt  = require('jwt-simple');
 
+var secret = 'Festus is the bestest';
+
 module.exports = {
   errorLogger: function (error, req, res, next) {
     // log the error then send it to the next middleware in
@@ -25,7 +27,7 @@ module.exports = {
     try {
       // decode token and attach user to the request
       // for use inside our controllers
-      user = jwt.decode(token, 'Festus is the bestest');
+      user = jwt.decode(token, secret);
       req.user = user;
       next();
     } catch(error) {

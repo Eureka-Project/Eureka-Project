@@ -102,7 +102,7 @@ a {
 }
 
 a:hover {
-	color: #999999;
+	color: #000;
 }
 
 form {
@@ -169,7 +169,7 @@ input.ng-pristine {
 .link-card {
 	text-align: left;
 	padding: 1% 5%;
-	height: 70px;
+	height: 80px;
 }
 
 .voting {
@@ -195,7 +195,13 @@ input.ng-pristine {
 }
 
 .link-data {
-	padding-left: 70px;
+	margin-left: 70px;
+	border-radius: 5px;
+	height: 100%;
+}
+
+.link-data:hover {
+	background-color: #f1f1f1;
 }
 
 .link-data h4, p {
@@ -285,10 +291,11 @@ input.ng-pristine {
 .link-description {
 	font-size: 12px;
 	margin-left: 80px;
+	padding-top: 3px;
 }
 
 .link-description p {
-	margin: 2px 0px;
+	margin: 5px 0px;
 }
 
 .link-image {
@@ -298,7 +305,7 @@ input.ng-pristine {
 	overflow: hidden;
 	border-radius: 5px;
 	float: left;
-	margin: 4px 15px 0px 0px;
+	margin: 10px 15px 0px 5px;
 }
 
 .link-image img {

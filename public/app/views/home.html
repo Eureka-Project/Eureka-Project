@@ -36,18 +36,18 @@
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
+						<a ng-href="{{link.url}}">
 				<div class="link-data">
 					<div class="link-image">
 						<img ng-src="{{link.image}}"/>
 					</div>
 					<div class="link-description">
-						<a ng-href="{{link.url}}">
 							<h4>{{link.title}}</h4>
-						</a>
-						<p class="link-description-p">{{link.description}}</p>
+						<p class="link-description-p">{{link.description | limitTo: 130}}</p>
 						<p class="link-description-p">{{link.site_name}}</p>
 					</div>
 				</div>
+						</a>
 			</div>
 		</div>
 	</div>

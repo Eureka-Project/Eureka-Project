@@ -35,5 +35,5 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-nodemon": "^0.2.1",
     "grunt-shell": "^0.6.4"
-  }
+  },
 }

@@ -31,15 +31,15 @@
 	<div class="results">
 		<div ng-repeat="day in links">
 			<h4 class="date-header">{{day.date}}</h4>
-			<div class="link-card" ng-repeat="link in day.linksArray | orderBy: '-upvotes'">
+			<div class="link-card" ng-repeat="link in day.links | orderBy: '-upvotes'">
 				<div class='voting'>
 					{{link.upvotes}}<i class="fa fa-arrow-up"></i>
 				</div>
 				<div class="link-data">
-					<a ng-href="{{link.url}}">
+					<!-- <a ng-href="{{link.url}}"> -->
 						<h4>{{link.title}}</h4>
-					</a>
-					<p>{{link.source}}</p>
+					<!-- </a> -->
+					<!-- <p>{{link.source}}</p> -->
 				</div>
 			</div>
 		</div>

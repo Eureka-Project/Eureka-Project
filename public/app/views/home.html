@@ -30,24 +30,24 @@
 <div class="page-container">
 	<div class="results">
 		<div ng-repeat="day in links">
-			<h4 ng-hide="day.links.length < 1" class="date-header">{{day.date[1]}}/{{day.date[2]}}/{{day.date[0]}}</h4>
+			<h4 ng-hide="day.links.length < 1" class="date-header">{{day.date}}</h4>
 			<div ng-hide="day.links.length < 1" class="link-card" ng-repeat="link in day.links | orderBy: '-upvotes'">
 				<div class='voting'>
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
-						<a ng-href="{{link.url}}">
-				<div class="link-data">
-					<div class="link-image">
-						<img ng-src="{{link.image}}"/>
+				<a ng-href="{{link.url}}">
+					<div class="link-data">
+						<div class="link-image">
+							<img ng-src="{{link.image}}"/>
+						</div>
+						<div class="link-description">
+								<h4>{{link.title}}</h4>
+							<p class="link-description-p">{{link.description | limitTo: 130}}</p>
+							<p class="link-description-p">{{link.site_name}}</p>
+						</div>
 					</div>
-					<div class="link-description">
-							<h4>{{link.title}}</h4>
-						<p class="link-description-p">{{link.description | limitTo: 130}}</p>
-						<p class="link-description-p">{{link.site_name}}</p>
-					</div>
-				</div>
-						</a>
+				</a>
 			</div>
 		</div>
 	</div>

@@ -33,8 +33,7 @@ angular.module('eureka.home', [])
 			url: '/api/links'
 		}).then(function (res) {
 			for (var prop in res.data.links) {
-				var array = res.data.links[prop].date.split('T');
-				date = array[0].split('-');
+				var date = Data.lookupDate(res.data.links[prop].date)
 				res.data.links[prop].date = date;
 			}
 			$scope.links = res.data.links;

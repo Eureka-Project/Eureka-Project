@@ -10,7 +10,7 @@
 	</a>
 	<div class="nav-actions">
 		<i ng-click="changeModal()" class="fa fa-plus-square fa-lg add-link-icon"></i>
-		<div class="logout" ng-click="signout()">
+		<div class="logout" ng-click="signout()" ng-show="!{{username}}">
 			<p>{{username}}</p>
 			<i class="fa fa-sign-out"></i>
 		</div>
@@ -20,7 +20,7 @@
 <div class="add-link-modal" ng-show="modalShow">
 	<div>
 		<i ng-click="changeModal()" class="fa fa-times-circle fa-2x"></i>
-		<h2>Gimme da link</h2>
+		<h2>Share Your Story</h2>
 		<form name="addLink" ng-submit='addLink.$valid && submitLink( newLink )' novalidate>
 			<input type='url' name="urlText" placeholder="Paste URL..." ng-model="newLink"><br>
 			<input type="submit" value="Submit Link">
@@ -32,7 +32,7 @@
 		<div ng-repeat="day in links">
 			<h4 ng-hide="day.links.length < 1" class="date-header">{{day.date}}</h4>
 			<div ng-hide="day.links.length < 1" class="link-card" ng-repeat="link in day.links | orderBy: '-upvotes'">
-				<div class='voting'>
+				<div class='voting' ng-click="upvote( link._id )">
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
@@ -42,8 +42,8 @@
 							<img ng-src="{{link.image}}"/>
 						</div>
 						<div class="link-description">
-								<h4>{{link.title}}</h4>
-							<p class="link-description-p">{{link.description | limitTo: 130}}</p>
+								<h2>{{link.title}}</h2>
+							<p class="link-description-p">{{link.description | limitTo: 125}}</p>
 							<p class="link-description-p">{{link.site_name}}</p>
 						</div>
 					</div>

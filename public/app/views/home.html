@@ -9,11 +9,11 @@
 		<div class="title">Eureka!</div>
 	</a>
 	<div class="nav-actions">
+		<i ng-click="changeModal()" class="fa fa-plus-square fa-lg add-link-icon"></i>
 		<div class="logout" ng-click="signout()">
 			<p>{{username}}</p>
 			<i class="fa fa-sign-out"></i>
 		</div>
-		<i ng-click="changeModal()" class="fa fa-plus-square fa-lg add-link-icon"></i>
 	</div>
 </nav>
 <div class="modal-background" ng-click="changeModal()" ng-show="modalShow"></div>

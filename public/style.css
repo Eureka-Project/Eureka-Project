@@ -54,7 +54,7 @@ nav .search-form {
 
 nav .nav-actions {
 	width: 20%;
-	float: right;
+	float: left;
 	padding-top: 9px;
 	cursor: pointer;
 }
@@ -70,8 +70,9 @@ nav .nav-actions p {
 }
 
 nav .nav-actions i {
-	float: left;
+	float: right;
 	margin-top: 0px;
+	margin-right: 20px;
 }
 
 
@@ -260,4 +261,13 @@ input.ng-pristine {
 	width: 100%;
 	border: none;
 	border-bottom: 1px solid black;
+}
+
+.no-search-results {
+	margin: 40px 10px;
+	text-align: left;
+}
+
+.logout {
+	float:right;
 }

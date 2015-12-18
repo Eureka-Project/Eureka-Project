@@ -66,7 +66,7 @@ module.exports = {
     var end = req.body.date || new Date();
 
     // Get the year, month, and day in number format.
-    var endYear = end.getYear();
+    var endYear = end.getFullYear();
     var endMonth = end.getMonth();
     var endDate = end.getDate();
 
@@ -207,7 +207,7 @@ var util = {
     return defer.promise;
   },
 
-   getUrlData: function(url) {
+  getUrlData: function(url) {
     var defer = Q.defer();
     og(url, function(err, data) {
       if (err) {

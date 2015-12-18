@@ -1,8 +1,8 @@
 <nav>
 	<div class="search">
-		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchText )'>
+		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchValue )'>
 			<i class="fa fa-search"></i>
-			<input type="text" ng-model="searchText" placeholder="Search..."/>
+			<input type="text" ng-model="searchValue" placeholder="Search..."/>
 		</form>
 	</div>
 	<a ng-href="#/home">
@@ -29,7 +29,7 @@
 </div>
 <div class="page-container">
 	<div class="search-field">
-		<input type="text" ng-model="searchText" placeholder"Search..."/>
+		<input type="text" ng-model="searchValue" placeholder="Search..."/>
 	</div>
 	<div class="results">
 	</div>

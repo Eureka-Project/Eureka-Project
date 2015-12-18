@@ -36,6 +36,7 @@ nav .search i {
 nav .search input {
 	padding: 8px 4%;
 	font-size: 16px;
+	line-height: 19px;
 	width: 70%;
 	float:left;
 	border-radius: 3px;
@@ -253,6 +254,7 @@ input.ng-pristine {
 
 .search-field input{
 	font-size: 26px;
+	line-height: 32px;
 	background-color: transparent;
 	padding: 10px;
 	width: 100%;

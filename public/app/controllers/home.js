@@ -1,10 +1,8 @@
 angular.module('eureka.home', [])
 
-.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Auth' ,function($scope, $http, $window, $location, Auth) {
+.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Data', 'Auth' ,function($scope, $http, $window, $location, Data, Auth) {
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
-
-	$scope.cookieData = JSON.parse($window.localStorage.getItem('eureka'));
 
 	$scope.modalShow = false;
 	$scope.changeModal = function() {
@@ -16,22 +14,9 @@ angular.module('eureka.home', [])
 		}
 	}
 
-	$scope.username = $scope.cookieData.username;
+	$scope.username = Data.username;
 
-	$scope.links = [
-	{	date: "December 17th, 2015",
-		linksArray: 
-		[{ title:"Let’s not let fear defeat our values",upvotes:2,source:"Medium",url:"https://medium.com/@sundar_pichai/let-s-not-let-fear-defeat-our-values-af2e5ca92371#.cfnq2efuy" },
-		{ title:"Google’s Angular 2 Framework Hits Beta",upvotes:3,source:"TechCrunch",url:"http://techcrunch.com/2015/12/15/googles-angular-2-framework-hits-beta/" },
-		{ title:"‘Star Wars: The Force Awakens’ Delivers the Thrills, With a Touch of Humanity",upvotes:5,source:"NY Times",url:"http://www.nytimes.com/2015/12/18/movies/star-wars-the-force-awakens-review.html?_r=0" }]
-	},
-	{	date: "December 16th, 2015",
-		linksArray:
-		[{ title:"Let’s not let fear defeat our values",upvotes:2,source:"Medium",url:"https://medium.com/@sundar_pichai/let-s-not-let-fear-defeat-our-values-af2e5ca92371#.cfnq2efuy" },
-		{ title:"Google’s Angular 2 Framework Hits Beta",upvotes:3,source:"TechCrunch",url:"http://techcrunch.com/2015/12/15/googles-angular-2-framework-hits-beta/" },
-		{ title:"‘Star Wars: The Force Awakens’ Delivers the Thrills, With a Touch of Humanity",upvotes:5,source:"NY Times",url:"http://www.nytimes.com/2015/12/18/movies/star-wars-the-force-awakens-review.html?_r=0" }]
-	}
-	];
+	$scope.links = Data.links;
 
 	$scope.getLinks = function () {
 		console.log('getting links...');
@@ -50,12 +35,12 @@ angular.module('eureka.home', [])
 		console.log('submitting link...', link)
 		var data = {};
 		data.url = link;
-		data.username = $scope.username;
+		data.username = Data.username;
 		console.log(data)
 		$http({
 			method: 'POST',
 			url: '/api/links',
-			headers: {'Authorization': $scope.cookieData.token },
+			headers: {'Authorization': Data.token },
 			data: data
 		}).then(function (res) {
 			console.log('success...link added')
@@ -70,10 +55,12 @@ angular.module('eureka.home', [])
 
 	$scope.signout = function () { Auth.signout() };
 
+	$scope.searchValue = Data.searchValue;
+
 	$scope.search = function(searchText) {
+		Data.searchValue = searchText;
 		$location.path('/search')
 	}
-
 
 	// Get Links When Controller Loads
 	$scope.getLinks()

@@ -1,4 +1,4 @@
-angular.module('eureka.services', [])
+angular.module('eureka.authService', [])
 
 .factory('Auth', function ($http, $location, $window) {
 

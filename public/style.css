@@ -174,7 +174,7 @@ input.ng-pristine {
 
 .voting {
 	width: 8%;
-	padding-top: 22px;
+	height: 100%;
 	font-size: 20px;
 	float: left;
 	cursor: pointer;
@@ -184,12 +184,22 @@ input.ng-pristine {
 	color: #999999;
 }
 
+.voting h3 {
+	float:left;
+	margin: 23px 0px 0px 0px;
+}
+
+.voting i {
+	float: left;
+	margin: 30px 0px 0px 10px;	
+}
+
 .link-data {
-	width: 92%;
+	padding-left: 70px;
 }
 
 .link-data h4, p {
-	margin: 10px 0px;
+	margin: 5px 0px;
 }
 
 .add-link-modal {
@@ -270,4 +280,34 @@ input.ng-pristine {
 
 .logout {
 	float:right;
+}
+
+.link-description {
+	font-size: 12px;
+	margin-left: 80px;
+}
+
+.link-description p {
+	margin: 2px 0px;
+}
+
+.link-image {
+	position: relative;
+	height: 60px;
+	width: 60px;
+	overflow: hidden;
+	border-radius: 5px;
+	float: left;
+	margin: 4px 15px 0px 0px;
+}
+
+.link-image img {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	height: 100%;
+	width: auto;
+	-webkit-transform: translate(-50%,-50%);
+	-ms-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);
 }

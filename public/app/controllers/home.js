@@ -43,6 +43,7 @@ angular.module('eureka.home', [])
 				results = results.concat($scope.links[prop].links)
 			}
 			$scope.allLinks = results;
+			console.log($scope.links)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

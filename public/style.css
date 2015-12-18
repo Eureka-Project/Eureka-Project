@@ -253,7 +253,7 @@ input.ng-pristine {
 .form-container {
 	background-color: #fff;
 	width: 500px;
-	margin: 0px auto;
+	margin: 42px auto;
 	border: 1px solid #e5e5e5;
 	border-radius: 5px;
 }
@@ -317,4 +317,14 @@ input.ng-pristine {
 	-webkit-transform: translate(-50%,-50%);
 	-ms-transform: translate(-50%,-50%);
 	transform: translate(-50%,-50%);
+}
+
+.loginError, .signupError {
+  color: #fff;
+  background-color: #d26c6c;
+  position: fixed;
+  width: 100%;
+  padding: 10px 0px;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
 }

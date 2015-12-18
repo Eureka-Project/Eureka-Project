@@ -4,15 +4,23 @@ angular.module('eureka.auth', [])
 
 	$scope.user = {};
 
+	$scope.loginErr = false;
+	$scope.signupErr = false;
+	$scope.loginTxt = "";
+	$scope.signupTxt = "";
+
 	$scope.signup = function () {
 		Auth.signup($scope.user)
 		.then(function (data) {
 			console.log('success...signing in now...');
 			$window.localStorage.setItem('eureka', JSON.stringify(data));
+			$scope.signupErr = false;
 			$location.path('/home');
 		})
 		.catch(function (error) {
-		console.error(error);
+			$scope.signupErr = true;
+			$scope.signupTxt = error.data.error;
+			console.error('Message: ', error.data.error);
 		});
 	}
 
@@ -21,10 +29,13 @@ angular.module('eureka.auth', [])
 		.then(function (data) {
 			console.log('success...signing in now...');
 			$window.localStorage.setItem('eureka', JSON.stringify(data));
+			$scope.loginErr = false;
 			$location.path('/home');
 		})
 		.catch(function (error) {
-		console.error(error);
+			$scope.loginErr = true;
+			$scope.loginTxt = error.data.error;
+			console.error('Message: ', error.data.error);
 		});
 	}
 

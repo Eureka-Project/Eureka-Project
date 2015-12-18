@@ -35,7 +35,7 @@ module.exports = {
   },
 
   getPreviousThreeDaysLinks: function(req, res, next) {
-    var end = req.body.date || new Date().toUTC();
+    var end = req.body.date || new Date();
 
     // Get the year, month, and day in number format.
     var endYear = end.getFullYear();

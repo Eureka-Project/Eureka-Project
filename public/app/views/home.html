@@ -30,15 +30,15 @@
 <div class="page-container">
 	<div class="results">
 		<div ng-repeat="day in links">
-			<h4 class="date-header">{{day.date}}</h4>
+			<h4 class="date-header">{{day.date[1]}}/{{day.date[2]}}/{{day.date[0]}}</h4>
 			<div class="link-card" ng-repeat="link in day.links | orderBy: '-upvotes'">
-				<div class='voting'>
+<!-- 				<div class='voting'>
 					{{link.upvotes}}<i class="fa fa-arrow-up"></i>
-				</div>
+				</div> -->
 				<div class="link-data">
-					<!-- <a ng-href="{{link.url}}"> -->
+					<a ng-href="{{link.url}}">
 						<h4>{{link.title}}</h4>
-					<!-- </a> -->
+					</a>
 					<!-- <p>{{link.source}}</p> -->
 				</div>
 			</div>

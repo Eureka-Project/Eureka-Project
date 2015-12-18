@@ -7,13 +7,10 @@ module.exports = function(grunt) {
 			options: {
 				seperator: ';'
 			},
-			
+
 			fuglyclient: {
-
-			},
-
-			fuglylib: {
-
+				src: [],
+				dest: 'public/dist/client.js'
 			}
 		},
 		
@@ -26,12 +23,7 @@ module.exports = function(grunt) {
 		uglify: {
 			fuglyclient: {
 				files: {
-					//file path here
-				}
-			},
-			fuglylib: {
-				files: { 
-					//file path here
+					'public/dist/client.min.js': ['public/dist/client.js']
 				}
 			}
 		},
@@ -39,13 +31,28 @@ module.exports = function(grunt) {
 		cssmin: {
       		fuglycss: {
         		files: {
-        			//file path here
+        			'public/dist.style.min.css': ['public/style.css']
         		}
       		}
+    	},
+
+    	shell: {
+    		prodServer: {
+    		}
     	}
+
 	});
 
-	grunt.loapNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-mocha-test');
+	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('grunt-nodemon');
+
+
 	grunt.registerTask('default', ['uglify']);
 
 }:

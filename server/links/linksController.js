@@ -143,7 +143,8 @@ module.exports = {
             visits: 0,
             base_url: req.headers.origin,
             title: title,
-            username: username
+            username: username,
+            upvotes: 0
           };
           return createLink(newLink);
         }

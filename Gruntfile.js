@@ -9,8 +9,13 @@ module.exports = function(grunt) {
 			},
 
 			fuglyclient: {
-				src: [],
+				src: ['public/app/app.js', 'public/app/controllers/auth.js', 'public/app/controllers/home.js', 'public/app/services/authServices.js', 'public/app/services/data.js'],
 				dest: 'public/dist/client.js'
+			},
+
+			fuglyserver: {
+				src: ['server/helpers.js', 'server/db/configdb.js', 'server/links/linksContoller.js', 'sever/links/linksRoute.js', 'server/users/usersController.js', 'server/users/usersRoutes.js'],
+				dest: 'server/dist/server.js'
 			}
 		},
 		
@@ -24,6 +29,11 @@ module.exports = function(grunt) {
 			fuglyclient: {
 				files: {
 					'public/dist/client.min.js': ['public/dist/client.js']
+				}
+			},
+			fuglyserver: {
+				files: {
+					'server/dist/sever.min.js': ['server/dist/server.js']
 				}
 			}
 		},

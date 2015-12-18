@@ -159,6 +159,7 @@ module.exports = {
             visits: 0,
             title: data.title,
             description: data.description,
+            site_name: data.site_name,
             image: (data.image) ? data.image.url : '',
             username: username,
             upvotes: 0

@@ -66,6 +66,7 @@ var urlSchema = mongoose.Schema({
 	title: { type: String, default: '' },
   url: String,
   description: { type: String, default: '' },
+  site_name: { type: String, default: '' },
   image: { type: String, default: '' },
 	visits: { type: Number, default: 0 },
   upvotes: { type: Number, default: 0 },

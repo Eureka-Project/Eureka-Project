@@ -10,7 +10,7 @@ module.exports = {
     var password = req.body.password;
 
     var findUser = Q.nbind(Users.findOne, Users);
-    findUser({username: username})
+    findUser({ username: username })
       .then(function (user) {
         if (!user) {
           next(new Error('User does not exist'));
@@ -19,7 +19,11 @@ module.exports = {
             .then(function(foundUser) {
               if (foundUser) {
                 var token = jwt.encode(user, secret);
-                res.json({username: user.username, token: token});
+                res.json({
+                  username: user.username,
+                  user_id: user['_id'],
+                  token: token
+                });
               } else {
                 return next(new Error('No user'));
               }
@@ -40,7 +44,7 @@ module.exports = {
     var findOne = Q.nbind(Users.findOne, Users);
 
     // check to see if user already exists
-    findOne({username: username})
+    findOne({ username: username })
       .then(function(user) {
         if (user) {
           next(new Error('User already exist!'));
@@ -58,8 +62,22 @@ module.exports = {
       })
       .then(function (user) {
         // create token to send back for auth
+        // user example: {
+        //   date: Fri Dec 18 2015 19:12:33 GMT-0600 (CST),
+        //   _id: 5674af012e5833104b30ef0f,
+        //   lastname: 'test2',
+        //   firstname: 'test2',
+        //   password: '$2a$10$5kWIkSPNOPvf3fFH8fkxUek9PMAy4saUj5LC2D.pbyD1NO7I7P.X.',
+        //   username: 'test2',
+        //   __v: 0
+        // }
+
         var token = jwt.encode(user, secret);
-        res.json({username: user.username, token: token});
+        res.json({
+          username: user.username,
+          user_id: user['_id'],
+          token: token
+        });
       })
       .fail(function (error) {
         next(error);

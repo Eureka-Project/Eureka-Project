@@ -21,6 +21,8 @@ angular.module('eureka.home', [])
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
 	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;
+	$scope.firstname = undefined;
+	$scope.lastname = undefined;
 	$scope.token = JSON.parse($window.localStorage.getItem('eureka')).token;
 	$scope.links = undefined; // will be defined once 'getLinks' is run
 	$scope.allLinks = undefined; // will be defined once 'getLinks' is run
@@ -96,8 +98,23 @@ angular.module('eureka.home', [])
 		$location.path('/search')
 	}
 
+	$scope.getUserInfo = function() {
+		console.log('getting user info...');
+		$http({
+			method: 'GET',
+			url: '/api/users/' + $scope.user_id,
+		}).then(function (res) {
+			$scope.firstname = res.data.firstname;
+			$scope.lastname = res.data.lastname;
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 	// Get Link Information When Controller Loads
-	$scope.getLinks()
+	$scope.getLinks();
+	$scope.getUserInfo();
 
 }]);
 

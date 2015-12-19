@@ -130,16 +130,6 @@ nav .nav-actions i {
 	color: #3b77db;
 }
 
-.search-field input{
-	font-size: 26px;
-	line-height: 32px;
-	background-color: transparent;
-	padding: 10px;
-	width: 100%;
-	border: none;
-	border-bottom: 1px solid black;
-}
-
 .logout {
 	float:right;
 }
@@ -361,6 +351,16 @@ input.ng-pristine {
 
 
 /*** Search Page ***/
+
+.search-field input{
+	font-size: 26px;
+	line-height: 32px;
+	background-color: transparent;
+	padding: 10px;
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid black;
+}
 
 .no-search-results {
 	margin: 40px 10px;

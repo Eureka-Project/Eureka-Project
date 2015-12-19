@@ -3,6 +3,7 @@ var app = angular.module('eureka', [
   'eureka.authService',
   'eureka.auth',
   'eureka.home',
+  'eureka.profile',
   'ui.router'
 ])
 
@@ -30,6 +31,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       url: "/login",
       templateUrl: "app/views/login.html",
       controller: "AuthController"
+    })
+    .state('profile', {
+      url: "/profile",
+      templateUrl: "app/views/profile.html",
+      controller: "ProfileController"
     })
     $httpProvider.interceptors.push('AttachTokens');
 });

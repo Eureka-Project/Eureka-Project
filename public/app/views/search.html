@@ -33,7 +33,7 @@
 	</div>
 	<div class="results">
 			<div class="link-card" ng-repeat="link in allLinks | filter:searchValue | orderBy: '-upvotes'">
-				<div class='voting'>
+				<div class='voting' ng-click="upvote( link._id )">
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
@@ -43,8 +43,8 @@
 							<img ng-src="{{link.image}}"/>
 						</div>
 						<div class="link-description">
-								<h4>{{link.title}}</h4>
-							<p class="link-description-p">{{link.description | limitTo: 130}}</p>
+								<h3>{{link.title}}</h3>
+							<p class="link-description-p">{{link.description | limitTo: 125}}</p>
 							<p class="link-description-p">{{link.site_name}}</p>
 						</div>
 					</div>

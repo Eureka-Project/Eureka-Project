@@ -20,6 +20,7 @@ angular.module('eureka.home', [])
 
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
+	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;
 	$scope.token = JSON.parse($window.localStorage.getItem('eureka')).token;
 	$scope.links = undefined; // will be defined once 'getLinks' is run
 	$scope.allLinks = undefined; // will be defined once 'getLinks' is run
@@ -42,7 +43,6 @@ angular.module('eureka.home', [])
 				results = results.concat($scope.links[prop].links)
 			}
 			$scope.allLinks = results;
-			console.log($scope.links)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -53,12 +53,11 @@ angular.module('eureka.home', [])
 		console.log('submitting link...', link)
 		var data = {};
 		data.url = link;
-		data.username = Data.username;
+		data.user_id = $scope.user_id;
 		console.log(data)
 		$http({
 			method: 'POST',
 			url: '/api/links',
-			headers: {'Authorization': Data.token },
 			data: data
 		}).then(function (res) {
 			console.log('success...link added')
@@ -73,8 +72,23 @@ angular.module('eureka.home', [])
 	}
 
 	$scope.upvote = function(linkID) {
-		console.log('submitting upvote by', $scope.username)
+		console.log('submitting upvote by', $scope.user_id)
 		console.log('linkID: ', linkID)
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.link_id = linkID;
+		$http({
+			method: 'POST',
+			url: '/api/upvote',
+			data: data
+		}).then(function (res) {
+			console.log('success...upvoted')
+			console.log('body: ', res.data)
+			$scope.getLinks();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
 	}
 
 	$scope.search = function(searchText) {

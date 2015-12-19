@@ -204,8 +204,13 @@ input.ng-pristine {
 	background-color: #f1f1f1;
 }
 
-.link-data h2, p {
+.link-data p {
 	margin: 8px 0px;
+}
+
+.link-data h3 {
+	font-size: 16px;
+	margin: 8px 0px;	
 }
 
 .add-link-modal {

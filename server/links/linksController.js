@@ -107,7 +107,7 @@ module.exports = {
 
   newLink: function (req, res, next) {
     var url = req.body.url;
-    var username = req.body.username;
+    var user_id = req.body.user_id;
     if (!util.isValidUrl(url)) {
       return next(new Error('Not a valid url'));
     }
@@ -133,7 +133,7 @@ module.exports = {
             description: data.description,
             site_name: data.site_name,
             image: (data.image) ? data.image.url : '',
-            username: username,
+            user_id: user_id,
             upvotes: 0
           };
           return createLink(newLink);

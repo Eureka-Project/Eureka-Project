@@ -76,8 +76,8 @@ var urlSchema = mongoose.Schema({
 });
 
 var upVoteSchema = mongoose.Schema({
-	userid: String,
-	linkid: String,
+	user_id: String,
+	link_id: String,
 	date: { type: Date, default: Date.now }
 
 });
@@ -86,7 +86,7 @@ var models = {
 
 	Url: mongoose.model('Url', urlSchema),
 	User: mongoose.model('User', userSchema),
-	UpVote: mongoose.model('Upvote', upVoteSchema)
+	Upvote: mongoose.model('Upvote', upVoteSchema)
 
 };
 

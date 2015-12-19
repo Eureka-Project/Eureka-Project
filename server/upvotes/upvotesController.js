@@ -1,4 +1,4 @@
-var Upvote = require('../db/configdb.js').UpVote;
+var Upvote = require('../db/configdb.js').Upvote;
 var Q = require('q');
 var request = require('request');
 
@@ -6,20 +6,20 @@ module.exports = {
 
   newUpvote: function(req, res, next) {
     console.log('here')
-    var linkid = req.body.linkid;
-    var userid = req.body.userid;
+    var link_id = req.body.link_id;
+    var user_id = req.body.user_id;
 
     var storeUpvote = Q.nbind(Upvote.create, Upvote); 
     var findUpvote = Q.nbind(Upvote.findOne, Upvote);
 
-    findUpvote({linkid: linkid, userid: userid})
+    findUpvote({link_id: link_id, user_id: user_id})
       .then(function (match) {
         if (match) {
           res.send(match);
         } else {
           var upvote = {
-            userid: userid,
-            linkid: linkid
+            user_id: user_id,
+            link_id: link_id
           };
           return storeUpvote(upvote)
         }

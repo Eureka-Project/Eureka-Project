@@ -59,6 +59,7 @@ module.exports = {
         var linksDayThree = [];
 
         for(var i = 0; i < links.length; i++) {
+          console.log('link id:', links[i]['_id']);
           var day = links[i].date.getDate();
           if(day === endDate) {
             linksDayOne.push(links[i]);

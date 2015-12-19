@@ -16,3 +16,20 @@
 		</div>
 	</div>
 </nav>
+<div class="modal-background" ng-click="changeModal()" ng-show="modalShow"></div>
+<div class="add-link-modal" ng-show="modalShow">
+	<div>
+		<i ng-click="changeModal()" class="fa fa-times-circle fa-2x"></i>
+		<h2>Share Your Story</h2>
+		<form name="addLink" ng-submit='addLink.$valid && submitLink( newLink )' novalidate>
+			<input type='url' name="urlText" placeholder="Paste URL..." ng-model="newLink"><br>
+			<input type="submit" value="Submit Link">
+		</form>
+	</div>
+</div>
+<div class="page-container">
+	<h1>Profile for {{username}}</h1>
+	<p>Get User Info from Server</p>
+	<p>Display list of links user has upvoted</p>
+	<p>Display list of links user has submitted</p>
+</div>

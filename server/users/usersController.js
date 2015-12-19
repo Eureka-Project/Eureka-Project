@@ -107,5 +107,27 @@ module.exports = {
           next(error);
         });
     }
+  },
+
+  userID: function (req, res, next) {
+    var userID = req.params.userID;
+    console.log('user: ', userID)
+    var findOne = Q.nbind(Users.findOne, Users);
+    // check to see if user exists
+    findOne({ _id: userID })
+      .then(function(user) {
+        res.json({
+          firstname: user.firstname,
+          lastname: user.lastname,
+          username: user.username,
+          user_id: user['_id']
+        });
+      })
+      .fail(function (error) {
+        next(error);
+      });
   }
-};
+
+
+
+}

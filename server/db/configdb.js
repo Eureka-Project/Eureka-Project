@@ -2,8 +2,8 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var Q        = require('q');
-mongoose.connect('localhost:27017');
-// mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+// mongoose.connect('localhost:27017'); // for local mongo hosting
+mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {

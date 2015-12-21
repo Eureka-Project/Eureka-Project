@@ -46,7 +46,7 @@ button:hover {
 }
 
 .page-container {
-	width: 80%;
+	width: 84%;
 	margin: 0px auto;
 	padding-top: 20px;
 	text-align: center;
@@ -352,6 +352,7 @@ input.ng-pristine {
 
 .link-description-username {
 	float: right;
+	padding-right: 10px;
 }
 
 

@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "postinstall": "grunt build"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",

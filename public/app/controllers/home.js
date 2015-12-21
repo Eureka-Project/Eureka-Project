@@ -21,8 +21,8 @@ angular.module('eureka.home', [])
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
 	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;
-	$scope.firstname = undefined;
-	$scope.lastname = undefined;
+	$scope.firstname = undefined; // will be defined once 'getLinks' is run
+	$scope.lastname = undefined; // will be defined once 'getLinks' is run
 	$scope.token = JSON.parse($window.localStorage.getItem('eureka')).token;
 	$scope.links = undefined; // will be defined once 'getLinks' is run
 	$scope.allLinks = undefined; // will be defined once 'getLinks' is run
@@ -45,6 +45,7 @@ angular.module('eureka.home', [])
 				results = results.concat($scope.links[prop].links)
 			}
 			$scope.allLinks = results;
+			console.log($scope.allLinks)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -55,6 +56,7 @@ angular.module('eureka.home', [])
 		console.log('submitting link...', link)
 		var data = {};
 		data.url = link;
+		data.username = $scope.firstname + ' ' + $scope.lastname;
 		data.user_id = $scope.user_id;
 		console.log(data)
 		$http({

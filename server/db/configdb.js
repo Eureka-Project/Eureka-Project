@@ -2,7 +2,8 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var Q        = require('q');
-mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+mongoose.connect('localhost:27017');
+// mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {
@@ -70,7 +71,8 @@ var urlSchema = mongoose.Schema({
   image: { type: String, default: '' },
 	visits: { type: Number, default: 0 },
   upvotes: { type: Number, default: 0 },
-  userid: { type: Number, default: 0 },
+  userid: { type: String, default: '' },
+  username: { type: String, default: '' },
 	date: { type: Date, default: Date.now }
 
 });

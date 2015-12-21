@@ -43,8 +43,9 @@
 						</div>
 						<div class="link-description">
 								<h3>{{link.title}}</h3>
-							<p class="link-description-p">{{link.description | limitTo: 125}}</p>
-							<p class="link-description-p">{{link.site_name}}</p>
+							<p class="link-description-p">{{link.description | limitTo: 140}}</p>
+							<p class="link-description-source">{{link.site_name}}</p>
+							<p class="link-description-username">Submitted by {{link.username}}</p>
 						</div>
 					</div>
 				</a>

@@ -34,7 +34,7 @@ angular.module('eureka.data', [])
 		var year = date[0];
 		var month = monthObj[date[1]];
 		if(dayObj[date[2]]) {
-			var day = date[2]+dayObj(date[2]);
+			var day = date[2]+dayObj[date[2]];
 		} else {
 			var day = date[2]+'th';
 		}

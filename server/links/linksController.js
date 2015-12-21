@@ -109,6 +109,7 @@ module.exports = {
   newLink: function (req, res, next) {
     var url = req.body.url;
     var user_id = req.body.user_id;
+    var user_name = req.body.username;
     if (!util.isValidUrl(url)) {
       return next(new Error('Not a valid url'));
     }
@@ -125,7 +126,6 @@ module.exports = {
         }
       })
       .then(function (data) {
-        console.log(data)
         if (data) {
           var newLink = {
             url: url,
@@ -134,9 +134,11 @@ module.exports = {
             description: data.description,
             site_name: data.site_name,
             image: (data.image) ? data.image.url : '',
-            user_id: user_id,
+            username: user_name,
+            userid: user_id,
             upvotes: 0
           };
+          console.log('new Link: ', newLink)
           return createLink(newLink);
         }
       })

@@ -1,4 +1,5 @@
 var Users = require('../db/configdb.js').User;
+var Links = require('../db/configdb.js').Url;
 var Q = require('q');
 var jwt = require('jwt-simple');
 
@@ -121,6 +122,32 @@ module.exports = {
           lastname: user.lastname,
           username: user.username,
           user_id: user['_id']
+        });
+      })
+      .fail(function (error) {
+        next(error);
+      });
+  },
+
+  profileInfo: function (req, res, next) {
+    var userID = req.params.userID;
+    console.log('user: ', userID)
+    var findOne = Q.nbind(Users.findOne, Users);
+    var findLinks = Q.nbind(Links.find, Links);
+    // check to see if user exists
+    findOne({ _id: userID })
+      .then(function(user) {
+        var userData = {};
+        userData.firstname = user.firstname;
+        userData.lastname = user.lastname;
+        userData.username = user.username;
+        userData.user_id = user['_id'];
+        findLinks({})
+        .then(function (links) {
+          res.json(userData);
+        })
+        .fail(function (error) {
+          next(error);
         });
       })
       .fail(function (error) {

@@ -40,11 +40,12 @@ angular.module('eureka.profile', [])
 		console.log('getting profile info...');
 		$http({
 			method: 'GET',
-			url: '/api/users/' + $stateParams.userID,
+			url: '/api/users/profile/' + $stateParams.userID,
 		}).then(function (res) {
 			$scope.profileUsername = res.data.username
 			$scope.profileFirstName = res.data.firstname;
 			$scope.profileLastName = res.data.lastname;
+			console.log(res.data)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

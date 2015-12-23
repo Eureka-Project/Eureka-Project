@@ -137,12 +137,13 @@ module.exports = {
     // check to see if user exists
     findOne({ _id: userID })
       .then(function(user) {
-        var userData = {};
-        userData.firstname = user.firstname;
-        userData.lastname = user.lastname;
-        userData.username = user.username;
-        userData.user_id = user['_id'];
-        findLinks({userid: userData.user_id})
+        var userData = {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          username: user.username,
+          user_id: user['_id'],
+        };
+        findLinks({ userid: userData.user_id })
         .then(function (links) {
           userData.submittedLinks = [];
           for (var i = 0; i < links.length; i++) {

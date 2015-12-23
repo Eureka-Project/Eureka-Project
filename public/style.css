@@ -361,6 +361,10 @@ input.ng-pristine {
 	padding-right: 10px;
 }
 
+.profile-link:hover {
+	color: #679df6;
+}
+
 
 
 

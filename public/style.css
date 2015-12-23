@@ -270,6 +270,12 @@ input.ng-pristine {
 	border-bottom: 1px solid #e5e5e5
 }
 
+.no-link-results {
+	font-weight: 300;
+	margin: 0px;
+	padding: 15px 0px 5px;
+}
+
 /*** Link-Card ***/
 
 .link-card {

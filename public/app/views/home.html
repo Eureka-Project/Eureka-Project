@@ -30,7 +30,7 @@
 <div class="page-container">
 	<div class="results">
 		<div class="links-day" ng-repeat="day in links">
-			<h4 ng-hide="day.links.length < 1" class="date-header">{{day.date}}</h4>
+			<h4 class="date-header">{{day.date}}</h4>
 			<div ng-hide="day.links.length < 1" class="link-card" ng-repeat="link in day.links | orderBy: '-upvotes'">
 				<div class='voting' ng-click="upvote( link._id )">
 					<h3>{{link.upvotes}}</h3>
@@ -50,6 +50,7 @@
 					</div>
 				</a>
 			</div>
+			<p class="no-link-results" ng-show="day.links.length < 1">No links submitted for today :(</p>
 		</div>
 	</div>
 </div>

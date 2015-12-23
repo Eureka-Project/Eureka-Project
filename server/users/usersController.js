@@ -142,8 +142,12 @@ module.exports = {
         userData.lastname = user.lastname;
         userData.username = user.username;
         userData.user_id = user['_id'];
-        findLinks({})
+        findLinks({userid: userData.user_id})
         .then(function (links) {
+          userData.submittedLinks = [];
+          for (var i = 0; i < links.length; i++) {
+            userData.submittedLinks.push(links[i])
+          }
           res.json(userData);
         })
         .fail(function (error) {

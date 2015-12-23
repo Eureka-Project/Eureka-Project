@@ -11,7 +11,7 @@
 	<div class="nav-actions">
 		<i ng-click="changeModal()" class="fa fa-plus-square fa-lg add-link-icon"></i>
 		<div class="logout" ng-click="signout()" ng-show="!{{username}}">
-			<p>{{username}}</p>
+			<p>{{firstname}} {{lastname}}</p>
 			<i class="fa fa-sign-out"></i>
 		</div>
 	</div>
@@ -28,7 +28,8 @@
 	</div>
 </div>
 <div class="page-container">
-	<h1>Profile for {{username}}</h1>
+	<h1>Profile for {{profileFirstName}} {{profileLastName}}</h1>
+	<p>Username: {{profileUsername}}</p>
 	<p>Get User Info from Server</p>
 	<p>Display list of links user has upvoted</p>
 	<p>Display list of links user has submitted</p>

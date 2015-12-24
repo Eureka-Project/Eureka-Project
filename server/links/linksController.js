@@ -110,26 +110,28 @@ module.exports = {
     var url = req.body.url;
     var user_id = req.body.user_id;
     var user_name = req.body.username;
-    if (!util.isValidUrl(url)) {
+    if ( ! util.isValidUrl(url) ) {
       return next(new Error('Not a valid url'));
     }
 
     var createLink = Q.nbind(Links.create, Links);
     var findLink = Q.nbind(Links.findOne, Links);
-    var updateLink = Q.nbind(Links.update, Links);
-    var isMatch = false;
 
     findLink({url: url})
       .then(function (match) {
         if (match) {
           console.log('Link already exists in database:\n', match);
           res.send(match);
+          // Stop the promise chain (go to '.fail()')
+          throw new Error('Stop promise chain');
         } else {
-          console.log('Adding link to database:', url);
           return util.getMetaData(url);
         }
       })
       .then(function (data) {
+        if ( ! data ) {
+          console.log('This should not run');
+        }
         if (data) {
           var newLink = {
             url: url,
@@ -151,8 +153,14 @@ module.exports = {
           res.json(createdLink);
         }
       })
-      .fail(function (error) {
-        next(error);
+      .fail(function (err) {
+        // Unless the error requests to stop the promise chain,
+        //   log the error and continue to the next function
+        //   in the chain.
+        if (err !== 'Stop promise chain') {
+          console.log(err);
+          next(err);
+        }
       });
   },
 

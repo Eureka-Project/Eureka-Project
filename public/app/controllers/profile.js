@@ -35,6 +35,7 @@ angular.module('eureka.profile', [])
 	$scope.profileFirstName = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileLastName = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileSubmittedLinks = undefined; // defined when 'getProfileInfo' is run
+	$scope.profileUpvotedLinks = undefined; // defined when 'getProfileInfo' is run
 
 
 	$scope.getProfileInfo = function() {
@@ -47,6 +48,7 @@ angular.module('eureka.profile', [])
 			$scope.profileFirstName = res.data.firstname;
 			$scope.profileLastName = res.data.lastname;
 			$scope.profileSubmittedLinks = res.data.submittedLinks;
+			$scope.profileUpvotedLinks = res.data.upvotedLinks;
 			console.log(res.data)
 			return res.data;
 		}).catch(function (error) {

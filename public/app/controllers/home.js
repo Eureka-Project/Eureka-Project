@@ -1,32 +1,33 @@
 angular.module('eureka.home', [])
 
-.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Data', 'Auth' ,function($scope, $http, $window, $location, Data, Auth) {
+.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth' ,function($scope, $http, $window, $location, Helpers, Auth) {
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
 
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };
 
+	// For the nav dropdown
+	$scope.showNavDropdown = false;
+	$scope.showNavDropdownContent = function() {
+		$scope.showNavDropdown = $scope.showNavDropdown === false ? true : false;
+	}
+
 	// For the add link pop-up modal
 	$scope.modalShow = false;
 	$scope.changeModal = function() {
-		console.log('changing modal...')
-		if ($scope.modalShow === false) {
-			$scope.modalShow = true;
-		} else {
-			$scope.modalShow = false;
-		}
+		$scope.modalShow = $scope.modalShow === false ? true : false;
 	}
 
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
 	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;
-	$scope.firstname = undefined; // will be defined once 'getLinks' is run
-	$scope.lastname = undefined; // will be defined once 'getLinks' is run
+	$scope.firstname = undefined; // will be defined once 'getUserInfo' is run
+	$scope.lastname = undefined; // will be defined once 'getUserInfo' is run
 	$scope.token = JSON.parse($window.localStorage.getItem('eureka')).token;
 	$scope.links = undefined; // will be defined once 'getLinks' is run
 	$scope.allLinks = undefined; // will be defined once 'getLinks' is run
-	$scope.searchValue = Data.searchValue; // defined when 'search' is run
+	$scope.searchValue = Helpers.searchValue; // defined when 'search' is run
 
 
 	$scope.getLinks = function () {
@@ -36,7 +37,7 @@ angular.module('eureka.home', [])
 			url: '/api/links'
 		}).then(function (res) {
 			for (var prop in res.data.links) {
-				var date = Data.lookupDate(res.data.links[prop].date)
+				var date = Helpers.lookupDate(res.data.links[prop].date)
 				res.data.links[prop].date = date;
 			}
 			$scope.links = res.data.links;
@@ -96,7 +97,7 @@ angular.module('eureka.home', [])
 	}
 
 	$scope.search = function(searchText) {
-		Data.searchValue = searchText;
+		Helpers.searchValue = searchText;
 		$location.path('/search')
 	}
 

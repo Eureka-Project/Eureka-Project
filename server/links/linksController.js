@@ -116,13 +116,17 @@ module.exports = {
 
     var createLink = Q.nbind(Links.create, Links);
     var findLink = Q.nbind(Links.findOne, Links);
+    var updateLink = Q.nbind(Links.update, Links);
+    var isMatch = false;
 
     findLink({url: url})
       .then(function (match) {
         if (match) {
+          console.log('Link already exists in database:\n', match);
           res.send(match);
         } else {
-          return util.getUrlData(url);
+          console.log('Adding link to database:', url);
+          return util.getMetaData(url);
         }
       })
       .then(function (data) {
@@ -145,6 +149,51 @@ module.exports = {
       .then(function (createdLink) {
         if (createdLink) {
           res.json(createdLink);
+        }
+      })
+      .fail(function (error) {
+        next(error);
+      });
+  },
+
+  updateLink: function (req, res, next) {
+    var url = req.body.url;
+    var user_id = req.body.user_id;
+    var user_name = req.body.username;
+    if (!util.isValidUrl(url)) {
+      return next(new Error('Not a valid url'));
+    }
+
+    var findLink = Q.nbind(Links.findOne, Links);
+    var updateLink = Q.nbind(Links.update, Links);
+
+    findLink({url: url})
+      .then(function (match) {
+        if (match) {
+          return util.getMetaData(url);
+        }
+      })
+      .then(function (data) {
+        if (data) {
+          console.log('data:', data);
+          var newLink = {
+            url: url,
+            visits: 0,
+            title: data.title,
+            description: data.description,
+            site_name: data.site_name,
+            image: (data.image) ? data.image.url : '',
+            username: user_name,
+            userid: user_id,
+            upvotes: 0
+          };
+          console.log('Updating link to:\n', newLink)
+          return updateLink({ url: url }, newLink);
+        }
+      })
+      .then(function (updatedLink) {
+        if (updatedLink) {
+          res.json(updatedLink);
         }
       })
       .fail(function (error) {

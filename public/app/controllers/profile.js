@@ -1,26 +1,27 @@
 angular.module('eureka.profile', [])
 
-.controller('ProfileController', ['$scope', '$http', '$window', '$location', 'Data', 'Auth', '$stateParams' ,function($scope, $http, $window, $location, Data, Auth, $stateParams) {
+.controller('ProfileController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth', '$stateParams' ,function($scope, $http, $window, $location, Helpers, Auth, $stateParams) {
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
 
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };
 
+	// For the nav dropdown
+	$scope.showNavDropdown = false;
+	$scope.showNavDropdownContent = function() {
+		$scope.showNavDropdown = $scope.showNavDropdown === false ? true : false;
+	}
+
 	// For the add link pop-up modal
 	$scope.modalShow = false;
 	$scope.changeModal = function() {
-		console.log('changing modal...')
-		if ($scope.modalShow === false) {
-			$scope.modalShow = true;
-		} else {
-			$scope.modalShow = false;
-		}
+		$scope.modalShow = $scope.modalShow === false ? true : false;
 	}
 
 	// search function for search bar redirect
 	$scope.search = function(searchText) {
-		Data.searchValue = searchText;
+		Helpers.searchValue = searchText;
 		$location.path('/search')
 	}
 
@@ -41,8 +42,10 @@ angular.module('eureka.profile', [])
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
 	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;
+	$scope.firstname = undefined; // will be defined once 'getUserInfo' is run
+	$scope.lastname = undefined; // will be defined once 'getUserInfo' is run
 	$scope.token = JSON.parse($window.localStorage.getItem('eureka')).token;
-	$scope.searchValue = Data.searchValue; // defined when 'search' is run
+	$scope.searchValue = Helpers.searchValue; // defined when 'search' is run
 
 	// profile data being temporarily stored
 	$scope.profileUsername = undefined; // defined when 'getProfileInfo' is run
@@ -51,6 +54,20 @@ angular.module('eureka.profile', [])
 	$scope.profileSubmittedLinks = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileUpvotedLinks = undefined; // defined when 'getProfileInfo' is run
 
+
+	$scope.getUserInfo = function() {
+		console.log('getting user info...');
+		$http({
+			method: 'GET',
+			url: '/api/users/' + $scope.user_id,
+		}).then(function (res) {
+			$scope.firstname = res.data.firstname;
+			$scope.lastname = res.data.lastname;
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
 
 	$scope.getProfileInfo = function() {
 		console.log('getting profile info...');
@@ -71,7 +88,8 @@ angular.module('eureka.profile', [])
 	}
 
 
-	// get profile info to display when controller loads
+	// get user and profile info to display when controller loads
+	$scope.getUserInfo();
 	$scope.getProfileInfo();
 
 

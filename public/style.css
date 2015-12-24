@@ -110,7 +110,7 @@ nav .logout:hover {
 }
 
 nav .nav-actions p {
-	font-size: 14px;
+	font-size: 16px;
 	float: left;
 	margin: 2px 4px;
 }
@@ -130,8 +130,34 @@ nav .nav-actions i {
 	color: #3b77db;
 }
 
-.logout {
+.nav-dropdown-link {
 	float:right;
+}
+
+.nav-dropdown {
+	width: 140px;
+	border: 1px solid #e5e5e5;
+	border-radius: 3px;
+	background-color: #fff;
+	list-style: none;
+	text-align: left;
+	font-size: 16px;
+	margin-top: 40px;
+	position: fixed;
+}
+
+.nav-dropdown li {
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+.nav-dropdown li:hover {
+	opacity: 0.5;
+}
+
+.nav-actions .nav-dropdown i {
+	float: left;
+	margin: 3px 10px 0px 0px;
 }
 
 

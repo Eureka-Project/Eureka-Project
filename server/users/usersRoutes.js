@@ -8,4 +8,5 @@ module.exports = function (app) {
   app.post('/signup', usersController.signup);
   app.get('/signedin', usersController.checkAuth);
   app.get('/:userID', usersController.userID);
+  app.get('/profile/:userID', usersController.profileInfo);
 };

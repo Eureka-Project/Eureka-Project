@@ -24,6 +24,20 @@ angular.module('eureka.profile', [])
 		$location.path('/search')
 	}
 
+	// toggle tabs on profile page
+	$scope.showSubmittedLinks = true;
+	$scope.showUpvotedLinks = false;
+
+	$scope.showUpvotedLinksContent = function() {
+		$scope.showSubmittedLinks = false;
+		$scope.showUpvotedLinks = true;
+	}
+
+	$scope.showSubmittedLinksContent = function() {
+		$scope.showSubmittedLinks = true;
+		$scope.showUpvotedLinks = false;
+	}
+
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
 	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;
@@ -34,17 +48,22 @@ angular.module('eureka.profile', [])
 	$scope.profileUsername = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileFirstName = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileLastName = undefined; // defined when 'getProfileInfo' is run
+	$scope.profileSubmittedLinks = undefined; // defined when 'getProfileInfo' is run
+	$scope.profileUpvotedLinks = undefined; // defined when 'getProfileInfo' is run
 
 
 	$scope.getProfileInfo = function() {
 		console.log('getting profile info...');
 		$http({
 			method: 'GET',
-			url: '/api/users/' + $stateParams.userID,
+			url: '/api/users/profile/' + $stateParams.userID,
 		}).then(function (res) {
-			$scope.profileUsername = res.data.username
+			$scope.profileUsername = res.data.username;
 			$scope.profileFirstName = res.data.firstname;
 			$scope.profileLastName = res.data.lastname;
+			$scope.profileSubmittedLinks = res.data.submittedLinks;
+			$scope.profileUpvotedLinks = res.data.upvotedLinks;
+			console.log(res.data)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

@@ -53,7 +53,7 @@ button:hover {
 }
 
 .results {
-	height: 1000px;
+
 }
 
 
@@ -387,6 +387,51 @@ input.ng-pristine {
 }
 
 
+
+/*** Tabs on Profile Page ***/
+
+.tabs {
+    float: none;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 10px;
+}
+ 
+.tabs:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+ 
+.tabs input[type=radio] {
+    display:none;
+}
+ 
+.tabs label {
+    display: block;
+    float: left;
+    width: 50%;
+    color: #ccc;
+    font-size: 20px;
+    font-weight: normal;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2;
+    cursor: pointer;
+    border-bottom: 4px solid #ccc;
+    -webkit-transition: all 0.5s; /* Safari 3.1 to 6.0 */
+    transition: all 0.5s;
+}
+ 
+.tabs label:hover {
+    color: #3b77db;
+    border-bottom: 4px solid #3b77db;
+}
+
+.tabs [id^="tab"]:checked + label {
+    border-bottom: 4px solid #3b77db;
+    color: #3b77db;
+}
 
 
 

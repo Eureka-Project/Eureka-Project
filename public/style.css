@@ -105,10 +105,6 @@ nav .nav-actions {
 	cursor: pointer;
 }
 
-nav .logout:hover {
-	color: #999999;
-}
-
 nav .nav-actions p {
 	font-size: 16px;
 	float: left;
@@ -123,7 +119,6 @@ nav .nav-actions i {
 
 .add-link-icon {
 	color: #679df6;
-	padding-left: 10px;
 }
 
 .add-link-icon:hover {
@@ -132,6 +127,10 @@ nav .nav-actions i {
 
 .nav-dropdown-link {
 	float:right;
+}
+
+nav .nav-dropdown-link-username:hover {
+	color: #999999;
 }
 
 .nav-dropdown {
@@ -153,6 +152,10 @@ nav .nav-actions i {
 
 .nav-dropdown li:hover {
 	opacity: 0.5;
+}
+
+.nav-actions .nav-dropdown-link i {
+	margin-right: 5px;
 }
 
 .nav-actions .nav-dropdown i {
@@ -414,7 +417,17 @@ input.ng-pristine {
 
 
 
-/*** Tabs on Profile Page ***/
+
+
+/*** Profile Page ***/
+
+.profile-info h1 {
+	margin: 0px;
+}
+
+.profile-info p {
+	margin: 0px;
+}
 
 .tabs {
     float: none;

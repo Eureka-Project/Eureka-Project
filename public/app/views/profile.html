@@ -31,55 +31,58 @@
 	<h1>Profile for {{profileFirstName}} {{profileLastName}}</h1>
 	<p>Username: {{profileUsername}}</p>
 	<br>
-	<div class="results">
-			<h4 class="date-header">Submitted Links</h4>
-			<div class="link-card" ng-repeat="link in profileSubmittedLinks | orderBy: '-upvotes'">
-				<div class='voting' ng-click="upvote( link._id )">
-					<h3>{{link.upvotes}}</h3>
-					<i class="fa fa-arrow-up"></i>
-				</div>
-				<a ng-href="{{link.url}}">
-					<div class="link-data">
-						<div class="link-image">
-							<img ng-src="{{link.image}}"/>
-						</div>
-						<div class="link-description">
-								<h3>{{link.title}}</h3>
-							<p class="link-description-p">{{link.description | limitTo: 140}}</p>
-							<p class="link-description-source">{{link.site_name}}</p>
-							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
-								<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
-							</a>
-						</div>
-					</div>
-				</a>
-			</div>
-			<p class="no-search-results" ng-show="(allLinks | filter:searchValue).length < 1">Sorry, no matching results</p>
+	<div class="tabs">
+		<input type="radio" name="tabs" id="tab1" checked>
+		<label ng-click="showSubmittedLinksContent()" for="tab1">Submitted Links</label>
+		<input type="radio" name="tabs" id="tab2">
+		<label ng-click="showUpvotedLinksContent()" for="tab2">Upvoted Links</label>
 	</div>
-	<br>
-	<div class="results">
-			<h4 class="date-header">Upvoted Links</h4>
-			<div class="link-card" ng-repeat="link in profileUpvotedLinks | orderBy: '-upvotes'">
-				<div class='voting' ng-click="upvote( link._id )">
-					<h3>{{link.upvotes}}</h3>
-					<i class="fa fa-arrow-up"></i>
-				</div>
-				<a ng-href="{{link.url}}">
-					<div class="link-data">
-						<div class="link-image">
-							<img ng-src="{{link.image}}"/>
-						</div>
-						<div class="link-description">
-								<h3>{{link.title}}</h3>
-							<p class="link-description-p">{{link.description | limitTo: 140}}</p>
-							<p class="link-description-source">{{link.site_name}}</p>
-							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
-								<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
-							</a>
-						</div>
-					</div>
-				</a>
+	<div class="results" ng-show="showSubmittedLinks">
+		<div class="link-card" ng-repeat="link in profileSubmittedLinks | orderBy: '-upvotes'">
+			<div class='voting' ng-click="upvote( link._id )">
+				<h3>{{link.upvotes}}</h3>
+				<i class="fa fa-arrow-up"></i>
 			</div>
-			<p class="no-search-results" ng-show="(allLinks | filter:searchValue).length < 1">Sorry, no matching results</p>
+			<a ng-href="{{link.url}}">
+				<div class="link-data">
+					<div class="link-image">
+						<img ng-src="{{link.image}}"/>
+					</div>
+					<div class="link-description">
+							<h3>{{link.title}}</h3>
+						<p class="link-description-p">{{link.description | limitTo: 140}}</p>
+						<p class="link-description-source">{{link.site_name}}</p>
+						<a class="profile-link" ng-href="#/profile/{{link.userid}}">
+							<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+						</a>
+					</div>
+				</div>
+			</a>
+		</div>
+		<p class="no-link-results" ng-show="profileSubmittedLinks.length < 1">Still waiting for {{profileFirstName}} to submit a link!</p>
+	</div>
+	<div class="results" ng-show="showUpvotedLinks">
+		<div class="link-card" ng-repeat="link in profileUpvotedLinks | orderBy: '-upvotes'">
+			<div class='voting' ng-click="upvote( link._id )">
+				<h3>{{link.upvotes}}</h3>
+				<i class="fa fa-arrow-up"></i>
+			</div>
+			<a ng-href="{{link.url}}">
+				<div class="link-data">
+					<div class="link-image">
+						<img ng-src="{{link.image}}"/>
+					</div>
+					<div class="link-description">
+							<h3>{{link.title}}</h3>
+						<p class="link-description-p">{{link.description | limitTo: 140}}</p>
+						<p class="link-description-source">{{link.site_name}}</p>
+						<a class="profile-link" ng-href="#/profile/{{link.userid}}">
+							<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+						</a>
+					</div>
+				</div>
+			</a>
+		</div>
+		<p class="no-link-results" ng-show="profileUpvotedLinks.length < 1">Still waiting for {{profileFirstName}} to upvote a link!</p>
 	</div>
 </div>

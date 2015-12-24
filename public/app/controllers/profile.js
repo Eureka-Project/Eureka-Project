@@ -24,6 +24,20 @@ angular.module('eureka.profile', [])
 		$location.path('/search')
 	}
 
+	// toggle tabs on profile page
+	$scope.showSubmittedLinks = true;
+	$scope.showUpvotedLinks = false;
+
+	$scope.showUpvotedLinksContent = function() {
+		$scope.showSubmittedLinks = false;
+		$scope.showUpvotedLinks = true;
+	}
+
+	$scope.showSubmittedLinksContent = function() {
+		$scope.showSubmittedLinks = true;
+		$scope.showUpvotedLinks = false;
+	}
+
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
 	$scope.user_id = JSON.parse($window.localStorage.getItem('eureka')).user_id;

@@ -1,5 +1,6 @@
 var Users = require('../db/configdb.js').User;
 var Links = require('../db/configdb.js').Url;
+var Upvotes = require('../db/configdb.js').Upvote;
 var Q = require('q');
 var jwt = require('jwt-simple');
 
@@ -134,6 +135,7 @@ module.exports = {
     console.log('user: ', userID)
     var findOne = Q.nbind(Users.findOne, Users);
     var findLinks = Q.nbind(Links.find, Links);
+    var findUpvotes = Q.nbind(Upvotes.find, Upvotes);
     // check to see if user exists
     findOne({ _id: userID })
       .then(function(user) {
@@ -143,13 +145,29 @@ module.exports = {
           username: user.username,
           user_id: user['_id'],
         };
-        findLinks({ userid: userData.user_id })
-        .then(function (links) {
-          userData.submittedLinks = [];
-          for (var i = 0; i < links.length; i++) {
-            userData.submittedLinks.push(links[i])
+        findUpvotes({ user_id: userData.user_id })
+        .then(function(upvotedLinks) {
+          var upvotedLinkIDs = [];
+          for (var x = 0; x < upvotedLinks.length; x++) {
+            upvotedLinkIDs.push(upvotedLinks[x].link_id)
           }
-          res.json(userData);
+          return upvotedLinkIDs;
+        }).then(function(upvotedLinkIDs){
+          findLinks({ _id: { $in: upvotedLinkIDs } })
+          .then(function (uvLinks) {
+            userData.upvotedLinks = uvLinks
+            findLinks({ userid: userData.user_id })
+            .then(function (links) {
+              userData.submittedLinks = links;
+              res.json(userData);
+            })
+            .fail(function (error) {
+              next(error);
+            });
+          })
+          .fail(function (error) {
+            next(error);
+          });
         })
         .fail(function (error) {
           next(error);

@@ -6,6 +6,11 @@ var util = require('./linksUtil.js');
 
 var Links = require('../db/configdb.js').Url;
 
+var findLink = Q.nbind(Links.findOne, Links);
+var findLinks = Q.nbind(Links.find, Links);
+var createLink = Q.nbind(Links.create, Links);
+var updateLink = Q.nbind(Links.update, Links);
+
 Date.prototype.toUTC = function() {
   return new Date(
     this.getUTCFullYear(),
@@ -18,9 +23,10 @@ Date.prototype.toUTC = function() {
 };
 
 module.exports = {
+
   findUrl: function (req, res, next, code) {
-    var findLink = Q.nbind(Links.findOne, Links);
-    findLink({code: code})
+    // var findLink = Q.nbind(Links.findOne, Links);
+    findLink({ code: code })
       .then(function (link) {
         if (link) {
           req.navLink = link;
@@ -29,8 +35,8 @@ module.exports = {
           next(new Error('Link not added yet'));
         }
       })
-      .fail(function (error) {
-        next(error);
+      .fail(function (err) {
+        next(err);
       });
   },
 
@@ -49,9 +55,9 @@ module.exports = {
 
     var start = dayThree;
 
-    var findAll = Q.nbind(Links.find, Links);
+    // var findLinks = Q.nbind(Links.find, Links);
 
-    findAll({ date: {"$gte": start, "$lt": end} })
+    findLinks({ date: {"$gte": start, "$lt": end} })
       .then(function (links) {
         // Split the links up by day created.
         var linksDayOne = []; 
@@ -86,23 +92,23 @@ module.exports = {
             }
           ],
         };
-        console.log(data)
+        console.log('Links for 3 days before %s:\n', end, data);
         res.json(data);
       })
-      .fail(function (error) {
-        next(error);
+      .fail(function (err) {
+        next(err);
       });
   },
 
   // allLinks: function (req, res, next) {
-  //   var findAll = Q.nbind(Links.find, Links);
+  //   var findLinks = Q.nbind(Links.find, Links);
 
-  //   findAll({})
+  //   findLinks({})
   //     .then(function (links) {
   //       res.json(links);
   //     })
-  //     .fail(function (error) {
-  //       next(error);
+  //     .fail(function (err) {
+  //       next(err);
   //     });
   // },
 
@@ -110,22 +116,28 @@ module.exports = {
     var url = req.body.url;
     var user_id = req.body.user_id;
     var user_name = req.body.username;
-    if (!util.isValidUrl(url)) {
+    if ( ! util.isValidUrl(url) ) {
       return next(new Error('Not a valid url'));
     }
 
-    var createLink = Q.nbind(Links.create, Links);
-    var findLink = Q.nbind(Links.findOne, Links);
+    // var createLink = Q.nbind(Links.create, Links);
+    // var findLink = Q.nbind(Links.findOne, Links);
 
     findLink({url: url})
       .then(function (match) {
         if (match) {
+          console.log('Link already exists in database:\n', match);
           res.send(match);
+          // Stop the promise chain (go to '.fail()')
+          throw new Error('Stop promise chain');
         } else {
-          return util.getUrlData(url);
+          return util.getMetaData(url);
         }
       })
       .then(function (data) {
+        if ( ! data ) {
+          console.log('This should not run');
+        }
         if (data) {
           var newLink = {
             url: url,
@@ -138,25 +150,35 @@ module.exports = {
             userid: user_id,
             upvotes: 0
           };
-          console.log('new Link: ', newLink)
           return createLink(newLink);
         }
       })
       .then(function (createdLink) {
-        if (createdLink) {
+        if ( ! createdLink ) {
+          res.json({});
+          console.log('Failed to create link in the database:', createdLink);
+          throw new Error('Failed to create link in the database');
+        } else {
+          console.log('createdLink: ', createdLink)
           res.json(createdLink);
         }
       })
-      .fail(function (error) {
-        next(error);
+      .fail(function (err) {
+        // Unless the error requests to stop the promise chain,
+        //   log the error and continue to the next function
+        //   in the chain.
+        if (err !== 'Stop promise chain') {
+          console.log(err);
+          next(err);
+        }
       });
   },
 
   // getTodaysLinks: function(req, res, next) {
-  //   var findAll = Q.nbind(Links.find, Links);
+  //   var findLinks = Q.nbind(Links.find, Links);
   //   var end = new Date();
   //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   findAll({date: {"$gte": start, "$lt": end} })
+  //   findLinks({date: {"$gte": start, "$lt": end} })
   //     .then(function (links) {
   //       var data = {
   //         links: [{
@@ -166,16 +188,16 @@ module.exports = {
   //       };
   //       res.json(data);
   //     })
-  //     .fail(function (error) {
-  //       next(error);
+  //     .fail(function (err) {
+  //       next(err);
   //     });
   // },
 
   // getLinksForDate: function(date) {
-  //   var findAll = Q.nbind(Links.find, Links);
+  //   var findLinks = Q.nbind(Links.find, Links);
   //   var end = date;
   //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   findAll({date: {"$gte": start, "$lt": end} })
+  //   findLinks({date: {"$gte": start, "$lt": end} })
   //     .then(function (links) {
   //       var data = {
   //         links: [{
@@ -185,8 +207,8 @@ module.exports = {
   //       };
   //      return data;
   //     })
-  //     .fail(function (error) {
-  //       console.log(error);
+  //     .fail(function (err) {
+  //       console.log(err);
   //     })
   // },
 

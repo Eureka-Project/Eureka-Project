@@ -14,29 +14,43 @@ var shorthandProperties = {
 
 var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
 
-exports = module.exports = getOGData;
-
-function getOGData (url, cb, options){
-	exports.getHTML(url, function(err, html){
-		if (err) return cb(err);
-		
-		cb(null, exports.parse(html, options));
-	})
+exports.isValidUrl = function(url) {
+  return url.match(rValidUrl);
 }
 
+exports.getMetaData = function(url, options){
+  var deferred = Q.defer();
+  console.log('Getting meta data for %s', url);
 
-exports.getHTML = function(url, cb){
+  exports.getHTML(url)
+  	.then(function(html){
+	    var data = exports.parseMetaData(html, options);
+	    data = exports.formatMetaData(data, html);
+	    deferred.resolve(data);
+	  })
+  	.fail(function(err) {
+  		console.log('Failed to get meta data for %s\n', url, err);
+      deferred.reject(err);
+    })
+
+  return deferred.promise;
+}
+
+exports.getHTML = function(url){	
+  var deferred = Q.defer();
+
 	var purl = require('url').parse(url);
 	
-	if (!purl.protocol)
+	if ( ! purl.protocol ) {
 		purl = require('url').parse("http://"+url);
+	}
 	
 	var httpModule = purl.protocol === 'https:'
 		? https
 		: http;
 	
 	url = require('url').format(purl);
-	
+
 	var client = httpModule.get(url, function(res){
 		res.setEncoding('utf-8');
 		
@@ -47,25 +61,27 @@ exports.getHTML = function(url, cb){
 		});
 		
 		res.on('end', function(){
-			if (res.statusCode >= 300 && res.statusCode < 400)
-			{
-				exports.getHTML(res.headers.location, cb);
-			}
-			else
-			{
-				cb(null, html);
+			if (res.statusCode >= 300 && res.statusCode < 400) {
+				// Recurse with 'res.headers.location' instead of 'url'.
+				exports.getHTML(res.headers.location)
+				  .then(function(html) {
+				  	deferred.resolve(html);
+				  })
+			} else {
+				deferred.resolve(html);
 			}
 			
 		});
 	});
 	
 	client.on('error', function(err){
-		cb(err);
+		deferred.reject(err);
 	})
+
+	return deferred.promise;
 }
 
-
-exports.parse = function(html, options){
+exports.parseMetaData = function(html, options){
 	options = options || {};
 	
 	var $ = cheerio.load(html);
@@ -75,32 +91,32 @@ exports.parse = function(html, options){
 	var namespace,
 		$html = $('html');
 	
-	if ($html.length)
-	{
+	if ($html.length) {
 		var attribKeys = Object.keys($html[0].attribs);
 		
 		attribKeys.some(function(attrName){
 			var attrValue = $html.attr(attrName);
 			
 			if (attrValue.toLowerCase() === 'http://opengraphprotocol.org/schema/'
-				&& attrName.substring(0, 6) == 'xmlns:')
-			{
+				&& attrName.substring(0, 6) == 'xmlns:') {
 				namespace = attrName.substring(6);
 				return false;
 			}
 		})
-	}
-	else if (options.strict)
+	} else if (options.strict) {
 		return null;
+	}
 	
-	if (!namespace) 
+	if ( ! namespace) {
 		// If no namespace is explicitly set..
-		if (options.strict)
-			// and strict mode is specified, abort parse.
+		if (options.strict) {
+			// and strict mode is specified, abort.
 			return null;
-		else
+		} else {
 			// and strict mode is not specific, then default to "og"
 			namespace = "og";
+		}
+	}
 	
 	var meta = {},
 		metaTags = $('meta');
@@ -109,9 +125,14 @@ exports.parse = function(html, options){
 		var element = $(this);
 			propertyAttr = element.attr('property');
 		
-		// If meta element isn't an "og:" property, skip it
-		if (!propertyAttr || propertyAttr.substring(0, namespace.length) !== namespace)
+		// If meta element doesn't have a property attribute, skip it
+		if ( ! propertyAttr ) {
 			return;
+		}
+		// If meta element isn't an "og:" property, skip it
+		if (propertyAttr.substring(0, namespace.length) !== namespace) {
+			return;
+		}
 		
 		var property = propertyAttr.substring(namespace.length+1),
 			content = element.attr('content');
@@ -166,45 +187,21 @@ exports.parse = function(html, options){
 	return meta;
 }
 
-exports.getUrlTitle = function(url) {
-  var defer = Q.defer();
-  request(url, function(err, res, html) {
-    if (err) {
-      defer.reject(err);
-    } else {
-      var tag = /<title>(.*)<\/title>/;
-      var match = html.match(tag);
-      var title = match ? match[1] : url;
-      defer.resolve(title);
-    }
-  });
-  return defer.promise;
-},
+exports.formatMetaData = function(data, html) {
+	if ( ! data.title ) {
+  	var tag = /<title>(.*)<\/title>/;
+    var match = html.match(tag);
+    var title = match ? match[1] : url;
+    data.title = title;
+  }
 
-exports.getUrlData = function(url) {
-  var defer = Q.defer();
+	if ( data && data.image ) {
+		for (var key in data.image) {
+			if ( Array.isArray( data.image[key] ) ) {
+				data.image[key] = data.image[key][0];
+			}
+		}
+	}
 
-  exports.getHTML(url, function(err, html){
-    if (err) {
-      defer.reject(err);
-    }
-
-    var data = exports.parse(html);
-
-    if (data.title) {
-      defer.resolve(data);
-    } else {
-      exports.getUrlTitle(url)
-        .then(function (title) {
-          data.title = title;
-          defer.resolve(data);
-        });
-    }
-  });
-
-  return defer.promise;
-},
-
-exports.isValidUrl = function(url) {
-  return url.match(rValidUrl);
+	return data;
 }

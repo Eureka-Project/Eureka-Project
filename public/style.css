@@ -8,11 +8,11 @@ body {
 
 nav {
 	width: 100%;
-	position: fixed;
+	position: absolute;
 	height: 35px;
 	padding: 5px 0px 10px;
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: 400;
 	background-color: #f1f1f1;
 	color: #000;
 	text-align: center;
@@ -67,6 +67,7 @@ nav .title {
 	width: 60%;
 	float: left;
 	margin-top: 3px;
+	font-weight: 600;
 }
 
 nav .search {
@@ -109,7 +110,7 @@ nav .nav-actions {
 nav .nav-actions p {
 	font-size: 16px;
 	float: left;
-	margin: 2px 4px;
+	margin: 1px 4px;
 }
 
 nav .nav-actions i {
@@ -136,14 +137,15 @@ nav .nav-dropdown-link-username:hover {
 
 .nav-dropdown {
 	width: 140px;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
 	border: 1px solid #e5e5e5;
 	border-radius: 3px;
 	background-color: #fff;
 	list-style: none;
 	text-align: left;
-	font-size: 16px;
+	font-size: 14px;
 	margin-top: 40px;
-	position: fixed;
+	position: absolute;
 }
 
 .nav-dropdown li {
@@ -152,7 +154,7 @@ nav .nav-dropdown-link-username:hover {
 }
 
 .nav-dropdown li:hover {
-	opacity: 0.5;
+	background-color: #e5e5e5;
 }
 
 .nav-actions .nav-dropdown-link i {
@@ -162,6 +164,7 @@ nav .nav-dropdown-link-username:hover {
 .nav-actions .nav-dropdown i {
 	float: left;
 	margin: 3px 10px 0px 0px;
+	width: 13px;
 }
 
 
@@ -264,7 +267,7 @@ input.ng-pristine {
 }
 
 .add-link-modal h2 {
-	margin: 25px auto 5px;
+	margin: 20px auto 5px;
 	width: 300px;
 }
 

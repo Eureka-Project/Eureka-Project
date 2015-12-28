@@ -1,18 +1,24 @@
-var Users = require('../db/configdb.js').User;
-var Links = require('../db/configdb.js').Url;
-var Upvotes = require('../db/configdb.js').Upvote;
 var Q = require('q');
 var jwt = require('jwt-simple');
 
+var Users = require('../db/configdb.js').User;
+var Links = require('../links/linksController.js');
+var Upvotes = require('../upvotes/upvotesController.js');
+
+
 var secret = 'Festus is the bestest';
 
-module.exports = {
+exports = module.exports = {
+
+  findUser: Q.nbind(Users.findOne, Users),
+  
+  createUser: Q.nbind(Users.create, Users),
+  
   login: function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
 
-    var findUser = Q.nbind(Users.findOne, Users);
-    findUser({ username: username })
+    exports.findUser({ username: username })
       .then(function (user) {
         if (!user) {
           next(new Error('User does not exist'));
@@ -43,23 +49,19 @@ module.exports = {
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
 
-    var findOne = Q.nbind(Users.findOne, Users);
-
     // check to see if user already exists
-    findOne({ username: username })
+    exports.findUser({ username: username })
       .then(function(user) {
         if (user) {
           next(new Error('User already exist!'));
         } else {
           // make a new user if not one
-          var create = Q.nbind(Users.create, Users);
-          var newUser = {
+          return exports.createUser({
             username: username,
             password: password,
             firstname: firstname,
             lastname: lastname
-          };
-          return create(newUser);
+          });
         }
       })
       .then(function (user) {
@@ -77,7 +79,7 @@ module.exports = {
         var token = jwt.encode(user, secret);
         res.json({
           username: user.username,
-          user_id: user['_id'],
+          user_id: user._id,
           token: token
         });
       })
@@ -96,8 +98,7 @@ module.exports = {
       next(new Error('No token'));
     } else {
       var user = jwt.decode(token, secret);
-      var findUser = Q.nbind(Users.findOne, Users);
-      findUser({username: user.username})
+      exports.findUser({username: user.username})
         .then(function (foundUser) {
           if (foundUser) {
             res.status(200).send();
@@ -111,18 +112,17 @@ module.exports = {
     }
   },
 
-  userID: function (req, res, next) {
+  getUserID: function (req, res, next) {
     var userID = req.params.userID;
     console.log('user: ', userID)
-    var findOne = Q.nbind(Users.findOne, Users);
     // check to see if user exists
-    findOne({ _id: userID })
+    exports.findUser({ _id: userID })
       .then(function(user) {
         res.json({
           firstname: user.firstname,
           lastname: user.lastname,
           username: user.username,
-          user_id: user['_id']
+          user_id: user._id
         });
       })
       .fail(function (error) {
@@ -130,14 +130,11 @@ module.exports = {
       });
   },
 
-  profileInfo: function (req, res, next) {
+  getProfileInfo: function (req, res, next) {
     var userID = req.params.userID;
     console.log('user: ', userID)
-    var findOne = Q.nbind(Users.findOne, Users);
-    var findLinks = Q.nbind(Links.find, Links);
-    var findUpvotes = Q.nbind(Upvotes.find, Upvotes);
     // check to see if user exists
-    findOne({ _id: userID })
+    exports.findUser({ _id: userID })
       .then(function(user) {
         var userData = {
           firstname: user.firstname,
@@ -145,7 +142,7 @@ module.exports = {
           username: user.username,
           user_id: user['_id'],
         };
-        findUpvotes({ user_id: userData.user_id })
+        Upvotes.findUpvotes({ user_id: userData.user_id })
         .then(function(upvotedLinks) {
           var upvotedLinkIDs = [];
           for (var x = 0; x < upvotedLinks.length; x++) {
@@ -153,10 +150,10 @@ module.exports = {
           }
           return upvotedLinkIDs;
         }).then(function(upvotedLinkIDs){
-          findLinks({ _id: { $in: upvotedLinkIDs } })
+          Links.findLinks({ _id: { $in: upvotedLinkIDs } })
           .then(function (uvLinks) {
             userData.upvotedLinks = uvLinks
-            findLinks({ userid: userData.user_id })
+            Links.findLinks({ userid: userData.user_id })
             .then(function (links) {
               userData.submittedLinks = links;
               res.json(userData);

@@ -2,8 +2,15 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 var Q        = require('q');
-// mongoose.connect('localhost:27017'); // for local mongo hosting
-mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+
+// Connect to the online mongolab server:
+// mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+
+// Connect locally:
+mongoose.connect('localhost:27018');
+// Terminal command:
+// mongod --port 27018 --dbpath server/db/db --wiredTigerJournalCompressor snappy --wiredTigerCollectionBlockCompressor snappy --cpu
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(callback) {

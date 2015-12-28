@@ -13,6 +13,37 @@ exports = module.exports = {
   findUser: Q.nbind(Users.findOne, Users),
   
   createUser: Q.nbind(Users.create, Users),
+
+  genToken: function(user) {
+    return jwt.encode({
+      user_id: user._id,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+    }, secret);
+  },
+
+  verifyToken: function (req, res, next) {
+    // checking to see if the user is authenticated
+    // grab the token in the header is any
+    // then decode the token, which we end up being the user object
+    // check to see if that user exists in the database
+    if ( ! req.user ) {
+      next(new Error('No token'));
+    } else {
+      exports.findUser({ _id: req.user.user_id })
+        .then(function(foundUser) {
+          if (foundUser) {
+            next();
+          } else {
+            res.status(401).send();
+          }
+        })
+        .fail(function (err) {
+          next(err);
+        });
+    }
+  },
   
   login: function (req, res, next) {
     var username = req.body.username;
@@ -25,11 +56,10 @@ exports = module.exports = {
         } else if ( ! user.isPassword(password) ) {
           throw new Error('Incorrect password');
         } else {
-          var token = jwt.encode(user, secret);
           res.json({
             username: user.username,
             user_id: user._id,
-            token: token
+            token: exports.genToken(user)
           });
         }
       })
@@ -71,38 +101,15 @@ exports = module.exports = {
         //   __v: 0
         // }
 
-        var token = jwt.encode(user, secret);
         res.json({
           username: user.username,
           user_id: user._id,
-          token: token
+          token: exports.genToken(user)
         });
       })
       .fail(function (error) {
         next(error);
       });
-  },
-
-  verifyToken: function (req, res, next) {
-    // checking to see if the user is authenticated
-    // grab the token in the header is any
-    // then decode the token, which we end up being the user object
-    // check to see if that user exists in the database
-    if ( ! req.user ) {
-      next(new Error('No token'));
-    } else {
-      exports.findUser({ username: req.user.username })
-        .then(function(foundUser) {
-          if (foundUser) {
-            next();
-          } else {
-            res.status(401).send();
-          }
-        })
-        .fail(function (err) {
-          next(err);
-        });
-    }
   },
 
   getUserInfo: function (req, res, next) {

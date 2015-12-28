@@ -1,10 +1,15 @@
-var db = require('../db/configdb.js');
-var Upvote = db.Upvote;
-var Links = db.Url;
 var Q = require('q');
-var request = require('request');
 
-module.exports = {
+var db = require('../db/configdb.js');
+var Links = require('../links/linksController.js');
+
+var Upvote = db.Upvote;
+
+exports = module.exports = {
+
+  findUpvote: Q.nbind(Upvote.findOne, Upvote),
+
+  storeUpvote: Q.nbind(Upvote.create, Upvote),
 
   newUpvote: function(req, res, next) {
     var link_id = req.body.link_id;
@@ -16,12 +21,7 @@ module.exports = {
       next(new Error('Did not receive user_id'))
     }
 
-    var findLink = Q.nbind(Links.findOne, Links);
-
-    var storeUpvote = Q.nbind(Upvote.create, Upvote); 
-    var findUpvote = Q.nbind(Upvote.findOne, Upvote);
-
-    findUpvote({
+    exports.findUpvote({
       link_id: link_id,
       user_id: user_id
     }).then(function (upvote) {
@@ -31,20 +31,21 @@ module.exports = {
           upvote.user_id === user_id
         );
         if (alreadyUpvoted) {
+          console.log('user %s has already upvoted %s', user_id, link_id);
           res.json(upvote);
           throw new Error('Stop promise chain');
         } else {
-          return storeUpvote({
+          return exports.storeUpvote({
             user_id: user_id,
             link_id: link_id
           });
         }
       })
       .then(function(upvote) {
-        return findLink({ _id: link_id })
+        return Links.findLink({ _id: link_id })
       })
       .then(function(link) {
-        link.upvotes = link.upvotes + 1;
+        link.upvotes++;
         return Q.nfcall(link.save, link);
       })
       .then(function(link) {

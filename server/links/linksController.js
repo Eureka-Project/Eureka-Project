@@ -8,16 +8,17 @@ var findLinks = Q.nbind(Links.find, Links);
 var createLink = Q.nbind(Links.create, Links);
 var updateLink = Q.nbind(Links.update, Links);
 
-Date.prototype.toUTC = function() {
-  return new Date(
-    this.getUTCFullYear(),
-    this.getUTCMonth(),
-    this.getUTCDate(),
-    this.getUTCHours(),
-    this.getUTCMinutes(),
-    this.getUTCSeconds()
-  );
-};
+// // Convert a date to UTC time.
+// Date.prototype.toUTC = function() {
+//   return new Date(
+//     this.getUTCFullYear(),
+//     this.getUTCMonth(),
+//     this.getUTCDate(),
+//     this.getUTCHours(),
+//     this.getUTCMinutes(),
+//     this.getUTCSeconds()
+//   );
+// };
 
 module.exports = {
 
@@ -36,6 +37,15 @@ module.exports = {
       });
   },
 
+  // Query the database for all links which were created
+  //   between a requested date and two days prior to that date
+  //   (e.g., between now and the day before yesterday).
+  // If the client does not specify a date,
+  //   get the links for the past three days
+  //   (today, yesterday, and the day before).
+  // Group these links according to the day each was created
+  //   by organizing them into three different arrays, one array for each day.
+  // Send these arrays back to the client.
   getPreviousThreeDaysLinks: function(req, res, next) {
     var end = req.body.date || new Date();
 
@@ -105,6 +115,8 @@ module.exports = {
   //     });
   // },
 
+  // Insert a new link into the database.
+  // Receive the 'url', 'user_id', and 'user_name' from the client.
   newLink: function (req, res, next) {
     var url = req.body.url;
     var user_id = req.body.user_id;
@@ -139,11 +151,14 @@ module.exports = {
       })
       .then(function (createdLink) {
         if ( ! createdLink ) {
+          // This should never happen.
+          // If the database could not create the new link,
+          //   it is most likely a problem with the mongoose server.
           res.json({});
           console.log('Failed to create link in the database:', createdLink);
           throw new Error('Failed to create link in the database');
         } else {
-          console.log('createdLink: ', createdLink)
+          console.log('Created new link: \n', createdLink)
           res.json(createdLink);
         }
       })

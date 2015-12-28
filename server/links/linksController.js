@@ -3,11 +3,6 @@ var util = require('./linksUtil.js');
 
 var Links = require('../db/configdb.js').Url;
 
-var findLink = Q.nbind(Links.findOne, Links);
-var findLinks = Q.nbind(Links.find, Links);
-var createLink = Q.nbind(Links.create, Links);
-var updateLink = Q.nbind(Links.update, Links);
-
 // // Convert a date to UTC time.
 // Date.prototype.toUTC = function() {
 //   return new Date(
@@ -20,7 +15,12 @@ var updateLink = Q.nbind(Links.update, Links);
 //   );
 // };
 
-module.exports = {
+exports = module.exports = {
+
+  findLink: Q.nbind(Links.findOne, Links),
+  findLinks: Q.nbind(Links.find, Links),
+  createLink: Q.nbind(Links.create, Links),
+  updateLink: Q.nbind(Links.update, Links),
 
   // Query the database for all links which were created
   //   between a requested date and two days prior to that date
@@ -46,7 +46,7 @@ module.exports = {
 
     var start = dayThree;
 
-    findLinks({ date: {"$gte": start, "$lt": end} })
+    exports.findLinks({ date: {"$gte": start, "$lt": end} })
       .then(function (links) {
         // Split the links up by day created.
         var linksDayOne = []; 
@@ -98,7 +98,7 @@ module.exports = {
       return next(new Error('Not a valid url'));
     }
 
-    findLink({url: url})
+    exports.findLink({url: url})
       .then(function (match) {
         if (match) {
           console.log('Link already exists in database:\n', match);
@@ -110,7 +110,7 @@ module.exports = {
         }
       })
       .then(function (data) {
-        return createLink({
+        return exports.createLink({
           url: url,
           visits: 0,
           title: data.title,
@@ -147,9 +147,7 @@ module.exports = {
   }
 
   // allLinks: function (req, res, next) {
-  //   var findLinks = Q.nbind(Links.find, Links);
-
-  //   findLinks({})
+  //   exports.findLinks({})
   //     .then(function (links) {
   //       res.json(links);
   //     })
@@ -159,10 +157,9 @@ module.exports = {
   // },
 
   // getTodaysLinks: function(req, res, next) {
-  //   var findLinks = Q.nbind(Links.find, Links);
   //   var end = new Date();
   //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   findLinks({date: {"$gte": start, "$lt": end} })
+  //   exports.findLinks({date: {"$gte": start, "$lt": end} })
   //     .then(function (links) {
   //       var data = {
   //         links: [{
@@ -178,10 +175,9 @@ module.exports = {
   // },
 
   // getLinksForDate: function(date) {
-  //   var findLinks = Q.nbind(Links.find, Links);
   //   var end = date;
   //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   findLinks({date: {"$gte": start, "$lt": end} })
+  //   exports.findLinks({date: {"$gte": start, "$lt": end} })
   //     .then(function (links) {
   //       var data = {
   //         links: [{
@@ -197,3 +193,11 @@ module.exports = {
   // },
 
 };
+
+exports.findLink({_id:'5680c61deed30a445e980187'})
+  .then(function(m) {
+    if (m) {
+      console.log('removing', m);
+      m.remove();
+    }
+  })

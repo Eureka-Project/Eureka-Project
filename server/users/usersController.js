@@ -112,12 +112,11 @@ exports = module.exports = {
     }
   },
 
-  getUserID: function (req, res, next) {
-    var userID = req.params.userID;
-    console.log('user: ', userID)
-    // check to see if user exists
-    exports.findUser({ _id: userID })
-      .then(function(user) {
+  getUserInfo: function (req, res, next) {
+    var user_id = req.params.user_id;
+
+    exports.findUser({ _id: user_id })
+      .then(function (user) {
         res.json({
           firstname: user.firstname,
           lastname: user.lastname,
@@ -131,50 +130,40 @@ exports = module.exports = {
   },
 
   getProfileInfo: function (req, res, next) {
-    var userID = req.params.userID;
-    console.log('user: ', userID)
-    // check to see if user exists
-    exports.findUser({ _id: userID })
+    var user_id = req.params.user_id;
+
+    var userData = {};
+
+    exports.findUser({ _id: user_id })
       .then(function(user) {
-        var userData = {
+        userData = {
           firstname: user.firstname,
           lastname: user.lastname,
           username: user.username,
-          user_id: user['_id'],
+          user_id: user._id,
         };
-        Upvotes.findUpvotes({ user_id: userData.user_id })
-        .then(function(upvotedLinks) {
-          var upvotedLinkIDs = [];
-          for (var x = 0; x < upvotedLinks.length; x++) {
-            upvotedLinkIDs.push(upvotedLinks[x].link_id)
-          }
-          return upvotedLinkIDs;
-        }).then(function(upvotedLinkIDs){
-          Links.findLinks({ _id: { $in: upvotedLinkIDs } })
-          .then(function (uvLinks) {
-            userData.upvotedLinks = uvLinks
-            Links.findLinks({ userid: userData.user_id })
-            .then(function (links) {
-              userData.submittedLinks = links;
-              res.json(userData);
+        return Upvotes.findUpvotes({ user_id: userData.user_id });
+      })  
+      .then(function(upvotes) {
+        return Links.findLinks({
+          _id: {
+            $in: upvotes.map(function(upvote) {
+              return upvote.link_id;
             })
-            .fail(function (error) {
-              next(error);
-            });
-          })
-          .fail(function (error) {
-            next(error);
-          });
-        })
-        .fail(function (error) {
-          next(error);
+          }
         });
       })
-      .fail(function (error) {
+      .then(function(upvotedLinks) {
+        userData.upvotedLinks = upvotedLinks
+        return Links.findLinks({ userid: userData.user_id });
+      })
+      .then(function(links) {
+        userData.submittedLinks = links;
+        res.json(userData);
+      })
+      .fail(function(error) {
         next(error);
       });
   }
-
-
 
 }

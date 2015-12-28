@@ -22,21 +22,6 @@ var updateLink = Q.nbind(Links.update, Links);
 
 module.exports = {
 
-  findUrl: function (req, res, next, code) {
-    findLink({ code: code })
-      .then(function (link) {
-        if (link) {
-          req.navLink = link;
-          next();
-        } else {
-          next(new Error('Link not added yet'));
-        }
-      })
-      .fail(function (err) {
-        next(err);
-      });
-  },
-
   // Query the database for all links which were created
   //   between a requested date and two days prior to that date
   //   (e.g., between now and the day before yesterday).
@@ -103,18 +88,6 @@ module.exports = {
       });
   },
 
-  // allLinks: function (req, res, next) {
-  //   var findLinks = Q.nbind(Links.find, Links);
-
-  //   findLinks({})
-  //     .then(function (links) {
-  //       res.json(links);
-  //     })
-  //     .fail(function (err) {
-  //       next(err);
-  //     });
-  // },
-
   // Insert a new link into the database.
   // Receive the 'url', 'user_id', and 'user_name' from the client.
   newLink: function (req, res, next) {
@@ -171,7 +144,19 @@ module.exports = {
           next(err);
         }
       });
-  },
+  }
+
+  // allLinks: function (req, res, next) {
+  //   var findLinks = Q.nbind(Links.find, Links);
+
+  //   findLinks({})
+  //     .then(function (links) {
+  //       res.json(links);
+  //     })
+  //     .fail(function (err) {
+  //       next(err);
+  //     });
+  // },
 
   // getTodaysLinks: function(req, res, next) {
   //   var findLinks = Q.nbind(Links.find, Links);
@@ -210,17 +195,5 @@ module.exports = {
   //       console.log(err);
   //     })
   // },
-
-  navToLink: function (req, res, next) {
-    var link = req.navLink;
-    link.visits++;
-    link.save(function (err, savedLink) {
-      if (err) {
-        next(err);
-      } else {
-        res.redirect(savedLink.url);
-      }
-    });
-  }
 
 };

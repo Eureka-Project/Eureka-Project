@@ -16,8 +16,10 @@ exports = module.exports = {
     var user_id = req.body.user_id;
 
     if ( ! link_id ) {
+      res.status(400);
       next(new Error('Did not receive link_id'))
     } else if ( ! user_id ) {
+      res.status(400);
       next(new Error('Did not receive user_id'))
     }
 
@@ -45,8 +47,16 @@ exports = module.exports = {
         return Links.findLink({ _id: link_id })
       })
       .then(function(link) {
-        link.upvotes++;
-        return Q.nfcall(link.save, link);
+        if ( ! link ) {
+          var err = 'Link ' + link_id + ' does not exist';
+          res.status(400);
+          res.json({ error: err});
+          console.log(err);
+          throw new Error(err);
+        } else {
+          link.upvotes++;
+          return Q.nfcall(link.save, link);
+        }
       })
       .then(function(link) {
         res.json(link);

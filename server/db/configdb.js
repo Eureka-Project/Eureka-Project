@@ -20,17 +20,8 @@ var userSchema = mongoose.Schema({
 	date: { type: Date, default: Date.now },
 });
 
-userSchema.methods.comparePasswords = function(candidatePassword) {
-  var defer = Q.defer();
-  var savedPassword = this.password;
-  bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
-    if (err) {
-      defer.reject(err);
-    } else {
-      defer.resolve(isMatch);
-    }
-  });
-  return defer.promise;
+userSchema.methods.isPassword = function(guess) {
+  return bcrypt.compareSync(guess, this.password);
 };
 
 userSchema.pre('save', function (next) {

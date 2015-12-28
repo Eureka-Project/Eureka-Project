@@ -20,22 +20,17 @@ exports = module.exports = {
 
     exports.findUser({ username: username })
       .then(function (user) {
-        if (!user) {
-          next(new Error('User does not exist'));
+        if ( ! user ) {
+          throw new Error('User does not exist');
+        } else if ( ! user.isPassword(password) ) {
+          throw new Error('Incorrect password');
         } else {
-          return user.comparePasswords(password)
-            .then(function(foundUser) {
-              if (foundUser) {
-                var token = jwt.encode(user, secret);
-                res.json({
-                  username: user.username,
-                  user_id: user['_id'],
-                  token: token
-                });
-              } else {
-                return next(new Error('No user'));
-              }
-            });
+          var token = jwt.encode(user, secret);
+          res.json({
+            username: user.username,
+            user_id: user._id,
+            token: token
+          });
         }
       })
       .fail(function (error) {

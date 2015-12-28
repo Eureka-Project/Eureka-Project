@@ -1,5 +1,6 @@
 var Q = require('q');
 var jwt = require('jwt-simple');
+var mongoose = require('mongoose');
 
 var Users = require('../db/configdb.js').User;
 var Links = require('../links/linksController.js');
@@ -39,8 +40,8 @@ exports = module.exports = {
             res.status(401).send();
           }
         })
-        .fail(function (err) {
-          next(err);
+        .fail(function(error) {
+          next(error);
         });
     }
   },
@@ -50,7 +51,7 @@ exports = module.exports = {
     var password = req.body.password;
 
     exports.findUser({ username: username })
-      .then(function (user) {
+      .then(function(user) {
         if ( ! user ) {
           throw new Error('User does not exist');
         } else if ( ! user.isPassword(password) ) {
@@ -63,7 +64,7 @@ exports = module.exports = {
           });
         }
       })
-      .fail(function (error) {
+      .fail(function(error) {
         next(error);
       });
   },
@@ -89,14 +90,15 @@ exports = module.exports = {
           });
         }
       })
-      .then(function (user) {
+      .then(function(user) {
         // create token to send back for auth
         // user example: {
         //   date: Fri Dec 18 2015 19:12:33 GMT-0600 (CST),
         //   _id: 5674af012e5833104b30ef0f,
         //   lastname: 'test2',
         //   firstname: 'test2',
-        //   password: '$2a$10$5kWIkSPNOPvf3fFH8fkxUek9PMAy4saUj5LC2D.pbyD1NO7I7P.X.',
+        //   password:
+        //     '$2a$10$5kWIkSPNOPvf3fFH8fkxUek9PMAy4saUj5LC2D.pbyD1NO7I7P.X.',
         //   username: 'test2',
         //   __v: 0
         // }
@@ -107,16 +109,22 @@ exports = module.exports = {
           token: exports.genToken(user)
         });
       })
-      .fail(function (error) {
+      .fail(function(error) {
         next(error);
       });
   },
 
-  getUserInfo: function (req, res, next) {
-    var user_id = req.params.user_id || req.user._id;
+  findUserFromRequestHeaders: function(req) {
+    return exports.findUser(
+      ( ! mongoose.Types.ObjectId.isValid(req.params.user_id) )
+        ? { username: req.params.user_id }
+        : { _id: req.params.user_id || req.user.user_id }
+    );
+  },
 
-    exports.findUser({ _id: user_id })
-      .then(function (user) {
+  getUserInfo: function (req, res, next) {
+    exports.findUserFromRequestHeaders(req)
+      .then(function(user) {
         res.json({
           firstname: user.firstname,
           lastname: user.lastname,
@@ -124,17 +132,13 @@ exports = module.exports = {
           user_id: user._id
         });
       })
-      .fail(function (error) {
+      .fail(function(error) {
         next(error);
       });
   },
 
   getProfileInfo: function (req, res, next) {
-    var user_id = req.params.user_id || req.user._id;
-
-    var userData = {};
-
-    exports.findUser({ _id: user_id })
+    exports.findUserFromRequestHeaders(req)
       .then(function(user) {
         userData = {
           firstname: user.firstname,

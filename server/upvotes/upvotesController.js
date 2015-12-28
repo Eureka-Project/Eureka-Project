@@ -6,6 +6,8 @@ var Links = require('../links/linksController.js');
 exports = module.exports = {
 
   findUpvote: Q.nbind(Upvote.findOne, Upvote),
+  
+  findUpvotes: Q.nbind(Upvote.find, Upvote),
 
   storeUpvote: Q.nbind(Upvote.create, Upvote),
 

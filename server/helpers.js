@@ -16,23 +16,29 @@ module.exports = {
     res.status(500).send({error: error.message});
   },
 
-  decode: function (req, res, next) {
+  decodeToken: function (req, res, next) {
     var token = req.headers['x-access-token'];
-    var user;
-
-    if (!token) {
-      return res.status(403).send(); // send forbidden if a token is not provided
-    }
-
-    try {
-      // decode token and attach user to the request
-      // for use inside our controllers
-      user = jwt.decode(token, secret);
-      req.user = user;
-      next();
-    } catch(error) {
-      return next(error);
-    }
-
+    req.user = (token) ? jwt.decode(token, secret) : null;
+    next();
   }
+
+  // decode: function (req, res, next) {
+  //   var token = req.headers['x-access-token'];
+  //   var user;
+
+  //   if (!token) {
+  //     return res.status(403).send(); // send forbidden if a token is not provided
+  //   }
+
+  //   try {
+  //     // decode token and attach user to the request
+  //     // for use inside our controllers
+  //     user = jwt.decode(token, secret);
+  //     req.user = user;
+  //     next();
+  //   } catch(error) {
+  //     return next(error);
+  //   }
+
+  // }
 };

@@ -24,12 +24,13 @@ require('./server/users/usersRoutes.js')(usersRouter);
 require('./server/links/linksRoutes.js')(linksRouter);
 require('./server/upvotes/upvotesRoutes.js')(upvotesRouter);
 
+// authentication middleware used to decode token and made available on the request
+app.use(helpers.decodeToken);
+
 app.use('/api/users', usersRouter); // use user router for all user request
 
 app.use('/api/upvote', upvotesRouter);
 
-// authentication middleware used to decode token and made available on the request
-app.use('/api/links', helpers.decode);
 app.use('/api/links', linksRouter); // user link router for link request
 
 

@@ -13,7 +13,7 @@ exports = module.exports = {
 
   newUpvote: function(req, res, next) {
     var link_id = req.body.link_id || req.params.link_id;
-    var user_id = req.body.user_id;
+    var user_id = req.body.user_id || req.user._id;
 
     if ( ! link_id ) {
       res.status(400);

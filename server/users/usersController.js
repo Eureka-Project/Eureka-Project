@@ -83,32 +83,30 @@ exports = module.exports = {
       });
   },
 
-  checkAuth: function (req, res, next) {
+  verifyToken: function (req, res, next) {
     // checking to see if the user is authenticated
     // grab the token in the header is any
     // then decode the token, which we end up being the user object
     // check to see if that user exists in the database
-    var token = req.headers['x-access-token'];
-    if (!token) {
+    if ( ! req.user ) {
       next(new Error('No token'));
     } else {
-      var user = jwt.decode(token, secret);
-      exports.findUser({username: user.username})
-        .then(function (foundUser) {
+      exports.findUser({ username: req.user.username })
+        .then(function(foundUser) {
           if (foundUser) {
-            res.status(200).send();
+            next();
           } else {
             res.status(401).send();
           }
         })
-        .fail(function (error) {
-          next(error);
+        .fail(function (err) {
+          next(err);
         });
     }
   },
 
   getUserInfo: function (req, res, next) {
-    var user_id = req.params.user_id;
+    var user_id = req.params.user_id || req.user._id;
 
     exports.findUser({ _id: user_id })
       .then(function (user) {
@@ -125,7 +123,7 @@ exports = module.exports = {
   },
 
   getProfileInfo: function (req, res, next) {
-    var user_id = req.params.user_id;
+    var user_id = req.params.user_id || req.user._id;
 
     var userData = {};
 

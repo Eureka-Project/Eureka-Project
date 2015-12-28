@@ -1,7 +1,4 @@
 var Q = require('q');
-// var request = require('request');
-// var og = require('open-graph');
-// var og = require('./linksUtil.js');
 var util = require('./linksUtil.js');
 
 var Links = require('../db/configdb.js').Url;
@@ -25,7 +22,6 @@ Date.prototype.toUTC = function() {
 module.exports = {
 
   findUrl: function (req, res, next, code) {
-    // var findLink = Q.nbind(Links.findOne, Links);
     findLink({ code: code })
       .then(function (link) {
         if (link) {
@@ -55,8 +51,6 @@ module.exports = {
 
     var start = dayThree;
 
-    // var findLinks = Q.nbind(Links.find, Links);
-
     findLinks({ date: {"$gte": start, "$lt": end} })
       .then(function (links) {
         // Split the links up by day created.
@@ -64,14 +58,13 @@ module.exports = {
         var linksDayTwo = [];
         var linksDayThree = [];
 
-        for(var i = 0; i < links.length; i++) {
-          console.log('link id:', links[i]['_id']);
+        for (var i = 0; i < links.length; i++) {
           var day = links[i].date.getDate();
-          if(day === endDate) {
+          if ( day === endDate ) {
             linksDayOne.push(links[i]);
-          } else if(day === endDate - 1) {
+          } else if ( day === endDate - 1 ) {
             linksDayTwo.push(links[i]);
-          } else if(day === endDate - 2) {
+          } else if ( day === endDate - 2 ) {
             linksDayThree.push(links[i]);
           }
         }
@@ -120,14 +113,11 @@ module.exports = {
       return next(new Error('Not a valid url'));
     }
 
-    // var createLink = Q.nbind(Links.create, Links);
-    // var findLink = Q.nbind(Links.findOne, Links);
-
     findLink({url: url})
       .then(function (match) {
         if (match) {
           console.log('Link already exists in database:\n', match);
-          res.send(match);
+          res.json(match);
           // Stop the promise chain (go to '.fail()')
           throw new Error('Stop promise chain');
         } else {
@@ -135,23 +125,17 @@ module.exports = {
         }
       })
       .then(function (data) {
-        if ( ! data ) {
-          console.log('This should not run');
-        }
-        if (data) {
-          var newLink = {
-            url: url,
-            visits: 0,
-            title: data.title,
-            description: data.description,
-            site_name: data.site_name,
-            image: (data.image) ? data.image.url : '',
-            username: user_name,
-            userid: user_id,
-            upvotes: 0
-          };
-          return createLink(newLink);
-        }
+        return createLink({
+          url: url,
+          visits: 0,
+          title: data.title,
+          description: data.description,
+          site_name: data.site_name,
+          image: (data.image) ? data.image.url : '',
+          username: user_name,
+          userid: user_id,
+          upvotes: 0
+        });
       })
       .then(function (createdLink) {
         if ( ! createdLink ) {
@@ -167,7 +151,7 @@ module.exports = {
         // Unless the error requests to stop the promise chain,
         //   log the error and continue to the next function
         //   in the chain.
-        if (err !== 'Stop promise chain') {
+        if (err.message !== 'Stop promise chain') {
           console.log(err);
           next(err);
         }

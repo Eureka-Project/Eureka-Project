@@ -15,7 +15,6 @@ module.exports = {
     } else if ( ! user_id ) {
       next(new Error('Did not receive user_id'))
     }
-    console.log(link_id);
 
     var findLink = Q.nbind(Links.findOne, Links);
 
@@ -33,7 +32,7 @@ module.exports = {
         );
         if (alreadyUpvoted) {
           res.json(upvote);
-          throw new Error('Already upvoted');
+          throw new Error('Stop promise chain');
         } else {
           return storeUpvote({
             user_id: user_id,
@@ -52,9 +51,9 @@ module.exports = {
         res.json(link);
       })
       .fail(function (err) {
-        if (err.message !== 'Already upvoted') {
+        if (err.message !== 'Stop promise chain') {
           next(err);
         }
-      })
+      });
   }     
 }

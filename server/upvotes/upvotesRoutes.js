@@ -1,8 +1,7 @@
 var upvotesController = require('./upvotesController.js');
 
 module.exports = function (app) {
-  // app === userRouter injected from middlware.js
-
   app.post('/', upvotesController.newUpvote);
+  app.post('/:link_id', upvotesController.newUpvote);
 };
 

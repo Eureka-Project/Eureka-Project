@@ -12,7 +12,7 @@ exports = module.exports = {
   storeUpvote: Q.nbind(Upvote.create, Upvote),
 
   newUpvote: function(req, res, next) {
-    var link_id = req.body.link_id;
+    var link_id = req.body.link_id || req.params.link_id;
     var user_id = req.body.user_id;
 
     if ( ! link_id ) {

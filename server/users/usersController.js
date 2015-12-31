@@ -6,7 +6,7 @@ var Users = require('../db/configdb.js').User;
 var Links = require('../links/linksController.js');
 var Upvotes = require('../upvotes/upvotesController.js');
 
-var secret = 'Festus is the bestest';
+var secretForToday = require('../secrets/secretsController.js');
 
 exports = module.exports = {
 
@@ -25,21 +25,21 @@ exports = module.exports = {
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
-    }, secret);
+    }, secretForToday.secret);
   },
 
   // Check whether the previously decoded token (stored as 'req.user')
   //   is valid by seeing if it matches a document in the database.
   verifyToken: function (req, res, next) {
     if ( ! req.user ) {
-      next(new Error('No token'));
+      res.status(403).send();
     } else {
       exports.findUser(req.user)
         .then(function(foundUser) {
           if (foundUser) {
             next();
           } else {
-            res.status(401).send();
+            res.status(403).send();
           }
         })
         .fail(function(error) {

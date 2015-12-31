@@ -193,11 +193,3 @@ exports = module.exports = {
   // },
 
 };
-
-exports.findLink({_id:'5680c61deed30a445e980187'})
-  .then(function(m) {
-    if (m) {
-      console.log('removing', m);
-      m.remove();
-    }
-  })

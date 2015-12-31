@@ -1,25 +1,32 @@
 var jwt  = require('jwt-simple');
 
-var secret = 'Festus is the bestest';
+var secretForToday = require('./secrets/secretsController.js');
 
-module.exports = {
+exports = module.exports = {
+
+  // Log an uncaught error and then send it to the next route,
+  //   which should be 'exports.errorHandler'.
+  // (The file requiring this function determines the route order.)
   errorLogger: function (error, req, res, next) {
-    // log the error then send it to the next middleware in
-    // middleware.js
-
     console.error(error.stack);
     next(error);
   },
+  
+  // Send an uncaught error message to the client.
   errorHandler: function (error, req, res, next) {
-    // send error message to client
-    // message for gracefull error handling on app
     res.status(500).send({error: error.message});
   },
 
+  // Decode the jwt token and place the extracted data into 'req.user'.
+  // Send a 'Forbidden' http response if it cannot be decoded.
   decodeToken: function (req, res, next) {
     var token = req.headers['x-access-token'];
-    req.user = (token) ? jwt.decode(token, secret) : null;
-    next();
+    try {
+      req.user = ( ! token ) ? null : jwt.decode(token, secretForToday.secret);
+      next();
+    } catch(error) {
+      return next(error);
+    }
   }
 
   // decode: function (req, res, next) {

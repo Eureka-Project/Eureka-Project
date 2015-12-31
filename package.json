@@ -32,6 +32,7 @@
     "jwt-simple": "^0.4.0",
     "mongodb": "2.0.52",
     "mongoose": "4.3.1",
+    "node-uuid": "^1.4.7",
     "nodemon": "^1.8.1",
     "open-graph": "^0.1.5",
     "q": "^1.4.1",

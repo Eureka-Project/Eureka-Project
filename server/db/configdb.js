@@ -1,7 +1,6 @@
-
 var mongoose = require('mongoose');
-var bcrypt   = require('bcrypt-nodejs');
 var Q        = require('q');
+var bcrypt   = require('bcrypt-nodejs');
 
 // Connect to the online mongolab server:
 // mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
@@ -9,7 +8,7 @@ var Q        = require('q');
 // Connect locally:
 mongoose.connect('localhost:27018');
 // Terminal command:
-// mongod --port 27018 --dbpath server/db/db --wiredTigerJournalCompressor snappy --wiredTigerCollectionBlockCompressor snappy --cpu
+// dbpath="server/db/db"; ! [ -d "${dbpath}" ] && mkdir -p "${dbpath}"; mongod --port 27018 --dbpath "${dbpath}" --wiredTigerJournalCompressor snappy --wiredTigerCollectionBlockCompressor snappy --cpu
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -82,11 +81,17 @@ var upVoteSchema = mongoose.Schema({
 
 });
 
+var secretSchema = mongoose.Schema({
+  secret: String,
+  date: Date
+});
+
 var models = {
 
 	Url: mongoose.model('Url', urlSchema),
 	User: mongoose.model('User', userSchema),
-	Upvote: mongoose.model('Upvote', upVoteSchema)
+	Upvote: mongoose.model('Upvote', upVoteSchema),
+  Secrets: mongoose.model('Secret', secretSchema)
 
 };
 

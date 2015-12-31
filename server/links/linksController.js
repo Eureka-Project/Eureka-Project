@@ -1,7 +1,7 @@
 var Q = require('q');
 var util = require('./linksUtil.js');
 
-var Links = require('../db/configdb.js').Url;
+var Links = require('../db/configdb.js').Links;
 
 // // Convert a date to UTC time.
 // Date.prototype.toUTC = function() {

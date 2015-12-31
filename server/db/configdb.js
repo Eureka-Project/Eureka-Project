@@ -60,7 +60,7 @@ userSchema.pre('save', function (next) {
 
 
 
-var urlSchema = mongoose.Schema({
+var linkSchema = mongoose.Schema({
 	title: { type: String, default: '' },
   url: String,
   description: { type: String, default: '' },
@@ -74,7 +74,7 @@ var urlSchema = mongoose.Schema({
 
 });
 
-var upVoteSchema = mongoose.Schema({
+var upvoteSchema = mongoose.Schema({
 	user_id: String,
 	link_id: String,
 	date: { type: Date, default: Date.now }
@@ -86,11 +86,19 @@ var secretSchema = mongoose.Schema({
   date: Date
 });
 
+var tokenSchema = mongoose.Schema({
+  user_id: String,
+  username: String,
+  firstname: String,
+  lastname: String,
+  date: { type: Date, default: Date.now }
+});
+
 var models = {
 
-	Url: mongoose.model('Url', urlSchema),
-	User: mongoose.model('User', userSchema),
-	Upvote: mongoose.model('Upvote', upVoteSchema),
+	Links: mongoose.model('Link', linkSchema),
+	Users: mongoose.model('User', userSchema),
+	Upvotes: mongoose.model('Upvote', upvoteSchema),
   Secrets: mongoose.model('Secret', secretSchema)
 
 };

@@ -2,8 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
-var mongoose = require('mongoose');
-
 var helpers = require('./server/helpers.js');
 
 var app = express();

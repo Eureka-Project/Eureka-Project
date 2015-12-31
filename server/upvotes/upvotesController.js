@@ -1,6 +1,6 @@
 var Q = require('q');
 
-var Upvote = require('../db/configdb.js').Upvote;
+var Upvote = require('../db/configdb.js').Upvotes;
 var Links = require('../links/linksController.js');
 
 exports = module.exports = {

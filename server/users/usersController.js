@@ -2,7 +2,7 @@ var Q = require('q');
 var jwt = require('jwt-simple');
 var mongoose = require('mongoose');
 
-var Users = require('../db/configdb.js').User;
+var Users = require('../db/configdb.js').Users;
 var Links = require('../links/linksController.js');
 var Upvotes = require('../upvotes/upvotesController.js');
 

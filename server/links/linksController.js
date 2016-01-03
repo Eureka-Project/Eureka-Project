@@ -1,6 +1,6 @@
 var Q = require('q');
-var util = require('./linksUtil.js');
 
+var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
 
 // // Convert a date to UTC time.
@@ -104,6 +104,14 @@ exports = module.exports = {
           console.log('Link already exists in database:\n', match);
           res.json(match);
           // Stop the promise chain (go to '.fail()')
+          throw new Error('Stop promise chain');
+        } else {
+          return util.isSafeUrl(url);
+        }
+      })
+      .then(function (isSafe) {
+        if ( ! isSafe ) {
+          res.status(403).send({error: 'Malicious site'})
           throw new Error('Stop promise chain');
         } else {
           return util.getMetaData(url);

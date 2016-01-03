@@ -4,40 +4,40 @@ var cookieParser = require('cookie-parser');
 
 var helpers = require('./server/helpers.js');
 
-var app = express();
+module.exports = app = express();
 
 app.set('port', (process.env.PORT || 3000));
 
+// Set up express formatting.
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// Redirect requests for local files to the './public' directory.
 app.use(express.static(__dirname + '/public'));
 
+// Decode the client's token (if it exists) for all http requests.
+app.use(helpers.decodeToken);
+
+// Initialize routers.
 var usersRouter = express.Router();
 var linksRouter = express.Router();
 var upvotesRouter = express.Router();
 
-// inject our routers into their respective route files
+// Configure routers.
 require('./server/users/usersRoutes.js')(usersRouter);
 require('./server/links/linksRoutes.js')(linksRouter);
 require('./server/upvotes/upvotesRoutes.js')(upvotesRouter);
 
-// authentication middleware used to decode token and made available on the request
-app.use(helpers.decodeToken);
-
-app.use('/api/users', usersRouter); // use user router for all user request
-
+// Set up route forwarding.
+app.use('/api/users', usersRouter);
 app.use('/api/upvote', upvotesRouter);
+app.use('/api/links', linksRouter);
 
-app.use('/api/links', linksRouter); // user link router for link request
-
-
-// If the url is not one of the ones above, send an error.
+// Handle uncaught errors.
 app.use(helpers.errorLogger);
 app.use(helpers.errorHandler);
 
+// Run the server.
 app.listen(app.get('port'), function(){
 	console.log('Node app is running on port', app.get('port'));
 });
-
-module.exports = app;

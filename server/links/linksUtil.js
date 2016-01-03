@@ -1,10 +1,26 @@
 // https://www.npmjs.com/package/open-graph
-
-var request = require('request');
 var http = require('http');
 var https = require('https');
 var cheerio = require('cheerio');
 var Q = require('q');
+var querystring = require('querystring');
+var urlModule = require('url');
+
+const SAFE_BROWSING_API = 'https://sb-ssl.google.com/safebrowsing/api/lookup';
+
+// API key for Google Safe Browsing
+const SAFE_BROWSING_KEY = 'AIzaSyAeqpm0ri9bnL0MGPwUYN9PtwtFFw_766s';
+
+var safeBrowsingUrl = 'https://sb-ssl.google.com/safebrowsing/api/lookup?' +
+	querystring.stringify({
+		client: 'eureka-1178',
+  	key: 'AIzaSyAeqpm0ri9bnL0MGPwUYN9PtwtFFw_766s',
+  	appver: '1.0.0',
+  	pver: '3.1'
+	}
+);
+
+var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
 
 var shorthandProperties = {
 	"image": "image:url",
@@ -12,10 +28,31 @@ var shorthandProperties = {
 	"audio": "audio:url"
 }
 
-var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
-
 exports.isValidUrl = function(url) {
   return url.match(rValidUrl);
+}
+
+exports.isSafeUrl = function(url) {
+  var deferred = Q.defer();
+  var testUrl = safeBrowsingUrl + '&url=' + url;
+
+  console.log("Checking %s for malicious content", url);
+
+  exports.get(testUrl)
+  	.then(function(res) {
+  		switch ( parseInt(res) ) {
+  			case 400, 401, 503:
+  				deferred.reject( new Error('Invalid url') );
+  				break;
+  			default:
+  				deferred.resolve( (res.body !== 'malware') )
+  		}
+  	})
+  	.fail(function(error) {
+  		deferred.reject(error);
+  	})
+
+	return deferred.promise;
 }
 
 exports.getMetaData = function(url, options){
@@ -36,31 +73,85 @@ exports.getMetaData = function(url, options){
   return deferred.promise;
 }
 
-exports.getHTML = function(url){	
+exports.get = function(url){	
   var deferred = Q.defer();
 
-	var purl = require('url').parse(url);
+	var parsedUrl = urlModule.parse(url);
 	
-	if ( ! purl.protocol ) {
-		purl = require('url').parse("http://"+url);
+	if ( ! parsedUrl.protocol ) {
+		parsedUrl = urlModule.parse("http://"+url);
 	}
 	
-	var httpModule = purl.protocol === 'https:'
-		? https
-		: http;
+	var httpModule = (parsedUrl.protocol === 'https:') ? https : http;
 	
-	url = require('url').format(purl);
+	url = urlModule.format(parsedUrl);
 
 	var client = httpModule.get(url, function(res){
 		res.setEncoding('utf-8');
 		
-		var html = "";
+		var html = '';
 		
 		res.on('data', function(data){
 			html += data;
 		});
 		
 		res.on('end', function(){
+			res.body = html;
+			deferred.resolve(res, html);
+		});
+	});
+	
+	client.on('error', function(err){
+		deferred.reject(err);
+	})
+
+	return deferred.promise;
+}
+
+exports.getHTML = function(url){	
+  var deferred = Q.defer();
+
+	// var parsedUrl = require('url').parse(url);
+	
+	// if ( ! parsedUrl.protocol ) {
+	// 	parsedUrl = require('url').parse("http://"+url);
+	// }
+	
+	// var httpModule = parsedUrl.protocol === 'https:'
+	// 	? https
+	// 	: http;
+	
+	// url = require('url').format(parsedUrl);
+
+	// var client = httpModule.get(url, function(res){
+	// 	res.setEncoding('utf-8');
+		
+	// 	var html = "";
+		
+	// 	res.on('data', function(data){
+	// 		html += data;
+	// 	});
+		
+	// 	res.on('end', function(){
+	// 		if (res.statusCode >= 300 && res.statusCode < 400) {
+	// 			// Recurse with 'res.headers.location' instead of 'url'.
+	// 			exports.getHTML(res.headers.location)
+	// 			  .then(function(html) {
+	// 			  	deferred.resolve(html);
+	// 			  })
+	// 		} else {
+	// 			deferred.resolve(html);
+	// 		}
+			
+	// 	});
+	// });
+	
+	// client.on('error', function(err){
+	// 	deferred.reject(err);
+	// })
+
+	exports.get(url)
+		.then(function(res) {
 			if (res.statusCode >= 300 && res.statusCode < 400) {
 				// Recurse with 'res.headers.location' instead of 'url'.
 				exports.getHTML(res.headers.location)
@@ -68,15 +159,12 @@ exports.getHTML = function(url){
 				  	deferred.resolve(html);
 				  })
 			} else {
-				deferred.resolve(html);
+				deferred.resolve(res.body);
 			}
-			
-		});
-	});
-	
-	client.on('error', function(err){
-		deferred.reject(err);
-	})
+		})
+		.fail(function(err) {
+			deferred.reject(err);
+		})
 
 	return deferred.promise;
 }
@@ -205,3 +293,8 @@ exports.formatMetaData = function(data, html) {
 
 	return data;
 }
+
+// exports.isSafeUrl('http%3A%2F%2Fgoogle.com%2F');
+exports.isSafeUrl('http://google.com/');
+// exports.isSafeUrl('http%3A%2F%2Fianfette.org%2F');
+exports.isSafeUrl('http://ianfette.org/');

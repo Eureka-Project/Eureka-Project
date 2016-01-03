@@ -10,12 +10,19 @@ exports = module.exports = {
 var findSecret = Q.nbind(Secrets.findOne, Secrets);
 var createSecret = Q.nbind(Secrets.create, Secrets);
 
+// Return a Date object for today's date, set at midnight.
+Date.prototype.toMidnight = function() {
+  this.setHours(0, 0, 0, 0);
+  return this;
+}
+
 function dateForToday() {
-  return new Date(new Date().setHours(0, 0, 0, 0));
+  return new Date().toMidnight();
 };
 
 function setSecret() {
   var today = dateForToday();
+  console.log('today', today);
 
   findSecret({ date: today })
     .then(function(secretForToday) {

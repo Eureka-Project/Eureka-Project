@@ -35,7 +35,7 @@
 	</div>
 </div>
 <div class="page-container">
-	<h4 class="date-header">Most Upvoted Links of All-Time</h4>
+	<h4 class="date-header" ng-show="allLinks">Most Upvoted Links of All-Time</h4>
 	<div class="results">
 			<div class="link-card" ng-repeat="link in allLinks | orderBy: '-upvotes'">
 				<div class='voting' ng-click="upvote( link._id )">

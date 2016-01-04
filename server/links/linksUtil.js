@@ -81,6 +81,43 @@ exports.getMetaData = function(url, options){
   return deferred.promise;
 }
 
+// Return the response from a GET request.
+// Store the html received in the response body.
+exports.get = function(url){	
+  var deferred = Q.defer();
+
+	var parsedUrl = urlModule.parse(url);
+	
+	if ( ! parsedUrl.protocol ) {
+		parsedUrl = urlModule.parse("http://"+url);
+	}
+	
+	var httpModule = (parsedUrl.protocol === 'https:') ? https : http;
+	
+	url = urlModule.format(parsedUrl);
+
+	var client = httpModule.get(url, function(res){
+		res.setEncoding('utf-8');
+		
+		var html = '';
+		
+		res.on('data', function(data){
+			html += data;
+		});
+		
+		res.on('end', function(){
+			res.body = html;
+			deferred.resolve(res);
+		});
+	});
+	
+	client.on('error', function(err){
+		deferred.reject(err);
+	})
+
+	return deferred.promise;
+}
+
 // Get the html of a page with a url.
 // If a 3** status code is received,
 //   recurse with the location received in the response headers.

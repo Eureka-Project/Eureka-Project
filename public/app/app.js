@@ -37,6 +37,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: "app/views/profile.html",
       controller: "ProfileController"
     })
+    .state('mostUpvoted', {
+      url: "/popular/mostUpvoted",
+      templateUrl: "app/views/mostUpvoted.html",
+      controller: "HomeController"
+    })
     $httpProvider.interceptors.push('AttachTokens');
 });
 

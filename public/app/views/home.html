@@ -4,6 +4,7 @@
 			<i class="fa fa-search"></i>
 			<input type="text" ng-model="searchText" placeholder="Search..."/>
 		</form>
+		<a ng-href="#/popular/mostUpvoted"><i class="fa fa-trophy"></i></a>
 	</div>
 	<a ng-href="#/home">
 		<div class="title">
@@ -51,7 +52,7 @@
 						</div>
 						<div class="link-description">
 								<h3>{{link.title}}</h3>
-							<p class="link-description-p">{{link.description | limitTo: 140}}</p>
+							<p class="link-description-p">{{link.description}}</p>
 							<p class="link-description-source">{{link.site_name}}</p>
 							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
 								<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>

@@ -39,9 +39,9 @@ exports = module.exports = {
           if (foundUser) {
             if(req.makeNewToken === true) {
               res.json({
-                username: user.username,
-                user_id: user._id,
-                token: exports.genToken(user)
+                username: foundUser.username,
+                user_id: foundUser._id,
+                token: exports.genToken(foundUser)
               }); 
             }
             next();

@@ -38,7 +38,11 @@ exports = module.exports = {
         .then(function(foundUser) {
           if (foundUser) {
             if(req.makeNewToken === true) {
-              exports.genToken(req.user); 
+              res.json({
+                username: user.username,
+                user_id: user._id,
+                token: exports.genToken(user)
+              }); 
             }
             next();
           } else {

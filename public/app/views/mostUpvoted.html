@@ -49,8 +49,8 @@
 						</div>
 						<div class="link-description">
 								<h3>{{link.title}}</h3>
-							<p class="link-description-p">{{link.description | limitTo: 140}}</p>
-							<p class="link-description-source">{{link.site_name}}</p>
+							<p class="link-description-p">{{link.description}}</p>
+							<p class="link-description-source">{{link.site_name}} - {{link.date}}</p>
 							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
 								<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
 							</a>

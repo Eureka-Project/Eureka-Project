@@ -3,10 +3,10 @@ var Q        = require('q');
 var bcrypt   = require('bcrypt-nodejs');
 
 // Connect to the online mongolab server:
-// mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
 
 // Connect locally:
-mongoose.connect('localhost:27018');
+// mongoose.connect('localhost:27018');
 // Terminal command:
 // dbpath="server/db/db"; ! [ -d "${dbpath}" ] && mkdir -p "${dbpath}"; mongod --port 27018 --dbpath "${dbpath}" --wiredTigerJournalCompressor snappy --wiredTigerCollectionBlockCompressor snappy --cpu
 

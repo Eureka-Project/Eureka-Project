@@ -1,4 +1,3 @@
-// https://www.npmjs.com/package/open-graph
 var http = require('http');
 var https = require('https');
 var cheerio = require('cheerio');
@@ -11,6 +10,7 @@ const SAFE_BROWSING_API = 'https://sb-ssl.google.com/safebrowsing/api/lookup';
 // API key for Google Safe Browsing
 const SAFE_BROWSING_KEY = 'AIzaSyAeqpm0ri9bnL0MGPwUYN9PtwtFFw_766s';
 
+// Base string for the url to Google's Safe Browsing API.
 var safeBrowsingUrl = 'https://sb-ssl.google.com/safebrowsing/api/lookup?' +
 	querystring.stringify({
 		client: 'eureka-1178',
@@ -20,6 +20,7 @@ var safeBrowsingUrl = 'https://sb-ssl.google.com/safebrowsing/api/lookup?' +
 	}
 );
 
+// Regexp object to test whether a string is a valid url.
 var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
 
 var shorthandProperties = {
@@ -32,6 +33,9 @@ exports.isValidUrl = function(url) {
   return url.match(rValidUrl);
 }
 
+// Asynchronously screen a url through Google's Safe Browsing api.
+// In the fulfillment value of the Promise,
+//   return a boolean indicating whether the site is safe.
 exports.isSafeUrl = function(url) {
   var deferred = Q.defer();
   var testUrl = safeBrowsingUrl + '&url=' + url;
@@ -55,6 +59,10 @@ exports.isSafeUrl = function(url) {
 	return deferred.promise;
 }
 
+// The rest of the exported functions were refactored from:
+// https://www.npmjs.com/package/open-graph
+
+// Get open-graph data for a url.
 exports.getMetaData = function(url, options){
   var deferred = Q.defer();
   console.log('Getting meta data for %s', url);
@@ -73,82 +81,11 @@ exports.getMetaData = function(url, options){
   return deferred.promise;
 }
 
-exports.get = function(url){	
-  var deferred = Q.defer();
-
-	var parsedUrl = urlModule.parse(url);
-	
-	if ( ! parsedUrl.protocol ) {
-		parsedUrl = urlModule.parse("http://"+url);
-	}
-	
-	var httpModule = (parsedUrl.protocol === 'https:') ? https : http;
-	
-	url = urlModule.format(parsedUrl);
-
-	var client = httpModule.get(url, function(res){
-		res.setEncoding('utf-8');
-		
-		var html = '';
-		
-		res.on('data', function(data){
-			html += data;
-		});
-		
-		res.on('end', function(){
-			res.body = html;
-			deferred.resolve(res, html);
-		});
-	});
-	
-	client.on('error', function(err){
-		deferred.reject(err);
-	})
-
-	return deferred.promise;
-}
-
+// Get the html of a page with a url.
+// If a 3** status code is received,
+//   recurse with the location received in the response headers.
 exports.getHTML = function(url){	
   var deferred = Q.defer();
-
-	// var parsedUrl = require('url').parse(url);
-	
-	// if ( ! parsedUrl.protocol ) {
-	// 	parsedUrl = require('url').parse("http://"+url);
-	// }
-	
-	// var httpModule = parsedUrl.protocol === 'https:'
-	// 	? https
-	// 	: http;
-	
-	// url = require('url').format(parsedUrl);
-
-	// var client = httpModule.get(url, function(res){
-	// 	res.setEncoding('utf-8');
-		
-	// 	var html = "";
-		
-	// 	res.on('data', function(data){
-	// 		html += data;
-	// 	});
-		
-	// 	res.on('end', function(){
-	// 		if (res.statusCode >= 300 && res.statusCode < 400) {
-	// 			// Recurse with 'res.headers.location' instead of 'url'.
-	// 			exports.getHTML(res.headers.location)
-	// 			  .then(function(html) {
-	// 			  	deferred.resolve(html);
-	// 			  })
-	// 		} else {
-	// 			deferred.resolve(html);
-	// 		}
-			
-	// 	});
-	// });
-	
-	// client.on('error', function(err){
-	// 	deferred.reject(err);
-	// })
 
 	exports.get(url)
 		.then(function(res) {
@@ -169,6 +106,7 @@ exports.getHTML = function(url){
 	return deferred.promise;
 }
 
+// Parse open graph tags in a page's html.
 exports.parseMetaData = function(html, options){
 	options = options || {};
 	
@@ -275,6 +213,12 @@ exports.parseMetaData = function(html, options){
 	return meta;
 }
 
+// Handle edge cases when retrieving the metadata of a webpage.
+// If it does not contain an open graph title tag,
+//   use the text inside the <title> tag
+//   for the metadata's title property.
+// If multiple open graph images are found, use only the first one
+//   for the metadata's image property.
 exports.formatMetaData = function(data, html) {
 	if ( ! data.title ) {
   	var tag = /<title>(.*)<\/title>/;

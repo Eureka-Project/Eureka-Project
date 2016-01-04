@@ -1,4 +1,5 @@
 var Q = require('q');
+var _ = require('underscore');
 
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
@@ -32,6 +33,7 @@ exports = module.exports = {
   //   by organizing them into three different arrays, one array for each day.
   // Send these arrays back to the client.
   getPreviousThreeDaysLinks: function(req, res, next) {
+    exports.getAllLinksByDay(req, res, next);
     var end = req.body.date || new Date();
 
     // Get the year, month, and day in number format.
@@ -49,7 +51,7 @@ exports = module.exports = {
     exports.findLinks({ date: {"$gte": start, "$lt": end} })
       .then(function (links) {
         // Split the links up by day created.
-        var linksDayOne = []; 
+        var linksDayOne = [];
         var linksDayTwo = [];
         var linksDayThree = [];
 
@@ -81,6 +83,74 @@ exports = module.exports = {
           ],
         };
         console.log('Links for 3 days before %s:\n', end, data);
+        res.json(data);
+      })
+      .fail(function (err) {
+        next(err);
+      });
+  },
+
+  getAllLinksByDay: function(req, res, next) {
+    var targetDate = req.body.date || new Date();
+    // Clone the date to prevent modifying the original date.
+    targetDate = new Date( targetDate.getTime() );
+    // Set it to midnight.
+    targetDate.setHours(0, 0, 0, 0);
+
+    exports.findLinks({})
+      .then(function (links) {
+        // Make an array-like hash table.
+        var linksByDay = {};
+
+        // Split the links up by day created.
+        links.forEach(function(link) {
+          // Clone the date to prevent modifying the original date.
+          var linkDate = new Date( link.date.getTime() );
+          // Set it to midnight.
+          linkDate.setHours(0, 0, 0, 0);
+
+          // Get the time difference from the initial date,
+          //   which will serve as an index for the linksByDay hash table.
+          var dayDifference = linkDate - targetDate;
+
+          // If this link is the first one found for its day,
+          //   initialize the bucket for that day
+          //   in the linksByDay hash table.
+          if ( ! linksByDay[dayDifference] ) {
+            linksByDay[dayDifference] = {
+              date: linkDate,
+              links: []
+            }
+          }
+
+          linksByDay[dayDifference].links.push(link);
+        })
+
+        // Declare the object to send in the response.
+        var data = {
+          links: []
+        }
+        // Turn the 'linksByDay' hash table into an array.
+        // Place the array in the response object as 'data.links'.
+        _.each(linksByDay, function(obj) {
+          data.links.push(obj);
+        })
+
+        // Example:
+        //   data === {
+        //     links: [
+        //       {
+        //         date: <todayAtMidnight>,
+        //         links: <linksForToday>
+        //       },
+        //       {
+        //         date: <yesterdayAtMidnight>,
+        //         links: <linksForYesterday>
+        //       }...
+        //     ],
+        //   };
+        
+        console.log('All links by day:\n', data);
         res.json(data);
       })
       .fail(function (err) {

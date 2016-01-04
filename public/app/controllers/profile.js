@@ -75,6 +75,14 @@ angular.module('eureka.profile', [])
 			method: 'GET',
 			url: '/api/users/profile/' + $stateParams.userID,
 		}).then(function (res) {
+			for (var i = 0; i < res.data.submittedLinks.length; i++) {
+				var link = res.data.submittedLinks[i];
+				link.date = Helpers.lookupDate(link.date);
+			}
+			for (var x = 0; x < res.data.upvotedLinks.length; x++) {
+				var link = res.data.upvotedLinks[x];
+				link.date = Helpers.lookupDate(link.date);
+			}
 			$scope.profileUsername = res.data.username;
 			$scope.profileFirstName = res.data.firstname;
 			$scope.profileLastName = res.data.lastname;

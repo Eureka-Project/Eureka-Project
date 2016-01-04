@@ -36,9 +36,14 @@ angular.module('eureka.home', [])
 			method: 'GET',
 			url: '/api/links'
 		}).then(function (res) {
+			console.log('data', res.data)
 			for (var prop in res.data.links) {
-				var date = Helpers.lookupDate(res.data.links[prop].date)
+				var date = Helpers.lookupDate(res.data.links[prop].date);
 				res.data.links[prop].date = date;
+				for (var i = 0; i < res.data.links[prop].links.length; i++) {
+					var link = res.data.links[prop].links[i];
+					link.date = date;
+				}
 			}
 			$scope.links = res.data.links;
 			var results = [];
@@ -46,7 +51,7 @@ angular.module('eureka.home', [])
 				results = results.concat($scope.links[prop].links)
 			}
 			$scope.allLinks = results;
-			console.log($scope.allLinks)
+			console.log('Links: ', $scope.allLinks)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -112,6 +117,7 @@ angular.module('eureka.home', [])
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
+			if (!$scope.firstname) $location.path('/login')
 		})
 	}
 

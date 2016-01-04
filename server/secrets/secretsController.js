@@ -41,9 +41,9 @@ function setSecret() {
           .then(setSecret);
       }
       else {
-        exports.today = secrets.secret;
+        exports.today = secrets[0].secret;
         if( secrets[1].date === yesterday ) {
-          exports.yesterday = secrets.secret;
+          exports.yesterday = secrets[1].secret;
         } else {
           createSecret({
             secret: uuid.v4(),

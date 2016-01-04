@@ -37,6 +37,9 @@ exports = module.exports = {
       exports.findUser(req.user)
         .then(function(foundUser) {
           if (foundUser) {
+            if(req.makeNewToken === true) {
+              exports.genToken(req.user); 
+            }
             next();
           } else {
             res.status(403).send();

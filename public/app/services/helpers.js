@@ -5,6 +5,7 @@ angular.module('eureka.helpers', [])
 	// Enables searchValue to be stored when page changes from 'home' to 'search'
 	var searchValue = undefined;
 
+	// Converts dates received from server into readable format
 	var lookupDate = function(badDate) {
 		var monthObj = {
 			'01': "January",
@@ -44,6 +45,7 @@ angular.module('eureka.helpers', [])
 		return date;
 	}
 
+	// exports
 	return {
 		searchValue: searchValue,
 		lookupDate: lookupDate

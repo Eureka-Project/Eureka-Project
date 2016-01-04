@@ -33,6 +33,7 @@ angular.module('eureka.authService', [])
 		$location.path('/login');
 	};
 
+	// exports
 	return {
 		login: login,
 		signup: signup,

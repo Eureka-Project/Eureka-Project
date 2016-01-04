@@ -88,7 +88,6 @@ angular.module('eureka.profile', [])
 			$scope.profileLastName = res.data.lastname;
 			$scope.profileSubmittedLinks = res.data.submittedLinks;
 			$scope.profileUpvotedLinks = res.data.upvotedLinks;
-			console.log(res.data)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

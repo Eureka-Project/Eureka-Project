@@ -1,3 +1,70 @@
+<<<<<<< HEAD
+<nav>
+	<div class="search">
+		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchText )'>
+			<i class="fa fa-search"></i>
+			<input type="text" ng-model="searchText" placeholder="Search..."/>
+		</form>
+	</div>
+	<a ng-href="#/home">
+		<div class="title">
+			<img src="logoTest.png" alt="logoTest" style="width:1086px;height:33px;">
+		</div>
+	</a>
+	<div class="nav-actions">
+		<i ng-click="changeModal()" class="fa fa-plus-circle add-link-icon"></i>
+		<div class="nav-dropdown-link" ng-show="!{{username}}">
+			<div class="nav-dropdown-link-username" ng-click="showNavDropdownContent()">
+				<p>{{firstname}} {{lastname}}</p>
+				<i class="fa fa-chevron-circle-down"></i>
+			</div>
+			<div class="nav-dropdown" ng-show="showNavDropdown">
+				<a ng-href="#/profile/{{user_id}}"><li><i class="fa fa-user"></i>Profile</li></a>
+				<li ng-click="signout()"><i class="fa fa-sign-out"></i>Log Out</li>
+			</div>
+		</div>
+	</div>
+</nav>
+<div class="modal-background" ng-click="changeModal()" ng-show="modalShow"></div>
+<div class="add-link-modal" ng-show="modalShow">
+	<div>
+		<i ng-click="changeModal()" class="fa fa-times-circle fa-2x"></i>
+		<h2>Share Your Story</h2>
+		<form name="addLink" ng-submit='addLink.$valid && submitLink( newLink )' novalidate>
+			<input type='url' name="urlText" placeholder="Paste URL..." ng-model="newLink"><br>
+			<input type="submit" value="Submit Link">
+		</form>
+	</div>
+</div>
+<div class="page-container">
+	<div class="search-field">
+		<input type="text" ng-model="searchValue" placeholder="Search..."/>
+	</div>
+	<div class="results">
+			<div class="link-card" ng-repeat="link in allLinks | filter:searchValue | orderBy: '-upvotes'">
+				<div class='voting' ng-click="upvote( link._id )">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-up"></i>
+				</div>
+				<a ng-href="{{link.url}}">
+					<div class="link-data">
+						<div class="link-image">
+							<img ng-src="{{link.image}}"/>
+						</div>
+						<div class="link-description">
+								<h3>{{link.title}}</h3>
+							<p class="link-description-p">{{link.description | limitTo: 140}}</p>
+							<p class="link-description-source">{{link.site_name}}</p>
+							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
+								<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+							</a>
+						</div>
+					</div>
+				</a>
+			</div>
+			<p class="no-search-results" ng-show="(allLinks | filter:searchValue).length < 1">Sorry, no matching results</p>
+	</div>
+=======
 <nav>
 	<div class="search">
 		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchText )'>
@@ -62,4 +129,5 @@
 			</div>
 			<p class="no-search-results" ng-show="(allLinks | filter:searchValue).length < 1">Sorry, no matching results</p>
 	</div>
+>>>>>>> master
 </div>

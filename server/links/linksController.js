@@ -4,18 +4,6 @@ var _ = require('underscore');
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
 
-// // Convert a date to UTC time.
-// Date.prototype.toUTC = function() {
-//   return new Date(
-//     this.getUTCFullYear(),
-//     this.getUTCMonth(),
-//     this.getUTCDate(),
-//     this.getUTCHours(),
-//     this.getUTCMinutes(),
-//     this.getUTCSeconds()
-//   );
-// };
-
 exports = module.exports = {
 
   findLink: Q.nbind(Links.findOne, Links),

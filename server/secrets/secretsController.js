@@ -4,7 +4,7 @@ var uuid = require('node-uuid');
 var Secrets = require('../db/configdb.js').Secrets;
 
 exports = module.exports = {
-  secret: ''
+  today: ''
 }
 
 var findSecret = Q.nbind(Secrets.findOne, Secrets);
@@ -27,7 +27,7 @@ function setSecret() {
   findSecret({ date: today })
     .then(function(secretForToday) {
       if ( secretForToday ) {
-        exports.secret = secretForToday.secret;
+        exports.today = secretForToday.secret;
       } else {
         createSecret({
           secret: uuid.v4(),

@@ -19,6 +19,11 @@ nav {
 	border-bottom: 1px solid #e5e5e5;
 }
 
+.logo {
+	height: 35px;
+	margin-top: 3px;
+}
+
 a {
 	text-decoration: none;
 	color: #000;
@@ -66,7 +71,6 @@ button:hover {
 nav .title {
 	width: 40%;
 	float: left;
-	margin-top: 3px;
 	font-weight: 600;
 }
 

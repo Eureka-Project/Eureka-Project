@@ -33,7 +33,7 @@ function setSecret() {
 
   findSecrets({$or: [{ date: today }, {date: yesterday} ]})
     .then(function(secrets) {
-      if( secrets[0].date !== today ) {
+      if( secrets[0].date.getTime() !== today.getTime() ) {
         createSecret({
           secret: uuid.v4(),
           date: today
@@ -42,7 +42,7 @@ function setSecret() {
       }
       else {
         exports.today = secrets[0].secret;
-        if( secrets[1].date === yesterday ) {
+        if( secrets[1].date.getTime() === yesterday.getTime() ) {
           exports.yesterday = secrets[1].secret;
         } else {
           createSecret({

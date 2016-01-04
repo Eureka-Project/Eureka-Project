@@ -6,7 +6,7 @@ var Users = require('../db/configdb.js').Users;
 var Links = require('../links/linksController.js');
 var Upvotes = require('../upvotes/upvotesController.js');
 
-var secretForToday = require('../secrets/secretsController.js');
+var secrets = require('../secrets/secretsController.js');
 
 exports = module.exports = {
 
@@ -25,7 +25,7 @@ exports = module.exports = {
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
-    }, secretForToday.secret);
+    }, secrets.today);
   },
 
   // Check whether the previously decoded token (stored as 'req.user')

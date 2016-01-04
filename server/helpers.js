@@ -1,7 +1,7 @@
 var Q    = require('q');
 var jwt  = require('jwt-simple');
 
-var secretForToday = require('./secrets/secretsController.js');
+var secrets = require('./secrets/secretsController.js');
 
 exports = module.exports = {
 
@@ -24,7 +24,7 @@ exports = module.exports = {
     var token = req.headers['x-access-token'];
     // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1Njg1OWM1NGRkYzUzNGQ3NWNiZThkMmUiLCJ1c2VybmFtZSI6Im1lbWUiLCJmaXJzdG5hbWUiOiJtZW1lIiwibGFzdG5hbWUiOiJtZW1lIn0.DxQxUgTw98PS8XVr2PeAIwRFntfOtkFZ8ZgTLKFDge4
     try {
-      req.user = ( ! token ) ? null : jwt.decode(token, secretForToday.secret);
+      req.user = ( ! token ) ? null : jwt.decode(token, secrets.today);
       next();
     } catch(error) {
       res.status(403).send({error: 'Invalid x-access-token'});

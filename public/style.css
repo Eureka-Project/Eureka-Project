@@ -74,6 +74,10 @@ nav .title {
 	font-weight: 600;
 }
 
+nav .title:hover {
+	opacity: 0.8;
+}
+
 nav .search {
 	width: 30%;
 	float: left;

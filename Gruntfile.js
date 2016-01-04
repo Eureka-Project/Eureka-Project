@@ -4,22 +4,22 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
     watch: {
-      scripts: {
-        files: [
-        	'public/app/**/*.js',
-          'public/app/controllers/**/*.js',
-          'public/app/services/**/*.js',
-          'server/**/*.js',
-          'server/db/**/*.js',
-          'server/links/**/*.js',
-    			'server/users/**/*.js',
+      // scripts: {
+      //   files: [
+      //   	'public/app/**/*.js',
+      //     'public/app/controllers/**/*.js',
+      //     'public/app/services/**/*.js',
+      //     'server/**/*.js',
+      //     'server/db/**/*.js',
+      //     'server/links/**/*.js',
+    		// 	'server/users/**/*.js',
 
-        ],
-        tasks: [
-          'concat',
-          'uglify'
-        ]
-      },
+      //   ],
+      //   tasks: [
+      //     'concat',
+      //     'uglify'
+      //   ]
+      // },
 
       css: {
         files: 'public/*.css',
@@ -27,21 +27,21 @@ module.exports = function(grunt) {
       }
     },
 
-		concat: {
-			options: {
-				seperator: ';'
-			},
+		// concat: {
+		// 	options: {
+		// 		seperator: ';'
+		// 	},
 
-			fuglyclient: {
-				src: ['public/app/app.js', 'public/app/controllers/auth.js', 'public/app/controllers/home.js', 'public/app/services/authServices.js', 'public/app/services/data.js'],
-				dest: 'public/dist/client.js'
-			},
+		// 	fuglyclient: {
+		// 		src: ['public/app/app.js', 'public/app/controllers/auth.js', 'public/app/controllers/home.js', 'public/app/services/authServices.js', 'public/app/services/data.js'],
+		// 		dest: 'public/dist/client.js'
+		// 	},
 
-			fuglyserver: {
-				src: ['server/helpers.js', 'server/db/configdb.js', 'server/links/linksContoller.js', 'server/links/linksRoute.js', 'server/users/usersController.js', 'server/users/usersRoutes.js'],
-				dest: 'server/dist/server.js'
-			}
-		},
+		// 	fuglyserver: {
+		// 		src: ['server/helpers.js', 'server/db/configdb.js', 'server/links/linksContoller.js', 'server/links/linksRoute.js', 'server/users/usersController.js', 'server/users/usersRoutes.js'],
+		// 		dest: 'server/dist/server.js'
+		// 	}
+		// },
 		
 		// nodemon: {
 		// 	dev: {
@@ -49,18 +49,18 @@ module.exports = function(grunt) {
 		// 	}
 		// },
 
-		uglify: {
-			fuglyclient: {
-				files: {
-					'public/dist/client.min.js': ['public/dist/client.js']
-				}
-			},
-			fuglyserver: {
-				files: {
-					'server/dist/server.min.js': ['server/dist/server.js']
-				}
-			}
-		},
+		// uglify: {
+		// 	fuglyclient: {
+		// 		files: {
+		// 			'public/dist/client.min.js': ['public/dist/client.js']
+		// 		}
+		// 	},
+		// 	fuglyserver: {
+		// 		files: {
+		// 			'server/dist/server.min.js': ['server/dist/server.js']
+		// 		}
+		// 	}
+		// },
 
 		cssmin: {
       		fuglycss: {
@@ -78,13 +78,13 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-concat');
+	// grunt.loadNpmTasks('grunt-contrib-uglify');
+	// grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-nodemon');
 
 
-	grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'watch']);
+	grunt.registerTask('default', ['cssmin', 'watch']);
 
 };

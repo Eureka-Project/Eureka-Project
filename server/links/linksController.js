@@ -78,6 +78,9 @@ exports = module.exports = {
       });
   },
 
+  // Send all [user submitted] links in the database to the client.
+  // Sort them by day, with each day containing an array of the links
+  //   which were submitted on that day.
   getAllLinksByDay: function(req, res, next) {
     var targetDate = req.body.date || new Date();
     // Clone the date to prevent modifying the original date.

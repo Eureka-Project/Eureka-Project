@@ -132,11 +132,11 @@ nav .nav-actions i {
 	margin-right: 20px;
 }
 
-.add-link-icon {
+.add-link-icon, .fa-trophy {
 	color: #679df6;
 }
 
-.add-link-icon:hover {
+.add-link-icon:hover, .fa-trophy:hover {
 	color: #3b77db;
 }
 

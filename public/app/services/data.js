@@ -34,8 +34,10 @@ angular.module('eureka.helpers', [])
 		var year = date[0];
 		var month = monthObj[date[1]];
 		if(dayObj[date[2]]) {
+			if(date[2] < 10) date[2] = date[2].slice(1)
 			var day = date[2]+dayObj[date[2]];
 		} else {
+			if(date[2] < 10) date[2] = date[2].slice(1)
 			var day = date[2]+'th';
 		}
 		date = month + ' ' + day + ', ' + year

@@ -394,6 +394,14 @@ input.ng-pristine {
 	padding-top: 3px;
 }
 
+.link-description-p {
+	overflow: hidden;
+	max-width: 95%;
+	position:relative;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .link-description-source {
 	float:left;
 }

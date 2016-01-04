@@ -127,6 +127,10 @@ exports = module.exports = {
           data.links.push(obj);
         })
 
+        data.links.sort(function(a, b) {
+          return b.date - a.date;
+        })
+
         // Example:
         //   data === {
         //     links: [

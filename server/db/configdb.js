@@ -96,7 +96,8 @@ var tokenSchema = mongoose.Schema({
 
 var models = {
 
-	Links: mongoose.model('Link', linkSchema),
+  Links: mongoose.model('Url', linkSchema),
+	// Links: mongoose.model('Link', linkSchema),
 	Users: mongoose.model('User', userSchema),
 	Upvotes: mongoose.model('Upvote', upvoteSchema),
   Secrets: mongoose.model('Secret', secretSchema)

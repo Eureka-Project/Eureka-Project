@@ -294,7 +294,8 @@ exports.formatMetaData = function(data, html) {
 	return data;
 }
 
-// exports.isSafeUrl('http%3A%2F%2Fgoogle.com%2F');
-exports.isSafeUrl('http://google.com/');
-// exports.isSafeUrl('http%3A%2F%2Fianfette.org%2F');
-exports.isSafeUrl('http://ianfette.org/');
+// Tests:
+// Should be good:
+// exports.isSafeUrl('http://google.com/');
+// Should be bad:
+// exports.isSafeUrl('http://ianfette.org/');

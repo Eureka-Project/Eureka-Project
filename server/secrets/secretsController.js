@@ -4,10 +4,11 @@ var uuid = require('node-uuid');
 var Secrets = require('../db/configdb.js').Secrets;
 
 exports = module.exports = {
-  today: ''
+  today: '',
+  yesterday: ''
 }
 
-var findSecret = Q.nbind(Secrets.findOne, Secrets);
+var findSecrets = Q.nbind(Secrets.find, Secrets);
 var createSecret = Q.nbind(Secrets.create, Secrets);
 
 // Return a Date object for today's date, set at midnight.
@@ -20,22 +21,40 @@ function dateForToday() {
   return new Date().toMidnight();
 };
 
+function dateForYesterday() {
+  var date = new Date().toMidnight();
+  date.setDate(date.getDate() - 1);
+  return date;
+};
+
 function setSecret() {
   var today = dateForToday();
-  console.log('today', today);
+  var yesterday = dateForYesterday();
 
-  findSecret({ date: today })
-    .then(function(secretForToday) {
-      if ( secretForToday ) {
-        exports.today = secretForToday.secret;
-      } else {
+  findSecrets({$or: [{ date: today }, {date: yesterday} ]})
+    .then(function(secrets) {
+      if( secrets[0].date !== today ) {
         createSecret({
           secret: uuid.v4(),
           date: today
         })
           .then(setSecret);
       }
+      else {
+        exports.today = secrets.secret;
+        if( secrets[1].date === yesterday ) {
+          exports.yesterday = secrets.secret;
+        } else {
+          createSecret({
+            secret: uuid.v4(),
+            date: yesterday
+          })
+            .then(setSecret);
+        }
+      } 
     })
+      
+      
     .fail(function(err) {
       console.log(err);
     });

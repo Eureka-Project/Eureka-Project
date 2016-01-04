@@ -7,27 +7,27 @@ angular.module('eureka.helpers', [])
 
 	var lookupDate = function(badDate) {
 		var monthObj = {
-			1: "January",
-			2: "February",
-			3: "March",
-			4: "April",
-			5: "May",
-			6: "June",
-			7: "July",
-			8: "August",
-			9: "September",
-			10: "October",
-			11: "November",
-			12: "December"
+			'01': "January",
+			'02': "February",
+			'03': "March",
+			'04': "April",
+			'05': "May",
+			'06': "June",
+			'07': "July",
+			'08': "August",
+			'09': "September",
+			'10': "October",
+			'11': "November",
+			'12': "December"
 		};
 		var dayObj = {
-			1: 'st',
-			2: 'nd',
-			3: 'rd',
-			21: 'st',
-			22: 'nd',
-			23: 'rd',
-			31: 'st'
+			'01': 'st',
+			'02': 'nd',
+			'03': 'rd',
+			'21': 'st',
+			'22': 'nd',
+			'23': 'rd',
+			'31': 'st'
 		};
 		var array = badDate.split('T');
 		var date = array[0].split('-');

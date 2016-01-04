@@ -23,9 +23,21 @@ exports = module.exports = {
   decodeToken: function (req, res, next) {
     var token = req.headers['x-access-token'];
     // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1Njg1OWM1NGRkYzUzNGQ3NWNiZThkMmUiLCJ1c2VybmFtZSI6Im1lbWUiLCJmaXJzdG5hbWUiOiJtZW1lIiwibGFzdG5hbWUiOiJtZW1lIn0.DxQxUgTw98PS8XVr2PeAIwRFntfOtkFZ8ZgTLKFDge4
+    if( !token ) { 
+      req.user = null;
+      return next();
+    }
     try {
-      req.user = ( ! token ) ? null : jwt.decode(token, secrets.today);
-      next();
+      try {
+        req.user = jwt.decode(token, secrets.today);
+        req.makeNewToken = false;
+        next();
+      }
+      catch(error) {
+        req.user = jwt.decode(token, secrets.yesterday);
+        req.makeNewToken = true;
+        next();
+      }
     } catch(error) {
       res.status(403).send({error: 'Invalid x-access-token'});
     }

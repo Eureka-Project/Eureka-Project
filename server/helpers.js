@@ -48,7 +48,7 @@ exports = module.exports = {
       }
     } catch(error) {
       // If neither secret worked, tell the client that the token is invalid.
-      res.status(403).send({error: 'Invalid x-access-token'});
+      next(error)
     }
   }
 

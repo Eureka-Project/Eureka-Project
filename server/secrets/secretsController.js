@@ -42,7 +42,7 @@ function setSecret() {
     .then(function(secrets) {
       // If today's secret does not exist, create it,
       //   and then run setSecret again.
-      if( secrets[0] && secrets[0].date.getTime() !== today.getTime() ) {
+      if( ! secrets || ! secrets[0] || secrets[0].date.getTime() !== today.getTime() ) {
         createSecret({
           secret: uuid.v4(),
           date: today
@@ -53,7 +53,7 @@ function setSecret() {
         exports.today = secrets[0].secret;
         // If yesterday's secret does not exist, create it,
         //   and then run setSecret again.
-        if( secrets[1] && secrets[1].date.getTime() !== yesterday.getTime() ) {
+        if( ! secrets[1] || secrets[1].date.getTime() !== yesterday.getTime() ) {
           createSecret({
             secret: uuid.v4(),
             date: yesterday

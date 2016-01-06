@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+
+  "name": "Eureka! plugin",
+  "description": "This extension will add links to Eureka! directly from their sites",
+  "version": "1.0",
+
+  "browser_action": {
+   "default_icon": "icon.png",
+   "default_popup": "popup.html"
+  },
+  "permissions": [
+   "activeTab"
+   ],
+  //  "background": {
+  //   "scripts": ["jquery-1.11.3.min"]
+  //   // "persistent": false
+  // }
+   "content_scripts": [{
+    "matches": ["http://*"],
+    "js": ["jquery-1.11.3.min", "popup.js"]
+   }]
+}

@@ -75,6 +75,7 @@ exports = module.exports = {
           res.json({
             username: user.username,
             user_id: user._id,
+            fullname: user.firstname + ' ' + user.lastname,
             token: exports.genToken(user)
           });
         }

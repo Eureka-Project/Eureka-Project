@@ -158,7 +158,8 @@ exports = module.exports = {
   newLink: function (req, res, next) {
     var url = req.body.url;
     var user_id = req.body.user_id;
-    var user_name = req.body.username;
+    var user_name = req.body.username; //actually fullname, not "username"
+
     if ( ! util.isValidUrl(url) ) {
       return next(new Error('Not a valid url'));
     }

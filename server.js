@@ -6,7 +6,7 @@ var helpers = require('./server/helpers.js');
 
 module.exports = app = express();
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 4000));
 
 // Set up express formatting.
 app.use(bodyParser.urlencoded({extended: true}));

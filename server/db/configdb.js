@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // Connect to the online mongolab server:
-mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+mongoose.connect('mongodb://hackstallion:hackstalliondev@dksato.com:27017/eureka');
 
 // Connect locally:
 // mongoose.connect('localhost:27018');
@@ -23,6 +23,7 @@ var userSchema = mongoose.Schema({
 	firstname: String,
 	lastname: String,
 	date: { type: Date, default: Date.now },
+  votesLeft: Number,
   lastSeen: Number
 });
 

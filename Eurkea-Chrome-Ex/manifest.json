@@ -25,10 +25,11 @@
   "version": "0.1",
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": ["jquery-2.1.4.min.js", "content.js"]
+      "matches": [ "<all_urls>" ],
+
+      "js": ["jquery-2.1.4.min.js", "content.js"],
+
+      "css": ["style.css"]
     }
   ],
     "browser_action": {

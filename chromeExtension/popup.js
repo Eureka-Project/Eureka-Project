@@ -4,6 +4,7 @@ var userDataStorage;
 $( "#login" ).submit(function( event ) {
   var username = $(".username").val();
   var password = $(".password").val();
+  console.log("something for chrissake");
   var loginRequest = {};
   loginRequest.username = username;
   loginRequest.password = password;
@@ -32,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var addLinkButton = document.getElementById("addLink");
   addLinkButton.addEventListener("click", function() {
 
-    chrome.tabs.getSelected(null, function(tab) {
+    chrome.tabs.getSelected(null, function(tab) {   //using instead of chrome.tabs.getSelected
 
       // var form = document.createElement('form');
       // form.action = 'localhost:3000/api/links';

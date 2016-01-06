@@ -11,13 +11,13 @@
   },
   "permissions": [
    "activeTab"
-   ],
+   ]
   //  "background": {
-  //   "scripts": ["jquery-1.11.3.min"]
+  //   "scripts": ["jquery-2.1.4.min.js"]
   //   // "persistent": false
   // }
-   "content_scripts": [{
-    "matches": ["http://*"],
-    "js": ["jquery-1.11.3.min", "popup.js"]
-   }]
+  // "content_scripts": [{
+  //   "matches": ["<all_urls>"],
+  //   "js": ["jquery-2.1.4.min.js", "popup.js"]
+  //  }]
 }

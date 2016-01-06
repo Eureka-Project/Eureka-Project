@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Q        = require('q');
 var bcrypt   = require('bcrypt-nodejs');
 
 // Connect to the online mongolab server:
@@ -102,7 +101,6 @@ var models = {
 	Users: mongoose.model('User', userSchema),
 	Upvotes: mongoose.model('Upvote', upvoteSchema),
   Secrets: mongoose.model('Secret', secretSchema)
-
 };
 
 module.exports = models;

@@ -20,12 +20,14 @@ exports = module.exports = {
   // When decoded later, it will serve as a conditions object for a
   //   database query.
   genToken: function(user) {
-    return jwt.encode({
-      _id: user._id,
-      username: user.username,
-      firstname: user.firstname,
-      lastname: user.lastname,
-    }, secrets.today);
+    return secrets.then(function(secrets){
+      return (jwt.encode({
+        _id: user._id,
+        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
+      }, secrets[secrets.length-1].secret));
+    });
   },
 
   // Check whether the previously decoded token (stored as 'req.user')
@@ -38,12 +40,18 @@ exports = module.exports = {
         .then(function(foundUser) {
           if (foundUser) {
             if(req.makeNewToken === true) {
-              return res.json({
-                username: foundUser.username,
-                user_id: foundUser._id,
-                token: exports.genToken(foundUser)
-              }); 
-            }
+              console.log('req.makeNewToken === true')
+              exports.genToken(foundUser).then(function(token){
+                console.log(token);
+                res.json({
+                  username: foundUser.username,
+                  user_id: foundUser._id,
+                  token: token
+                }); 
+              }).fail(function(){
+                res.status(403).send();
+              });
+            };
             next();
           } else {
             res.status(403).send();
@@ -64,6 +72,7 @@ exports = module.exports = {
 
     exports.findUser({ username: username })
       .then(function(user) {
+        console.log(user);
         if ( ! user ) {
           // Bad username
           throw new Error('User does not exist');
@@ -72,10 +81,13 @@ exports = module.exports = {
           throw new Error('Incorrect password');
         } else {
           // Success
-          res.json({
-            username: user.username,
-            user_id: user._id,
-            token: exports.genToken(user)
+          exports.genToken(user).then(function(token){
+            res.json({
+              username: user.username,
+              user_id: user._id,
+              fullname: user.firstname + ' '+user.lastname,
+              token: token
+            });
           });
         }
       })
@@ -101,42 +113,36 @@ exports = module.exports = {
     exports.findUser({ username: username })
       .then(function(user) {
         if (user) {
+          console.log(user);
           // Found a user with the same username.
           // Abort signup and respond that the username is taken.
-          next(new Error('Username already taken. :('));
+          return next(new Error('Username already taken. :('));
         } else {
           // Create a new user.
-          return exports.createUser({
+          var newUser = {
             username: username,
             password: password,
             firstname: firstname,
             lastname: lastname
+          };
+          exports.createUser(newUser).then(function(){
+            console.log('user created in DB')
+            exports.findUser({username:username}).then(function(newUserRecord){
+              console.log('new user record found');
+              console.log(newUserRecord);
+              exports.genToken(newUserRecord).then(function(token){
+                console.log(token);
+                var responseVal = {
+                  username: newUserRecord.username,
+                  user_id: newUserRecord._id,
+                  token: token
+                };
+                console.log(responseVal);
+                res.json(responseVal);
+              });
+            });
           });
         }
-      })
-      .then(function(user) {
-        // Send back the new document's username and ObjectId
-        //   as well as a unique token for the document.
-
-        // user example: {
-        //   date: Fri Dec 18 2015 19:12:33 GMT-0600 (CST),
-        //   _id: 5674af012e5833104b30ef0f,
-        //   lastname: 'test2',
-        //   firstname: 'test2',
-        //   password:
-        //     '$2a$10$5kWIkSPNOPvf3fFH8fkxUek9PMAy4saUj5LC2D.pbyD1NO7I7P.X.',
-        //   username: 'test2',
-        //   __v: 0
-        // }
-
-        res.json({
-          username: user.username,
-          user_id: user._id,
-          token: exports.genToken(user)
-        });
-      })
-      .fail(function(error) {
-        next(error);
       });
   },
 

@@ -28,8 +28,6 @@ exports = module.exports = {
       Users.findOne({username: req.user.username}, function(err,user){
         user.lastSeen = new Date().getTime();
         user.save();
-        console.log('found user');
-        console.log(user);
       });
     }
     return next();

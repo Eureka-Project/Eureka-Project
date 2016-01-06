@@ -146,6 +146,7 @@ exports = module.exports = {
         //   };
         
         console.log('All links by day:\n', data);
+        data.links.forEach(function(link){console.log(link)});
         res.json(data);
       })
       .fail(function (err) {
@@ -218,51 +219,4 @@ exports = module.exports = {
         }
       });
   }
-
-  // allLinks: function (req, res, next) {
-  //   exports.findLinks({})
-  //     .then(function (links) {
-  //       res.json(links);
-  //     })
-  //     .fail(function (err) {
-  //       next(err);
-  //     });
-  // },
-
-  // getTodaysLinks: function(req, res, next) {
-  //   var end = new Date();
-  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   exports.findLinks({date: {"$gte": start, "$lt": end} })
-  //     .then(function (links) {
-  //       var data = {
-  //         links: [{
-  //           date: start,
-  //           links: links
-  //         }],
-  //       };
-  //       res.json(data);
-  //     })
-  //     .fail(function (err) {
-  //       next(err);
-  //     });
-  // },
-
-  // getLinksForDate: function(date) {
-  //   var end = date;
-  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   exports.findLinks({date: {"$gte": start, "$lt": end} })
-  //     .then(function (links) {
-  //       var data = {
-  //         links: [{
-  //           date: start,
-  //           links: links
-  //         }],
-  //       };
-  //      return data;
-  //     })
-  //     .fail(function (err) {
-  //       console.log(err);
-  //     })
-  // },
-
 };

@@ -2,6 +2,9 @@ var Q    = require('q');
 var jwt  = require('jwt-simple');
 
 var secrets = require('./secrets/secretsController.js');
+var decode = function(){
+  jwt.decode.apply(this,arguments)
+}
 
 exports = module.exports = {
 
@@ -33,42 +36,22 @@ exports = module.exports = {
     }
 
     // Try to decode the token.
-    try {
-      try {
-        // First try to use the secret for today.
-        req.user = jwt.decode(token, secrets.today);
-        req.makeNewToken = false;
-        next();
+    secrets.then(function(secrets){
+      for (var i=0;i<secrets.length;i++){
+        try {
+          req.user = jwt.decode(token, secrets[i].secret);
+          console.log('success');
+          return next();
+        }
+        catch(error) {
+          console.log('failure');
+          if (i===secrets.length-1){
+            req.user = null;
+            return next();
+            //res.status(403).send({error: 'Invalid x-access-token'});
+          }
+        }
       }
-      catch(error) {
-        // If today's secret did not work, use yesterday's secret.
-        req.user = jwt.decode(token, secrets.yesterday);
-        req.makeNewToken = true;
-        next();
-      }
-    } catch(error) {
-      // If neither secret worked, tell the client that the token is invalid.
-      res.status(403).send({error: 'Invalid x-access-token'});
-    }
+    });
   }
-
-  // decode: function (req, res, next) {
-  //   var token = req.headers['x-access-token'];
-  //   var user;
-
-  //   if (!token) {
-  //     return res.status(403).send(); // send forbidden if a token is not provided
-  //   }
-
-  //   try {
-  //     // decode token and attach user to the request
-  //     // for use inside our controllers
-  //     user = jwt.decode(token, secret);
-  //     req.user = user;
-  //     next();
-  //   } catch(error) {
-  //     return next(error);
-  //   }
-
-  // }
 };

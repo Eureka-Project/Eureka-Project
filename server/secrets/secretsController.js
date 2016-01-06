@@ -27,9 +27,6 @@ function dateForYesterday() {
 };
 
 // Set the exported secrets.
-// Find the secrets for today and yesterday in the database.
-// If either does not exist, create it, and then run this function again.
-// Otherwise, reset the exported secrets to the ones found.
 function setSecret() {
   var newSecret = {secret: uuid.v4(),
                    date: null};
@@ -48,20 +45,5 @@ function setSecret() {
     });
 };
 
-// Update the exported secrets every dat at midnight.
-function setSecretDaily() {
-  var msInOneDay = 86400000;
-  var msUntilMidnight = msInOneDay - ( new Date() - dateForToday() );
-
-  // Wait until midnight tomorrow/tonight,
-  //   and then run setSecret every 24 hours.
-  setTimeout(function() {
-    settingSecretDaily = setInterval(setSecret, 86400000);
-  }, msUntilMidnight);
-}
-
 // Run setSecret on startup.
   module.exports = setSecret();
-// Run setSecret every day at midnight.
-//setSecretDaily();
-// Export the jwt token authentication secrets for today and yesterday. 

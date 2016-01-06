@@ -2,6 +2,8 @@ var Q    = require('q');
 var jwt  = require('jwt-simple');
 
 var secrets = require('./secrets/secretsController.js');
+var Users = require('./db/configdb.js').Users;
+
 var decode = function(){
   jwt.decode.apply(this,arguments)
 }
@@ -19,6 +21,18 @@ exports = module.exports = {
   // Send an uncaught error message to the client.
   errorHandler: function (error, req, res, next) {
     res.status(500).send({error: error.message});
+  },
+
+  lastSeen: function(req, res, next){
+    if (req.user && req.user.username){
+      Users.findOne({username: req.user.username}, function(err,user){
+        user.lastSeen = new Date().getTime();
+        user.save();
+        console.log('found user');
+        console.log(user);
+      });
+    }
+    return next();
   },
 
   // Decode the jwt token and place the extracted data into 'req.user'.

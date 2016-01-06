@@ -23,6 +23,7 @@ var userSchema = mongoose.Schema({
 	firstname: String,
 	lastname: String,
 	date: { type: Date, default: Date.now },
+  lastSeen: Number
 });
 
 userSchema.methods.isPassword = function(guess) {

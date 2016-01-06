@@ -18,6 +18,10 @@ app.use(express.static(__dirname + '/public'));
 // Decode the client's token (if it exists) for all http requests.
 app.use(helpers.decodeToken);
 
+// Update the user's last-seen status.
+app.use(helpers.lastSeen);
+
+
 // Initialize routers.
 var usersRouter = express.Router();
 var linksRouter = express.Router();

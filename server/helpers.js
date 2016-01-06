@@ -46,7 +46,9 @@ exports = module.exports = {
         catch(error) {
           console.log('failure');
           if (i===secrets.length-1){
-            res.status(403).send({error: 'Invalid x-access-token'});
+            req.user = null;
+            return next();
+            //res.status(403).send({error: 'Invalid x-access-token'});
           }
         }
       }

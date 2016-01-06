@@ -21,8 +21,6 @@ exports = module.exports = {
   //   database query.
   genToken: function(user) {
     return secrets.then(function(secrets){
-      console.log('secret:')
-      console.log(secrets[secrets.length-1].secret)
       return (jwt.encode({
         _id: user._id,
         username: user.username,
@@ -74,6 +72,7 @@ exports = module.exports = {
 
     exports.findUser({ username: username })
       .then(function(user) {
+        console.log(user);
         if ( ! user ) {
           // Bad username
           throw new Error('User does not exist');
@@ -82,11 +81,13 @@ exports = module.exports = {
           throw new Error('Incorrect password');
         } else {
           // Success
-          res.json({
-            username: user.username,
-            user_id: user._id,
-            fullname: user.firstname + ' '+user.lastname,
-            token: exports.genToken(user)
+          exports.genToken(user).then(function(token){
+            res.json({
+              username: user.username,
+              user_id: user._id,
+              fullname: user.firstname + ' '+user.lastname,
+              token: token
+            });
           });
         }
       })

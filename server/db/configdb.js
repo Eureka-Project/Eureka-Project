@@ -23,8 +23,8 @@ var userSchema = mongoose.Schema({
 	firstname: String,
 	lastname: String,
 	date: { type: Date, default: Date.now },
-  votesLeft: Number,
-  lastSeen: Number
+  votesLeft: {type: Number, default:20},
+  lastSeen: {type:Number, default:0}
 });
 
 userSchema.methods.isPassword = function(guess) {
@@ -71,8 +71,9 @@ var linkSchema = mongoose.Schema({
   upvotes: { type: Number, default: 0 },
   userid: { type: String, default: '' },
   username: { type: String, default: '' },
-	date: { type: Date, default: Date.now }
-
+	date: { type: Date, default: Date.now },
+  tags: Array,
+  commentCount: {type: Number, default: 0}
 });
 
 var upvoteSchema = mongoose.Schema({
@@ -95,13 +96,21 @@ var tokenSchema = mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
+var commentSchema = mongoose.Schema({
+  username: { type: String, default: '' },
+  text: String,
+  date: Number,
+  link_id: String
+})
+
 var models = {
 
   Links: mongoose.model('Url', linkSchema),
 	// Links: mongoose.model('Link', linkSchema),
 	Users: mongoose.model('User', userSchema),
 	Upvotes: mongoose.model('Upvote', upvoteSchema),
-  Secrets: mongoose.model('Secret', secretSchema)
+  Secrets: mongoose.model('Secret', secretSchema),
+  Comments: mongoose.model('Comment', commentSchema)
 };
 
 module.exports = models;

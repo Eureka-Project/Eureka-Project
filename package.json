@@ -31,6 +31,7 @@
     "grunt-nodemon": "^0.2.1",
     "grunt-shell": "^0.6.4",
     "jwt-simple": "^0.4.0",
+    "kerberos": "0.0.17",
     "mongodb": "2.0.52",
     "mongoose": "4.3.1",
     "node-uuid": "^1.4.7",

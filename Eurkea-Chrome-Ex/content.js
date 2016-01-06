@@ -89,35 +89,30 @@ document.addEventListener("DOMContentLoaded", function(){
 document.addEventListener("DOMContentLoaded", function() {
   var addLinkButton = document.getElementById("addLink");
   addLinkButton.addEventListener("click", function() {
+    console.log("userDataStorage inside link Post", userDataStorage)
 
     chrome.tabs.getSelected(null, function(tab) {
 
-      // var form = document.createElement('form');
-      // form.action = 'localhost:3000/api/links';
-      // form.method = 'post';
-      // var input = document.createElement('input');
-      // input.type = 'hidden';
-      // input.name = 'url';
-      // input.value = tab.url;
-      // form.appendChild(i);
-      // document.body.appendChild(form);
-      // form.submit();
-
-      // $("#addLink").submit(function( event ) {
-      //   //handle link adding here
-      //   function() {
           $.ajax({
-              url: "localhost:3000/api/links",
+              url: "http://localhost:4000/api/links",
               type: "POST",
               data: {
-                      "username": userDataStorage.fullname,  //?????
-                      "url": tab.url,                        //?????
-                      "user_id": userDataStorage.user_id     //?????
+                      "username": userDataStorage.fullname,  
+                      "url": tab.url,                        
+                      "user_id": userDataStorage.user_id 
               },
-              dataType: "application/json",
+
+              headers: {
+                "x-access-token": userDataStorage.token 
+              },
+
+              // dataType: "application/json",
               success: function(data) {
+                console.log("success!")
                 console.log("Link should be posted.");
                 console.log(data);
+                $('#addLink').hide();
+                document.getElementById("done").innerHTML = '<p>Link has been added to Eureka!</p>';
               },
               error: function(data) {
                 console.log(data);

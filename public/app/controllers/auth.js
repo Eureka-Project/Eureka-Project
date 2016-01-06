@@ -33,6 +33,7 @@ angular.module('eureka.auth', [])
 			$location.path('/home');
 		})
 		.catch(function (error) {
+			$window.localStorage.removeItem('com.eureka');
 			$scope.loginErr = true;
 			$scope.loginTxt = error.data.error;
 			console.error('Message: ', error.data.error);

@@ -45,6 +45,7 @@
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
+				<div class='voting' ng-click="undoUpvote( link._id)">undo</div>
 				<a ng-model = "link.url" ng-href="{{link.url}}">
 					<div ng-model = "link.data" class="link-data">
 						<div class="link-image">

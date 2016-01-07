@@ -1,17 +1,19 @@
 
 
-document.addEventListener("DOMContentLoaded", function(){
-
-
-    $(".wrong").hide();
-    $("#addLink").hide();
-    $("#done").hide();
-
-    if(background) {
-            $("#login").hide();
-            $("#addLink").show();
-            $("#please").hide();
+document.addEventListener("DOMContentLoaded", function() {
+  $(".wrong").hide();
+  $("#addLink").hide();
+  $("#done").hide();
+  //The callbacks for Chrome storage's methods are asynchronous and aren't executed till later
+  chrome.storage.sync.get("userData", function(data) { 
+    if (Object.keys(data).length) {
+      $("#login").hide();
+      $("#addLink").show();
+      $("#please").hide();
     }
+  });
+
+
     var getInfo = document.getElementById("login");
     getInfo.addEventListener("submit", function(){
       var password =  $('#password').val();
@@ -25,29 +27,23 @@ document.addEventListener("DOMContentLoaded", function(){
             "password": password
           },
 
-          success: function(res) {
-            chrome.storage.sync.set({"userData": res}, function() {
-              console.log("Settings saved");
-            });
-          
-            background = true;
-            $("#login").hide();
-            $("#addLink").show();
-            $("#please").hide();
-          },
-          error: function(err) {
-            console.log("error", JSON.stringify(err));
-            $(".wrong").show()
-          }
-      })
-      event.preventDefault();
+      success: function(res) {
+        chrome.storage.sync.set({"userData": res}, function() {
+          console.log("Settings saved");
+        });
+        $("#login").hide();
+        $("#addLink").show();
+        $("#please").hide();
+      },
+      error: function(err) {
+        console.log("error", JSON.stringify(err));
+        $(".wrong").show()
+      }
     })
+    event.preventDefault();
+  })
 
-
-
-// document.addEventListener("DOMContentLoaded", function() {
   var addLinkButton = document.getElementById("addLink");
-  var linkSentHide = false;
   addLinkButton.addEventListener("click", function() {
 
     chrome.tabs.getSelected(null, function(tab) {
@@ -67,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function(){
             },
             success: function(res) {
               $("#addLink").hide();
-              linkSentHide = true;
               $("#done").show();
             },
             error: function(err) {
@@ -76,9 +71,9 @@ document.addEventListener("DOMContentLoaded", function(){
         });
       });
     })
-  }, false);
-// }, false);
-}, false);
+  });
+});
+
 
 
 

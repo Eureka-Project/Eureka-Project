@@ -361,7 +361,7 @@ input.ng-pristine {
 	margin-left: 70px;
 	border-radius: 5px;
 	height: 100%;
-	text-overflow: ellipsis;
+	
 }
 
 .link-data:hover {
@@ -370,14 +370,13 @@ input.ng-pristine {
 
 .link-data p {
 	margin: 0px 0px 8px;
-	text-overflow: ellipsis;
-	hite-space: nowrap;
 	overflow: hidden;
 }
 
 .link-data h3 {
 	font-size: 16px;
 	margin: 8px 0px;
+
 	
 }
 
@@ -389,6 +388,8 @@ input.ng-pristine {
 	border-radius: 5px;
 	float: left;
 	margin: 5px 15px 0px 0px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .link-image img {
@@ -400,25 +401,29 @@ input.ng-pristine {
 	-webkit-transform: translate(-50%,-50%);
 	-ms-transform: translate(-50%,-50%);
 	transform: translate(-50%,-50%);
+
 }
 
 .link-description {
 	font-size: 12px;
 	margin-left: 80px;
 	padding-top: 3px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 95%
 }
 
 .link-description-p {
-	overflow: hidden;
+	/*overflow: hidden;*/
 	max-width: 95%;
-	position:relative;
+	/*position:relative;*/
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .link-description-source {
 	float:left;
-	
+	white-space: nowrap;
 }
 
 

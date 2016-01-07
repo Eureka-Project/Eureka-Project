@@ -102,6 +102,27 @@ angular.module('eureka.home', [])
 		})
 	}
 
+	$scope.undoUpvote = function(linkID) {
+		console.log('submitting undo by', $scope.user_id)
+		console.log('linkID: ', linkID)
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.username = $scope.username;
+		data.link_id = linkID;
+		$http({
+			method: 'POST',
+			url: '/api/upvote/undo',
+			data: data
+		}).then(function (res) {
+			console.log('success...undone')
+			// console.log('body: ', res.data)
+			$scope.getLinks();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 	$scope.search = function(searchText) {
 		Helpers.searchValue = searchText;
 		$location.path('/search')
@@ -130,7 +151,7 @@ angular.module('eureka.home', [])
 		$window.localStorage.setItem("CommentSiteName", linkSiteName);
 		$window.localStorage.setItem("CommentLinkUsername", linkUsername);
 		$window.localStorage.setItem("CommentIndex", linkIndex);
-		$window.localStorage.setItem("CommentId", linkId);
+		$window.localStorage.setItem("CommentId", linkID);
 
 
 	}

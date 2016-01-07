@@ -8,7 +8,7 @@ body {
 
 nav {
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	height: 35px;
 	padding: 5px 0px 10px;
 	font-size: 24px;
@@ -361,6 +361,7 @@ input.ng-pristine {
 	margin-left: 70px;
 	border-radius: 5px;
 	height: 100%;
+	text-overflow: ellipsis;
 }
 
 .link-data:hover {
@@ -369,11 +370,15 @@ input.ng-pristine {
 
 .link-data p {
 	margin: 0px 0px 8px;
+	text-overflow: ellipsis;
+	hite-space: nowrap;
+	overflow: hidden;
 }
 
 .link-data h3 {
 	font-size: 16px;
-	margin: 8px 0px;	
+	margin: 8px 0px;
+	
 }
 
 .link-image {
@@ -413,7 +418,9 @@ input.ng-pristine {
 
 .link-description-source {
 	float:left;
+	
 }
+
 
 .link-description-username {
 	float: right;

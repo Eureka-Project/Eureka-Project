@@ -3,13 +3,19 @@ var _ = require('underscore');
 
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
+var Users = require('../db/configdb.js').Users;
+var Alchemy = require('alchemy-api');
+var APIkey = require('./links-Alchemy-APIkey.js').APIkey;
+var alchemy = new Alchemy(APIkey);
 
 exports = module.exports = {
 
   findLink: Q.nbind(Links.findOne, Links),
+  findUser: Q.nbind(Users.findOne, Users),
   findLinks: Q.nbind(Links.find, Links),
   createLink: Q.nbind(Links.create, Links),
   updateLink: Q.nbind(Links.update, Links),
+  getConcepts: Q.nbind(alchemy.concepts, alchemy),
 
   // Query the database for all links which were created
   //   between a requested date and two days prior to that date
@@ -70,7 +76,7 @@ exports = module.exports = {
             }
           ],
         };
-        console.log('Links for 3 days before %s:\n', end, data);
+        //console.log('Links for 3 days before %s:\n', end, data);
         res.json(data);
       })
       .fail(function (err) {
@@ -145,8 +151,8 @@ exports = module.exports = {
         //     ],
         //   };
         
-        console.log('All links by day:\n', data);
-        data.links.forEach(function(link){console.log(link)});
+        //console.log('All links by day:\n', data);
+        //data.links.forEach(function(link){console.log(link)});
         res.json(data);
       })
       .fail(function (err) {
@@ -184,12 +190,25 @@ exports = module.exports = {
           return util.getMetaData(url);
         }
       })
+      .then(function (data){
+        return exports.getConcepts(url,{maxRetrieve:8}).then(function(response){
+          var tags = response.concepts.map(function(tag){
+            return tag.text;
+          });
+          data.tags = tags;
+          return data;
+        }).catch(function(err){
+        console.log('alchemy error');
+        console.log(err);
+        });
+      })
       .then(function (data) {
         return exports.createLink({
           url: url,
           visits: 0,
           title: data.title,
           description: data.description,
+          tags: data.tags,
           site_name: data.site_name,
           image: (data.image) ? data.image.url : '',
           username: user_name,
@@ -219,5 +238,26 @@ exports = module.exports = {
           next(err);
         }
       });
+  },
+  delLink : function(req,res,next){
+    exports.findLink({_id:req.params.link_id}).then(function(link){
+      exports.findUser({username:req.user.username}).then(function(user){
+        if (link.userid.toString() === user._id.toString()){
+          link.remove(function(){
+            res.status(200).send();
+            return next ? next() : true;
+          });
+        } else{
+          res.status(401).send();
+          return next ? next() : true;
+        }
+      }).catch(function(){
+        res.status(500).send();
+      return next ? next() :true;
+      })
+    }).catch(function(){
+      res.status(404).send();
+      return next ? next() :true;
+    });
   }
 };

@@ -1,0 +1,68 @@
+body {
+  width: 10cm;
+  height: 7cm;
+  background-color: lightgray;
+}
+
+h1 {
+  text-align: center;
+  color: blue;
+}
+
+h3 {
+  margin: auto;
+}
+
+#please {
+  text-align: center;
+}
+
+#username {
+  height: .75cm;
+  font-size: 2em;
+  display: block;
+  margin: auto;
+}
+
+#password {
+  height: .75cm;
+  font-size: 2em;
+  display: block;
+  margin: auto;
+}
+
+input#submit {
+  width: 100px;
+  font-size: 2em;
+  padding: 10px;
+  background: #3e9cbf;
+  color: #fff;
+  display: block;
+  margin: auto;
+}
+
+#addLink {
+  width: 200px;
+  font-size: 2em;
+  padding: 10px;
+  background: #3e9cbf;
+  color: #fff;
+  display: block;
+  margin: auto;
+}
+
+#logout {
+  width: 150px;
+  font-size: 2em;
+  padding: 10px;
+  background: #3e9cbf;
+  color: black;
+  display: block;
+  margin: auto;
+}
+
+div {
+  text-align: center;
+  color: darkblue;
+  font-size: 2em;
+}

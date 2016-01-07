@@ -1,4 +1,5 @@
 
+
 document.addEventListener("DOMContentLoaded", function() {
   $(".wrong").hide();
   $("#addLink").hide();
@@ -19,13 +20,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var password =  $('#password').val();
     var username = $('#username').val();
 
-    $.ajax({
-      url: "http://localhost:4000/api/users/login",
-      type: "POST", 
-      data: {
-        "username": username, 
-        "password": password
-      },
+
+        $.ajax({
+          url: "http://localhost:4000/api/users/login",
+          type: "POST", 
+          data: {
+            "username": username, 
+            "password": password
+          },
 
       success: function(res) {
         chrome.storage.sync.set({"userData": res}, function() {
@@ -84,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $("#done").hide();
   });
 });
+
 
 
 

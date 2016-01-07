@@ -1,10 +1,16 @@
 
-document.addEventListener("DOMContentLoaded", function(){
-  var logged = false;
-  var loginHide = false;
+document.addEventListener("DOMContentLoaded", function() {
   $(".wrong").hide();
   $("#addLink").hide();
   $("#done").hide();
+  //The callbacks for Chrome storage's methods are asynchronous and aren't executed till later
+  chrome.storage.sync.get("userData", function(data) { 
+    if (Object.keys(data).length) {
+      $("#login").hide();
+      $("#addLink").show();
+      $("#please").hide();
+    }
+  });
 
   var getInfo = document.getElementById("login");
   getInfo.addEventListener("submit", function(){
@@ -23,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function(){
         chrome.storage.sync.set({"userData": res}, function() {
           console.log("Settings saved");
         });
-        loginHide = true;
-        logged = true;
         $("#login").hide();
         $("#addLink").show();
         $("#please").hide();
@@ -36,11 +40,8 @@ document.addEventListener("DOMContentLoaded", function(){
     })
     event.preventDefault();
   })
-});
 
-document.addEventListener("DOMContentLoaded", function() {
   var addLinkButton = document.getElementById("addLink");
-  var linkSentHide = false;
   addLinkButton.addEventListener("click", function() {
 
     chrome.tabs.getSelected(null, function(tab) {
@@ -60,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             success: function(res) {
               $("#addLink").hide();
-              linkSentHide = true;
               $("#done").show();
             },
             error: function(err) {
@@ -69,8 +69,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       });
     })
-  }, false);
-}, false);
+  });
+});
 
 
 

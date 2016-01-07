@@ -2,7 +2,7 @@ var Q = require('q');
 
 var Upvote = require('../db/configdb.js').Upvotes;
 var Links = require('../links/linksController.js');
-var Users = require('../users/usersController.js');
+var Users = require('../db/configdb.js').Users;
 
 exports = module.exports = {
 
@@ -12,19 +12,21 @@ exports = module.exports = {
 
   storeUpvote: Q.nbind(Upvote.create, Upvote),
 
+  // Promise version of Mongoose's 'Model.findOne()' method.
+  findUser: Q.nbind(Users.findOne, Users),
+
   // Check vote limit status.
   verifyVotesLeft: function(req, res){
     console.log('verifying Votes Left');
-    return Users.findUser(req.user)
+    return exports.findUser(req.user)
       .then(function(foundUser){
-        console.log('foundUSer', foundUser);
         if(foundUser){
-          var LimitDate = [];
-          limitDate[0] = foundUser.lastSeen.getMonth();
-          limitDate[1] = foundUser.lastSeen.getDate();
+          var limitDate = [foundUser.lastSeen, foundUser.lastSeen];
+          limitDate[0] = new Date().getMonth();
+          limitDate[1] = new Date().getDate();
           var votesLeft = foundUser.votesLeft;
-          var currDate = new Date().getTime();
-          currDate = [currDate.getMonth(), currDate.getDate()];
+          var tempDate = new Date();
+          currDate = [tempDate.getMonth(), tempDate.getDate()];
 
           if(limitDate[0] < currDate[0] || limitDate[1] < currDate[1]){
             console.log('resetting votesLeft');
@@ -65,7 +67,7 @@ exports = module.exports = {
       next(new Error('Did not receive user_id'))
     }
 
-    console.log('about to run verifyVotesLeft from newUpvote');
+    // Verify that user has not met vote limit.
     exports.verifyVotesLeft({user: req.user._id})
 
       // Search the upvotes collection

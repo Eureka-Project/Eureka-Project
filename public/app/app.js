@@ -17,6 +17,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: "app/views/home.html",
       controller: "HomeController"
     })
+    .state('comments', {
+      url: "/comments", 
+      templateUrl: "app/views/comments.html", 
+      controller: 'CommentsController'
+    })
     .state('search', {
       url: "/search",
       templateUrl: "app/views/search.html",

@@ -420,8 +420,12 @@ input.ng-pristine {
 	padding-right: 10px;
 }
 
-.profile-link:hover {
+.link-description-username:hover {
 	color: #679df6;
+}
+
+.toComments:hover {
+	color: red;
 }
 
 
@@ -500,6 +504,11 @@ input.ng-pristine {
 .tabs [id^="tab"]:checked + label {
     border-bottom: 4px solid #3b77db;
     color: #3b77db;
+}
+
+.toComments {
+	float: right;
+	margin-right: 20px!important
 }
 
 

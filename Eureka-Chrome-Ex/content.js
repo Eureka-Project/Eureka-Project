@@ -7,9 +7,10 @@ document.addEventListener("DOMContentLoaded", function() {
   //The callbacks for Chrome storage's methods are asynchronous and aren't executed till later
   chrome.storage.sync.get("userData", function(data) { 
     if (Object.keys(data).length) {
+      $("#please").hide();
       $("#login").hide();
       $("#addLink").show();
-      $("#please").hide();
+      $("#logout").show();
     }
   });
 
@@ -80,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $("#login").show();
     $("#addLink").hide();
     $("#logout").hide();
+    $("#done").hide();
   });
 });
 

@@ -151,8 +151,6 @@ exports = module.exports = {
         //     ],
         //   };
         
-        //console.log('All links by day:\n', data);
-        //data.links.forEach(function(link){console.log(link)});
         res.json(data);
       })
       .fail(function (err) {
@@ -191,6 +189,9 @@ exports = module.exports = {
         }
       })
       .then(function (data){
+        //It occurred to me after writing this that 
+        //it should probably go in linksUtil.js.
+        //Too late now.
         return exports.getConcepts(url,{maxRetrieve:8}).then(function(response){
           var tags = response.concepts.map(function(tag){
             return tag.text;
@@ -239,25 +240,29 @@ exports = module.exports = {
         }
       });
   },
-  delLink : function(req,res,next){
+  delLink : function(req,res){
+    //delete a link
     exports.findLink({_id:req.params.link_id}).then(function(link){
+      //link id to delete specified in the url.
       exports.findUser({username:req.user.username}).then(function(user){
+        //wouldn't it be nice if the username was stored in the link object?
+        //It's not, so we have to look up the logged-in user's id.
         if (link.userid.toString() === user._id.toString()){
           link.remove(function(){
             res.status(200).send();
-            return next ? next() : true;
+            //successful deletion.
           });
         } else{
           res.status(401).send();
-          return next ? next() : true;
+          //link belongs to a different user
         }
       }).catch(function(){
         res.status(500).send();
-      return next ? next() :true;
+        //user who is doing the deleting not found in DB
       })
     }).catch(function(){
       res.status(404).send();
-      return next ? next() :true;
+      //link not found
     });
   }
 };

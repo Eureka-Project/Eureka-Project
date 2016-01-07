@@ -40,9 +40,7 @@ exports = module.exports = {
         .then(function(foundUser) {
           if (foundUser) {
             if(req.makeNewToken === true) {
-              console.log('req.makeNewToken === true')
               exports.genToken(foundUser).then(function(token){
-                console.log(token);
                 res.json({
                   username: foundUser.username,
                   user_id: foundUser._id,
@@ -72,7 +70,6 @@ exports = module.exports = {
 
     exports.findUser({ username: username })
       .then(function(user) {
-        console.log(user);
         if ( ! user ) {
           // Bad username
           throw new Error('User does not exist');
@@ -113,7 +110,6 @@ exports = module.exports = {
     exports.findUser({ username: username })
       .then(function(user) {
         if (user) {
-          console.log(user);
           // Found a user with the same username.
           // Abort signup and respond that the username is taken.
           return next(new Error('Username already taken. :('));
@@ -126,18 +122,13 @@ exports = module.exports = {
             lastname: lastname
           };
           exports.createUser(newUser).then(function(){
-            console.log('user created in DB')
             exports.findUser({username:username}).then(function(newUserRecord){
-              console.log('new user record found');
-              console.log(newUserRecord);
               exports.genToken(newUserRecord).then(function(token){
-                console.log(token);
                 var responseVal = {
                   username: newUserRecord.username,
                   user_id: newUserRecord._id,
                   token: token
                 };
-                console.log(responseVal);
                 res.json(responseVal);
               });
             });

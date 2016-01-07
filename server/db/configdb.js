@@ -10,9 +10,9 @@ mongoose.connect('mongodb://hackstallion:hackstalliondev@dksato.com:27017/eureka
 // dbpath="server/db/db"; ! [ -d "${dbpath}" ] && mkdir -p "${dbpath}"; mongod --port 27018 --dbpath "${dbpath}" --wiredTigerJournalCompressor snappy --wiredTigerCollectionBlockCompressor snappy --cpu
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB Connection Error:'));
 db.once('open', function(callback) {
-	console.log('connection made');
+	console.log('Connected to MongoDB');
 });
 
 var SALT_WORK_FACTOR  = 10;

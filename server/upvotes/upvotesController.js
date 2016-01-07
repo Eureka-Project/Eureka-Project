@@ -155,6 +155,86 @@ exports = module.exports = {
             next(err);
           }
         });
-    // });
-  }     
+  },
+
+  // Undo upvote a link in the database.
+  undoUpvote: function(req, res, next) {
+    // console.log('req for newUpvote', req);
+    var link_id = req.body.link_id || req.params.link_id;
+    var user_id = req.body.user_id || req.user._id;
+
+    // Client needs to send both a link_id and user_id.
+    if ( ! link_id ) {
+      res.status(400);
+      next(new Error('Did not receive link_id'))
+    } else if ( ! user_id ) {
+      res.status(400);
+      next(new Error('Did not receive user_id'))
+    }
+
+    
+      // Search the upvotes collection
+      //   to see whether the user has upvoted this link.
+       
+        exports.findUpvote({
+          link_id: link_id,
+          user_id: user_id
+        })
+        .then(function (upvote) { 
+          var alreadyUpvoted = (
+            upvote && 
+            upvote.user_id && 
+            upvote.user_id === user_id
+          );
+          if (!alreadyUpvoted) {
+            // If the user has already upvoted this link,
+            //   change nothing in the database
+            //   and instead return the current data from the database.
+            console.log('user %s has not upvoted %s', user_id, link_id);
+            res.json(upvote);
+            throw new Error('Stop promise chain');
+          } else {
+             // Otherwise, remove upvote from user
+            //   and continue down the promise chain.
+            alreadyUpvoted.remove();
+            return true;
+          }
+        })
+        .then(function(undoUpvote) {
+          if (undoUpvote){ 
+            // Find this link in the links collection.
+            return Links.findLink({ _id: link_id })
+          }else{
+            res.status(403).send();
+          }
+        })
+        .then(function(link) {
+          console.log('link', link);
+          if ( ! link ) {
+            // This should never run, since the client should only be sending
+            //   link_id's which the server has sent previously.
+            // But in case it does, tell the client that the link_id is invalid.
+            var err = 'Link ' + link_id + ' does not exist';
+            res.status(400);
+            res.json({ error: err});
+            console.log(err);
+            throw new Error(err);
+          } else {
+            // If the link exists, decrease its upvote count by one,
+            //   and continue down the promise chain.
+            link.upvotes--;
+            return Q.nfcall(link.save, link);
+          }
+        })
+        .then(function(link) {
+          // Send the updated link info to the client.
+          res.json(link);
+        })
+        .fail(function (err) {
+          // Do nothing if the error was thrown to stop the promise chain.
+          if (err.message !== 'Stop promise chain') {
+            next(err);
+          }
+        });
+  } 
 }

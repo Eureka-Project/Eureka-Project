@@ -159,6 +159,7 @@ exports = module.exports = {
 
   // Undo upvote a link in the database.
   undoUpvote: function(req, res, next) {
+    console.log('attempting upvote undo');
     // console.log('req for newUpvote', req);
     var link_id = req.body.link_id || req.params.link_id;
     var user_id = req.body.user_id || req.user._id;
@@ -196,7 +197,7 @@ exports = module.exports = {
           } else {
              // Otherwise, remove upvote from user
             //   and continue down the promise chain.
-            alreadyUpvoted.remove();
+            upvote.remove();
             return true;
           }
         })

@@ -26,16 +26,19 @@ app.use(helpers.lastSeen);
 var usersRouter = express.Router();
 var linksRouter = express.Router();
 var upvotesRouter = express.Router();
+var commentsRouter = express.Router();
 
 // Configure routers.
 require('./server/users/usersRoutes.js')(usersRouter);
 require('./server/links/linksRoutes.js')(linksRouter);
 require('./server/upvotes/upvotesRoutes.js')(upvotesRouter);
+require('./server/comments/commentsRoutes.js')(commentsRouter);
 
 // Set up route forwarding.
 app.use('/api/users', usersRouter);
 app.use('/api/upvote', upvotesRouter);
 app.use('/api/links', linksRouter);
+app.use('/api/comments', commentsRouter);
 
 // Handle uncaught errors.
 app.use(helpers.errorLogger);

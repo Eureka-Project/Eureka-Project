@@ -8,7 +8,7 @@ body {
 
 nav {
 	width: 100%;
-	position: absolute;
+	position: fixed;
 	height: 35px;
 	padding: 5px 0px 10px;
 	font-size: 24px;
@@ -361,6 +361,7 @@ input.ng-pristine {
 	margin-left: 70px;
 	border-radius: 5px;
 	height: 100%;
+	
 }
 
 .link-data:hover {
@@ -369,11 +370,14 @@ input.ng-pristine {
 
 .link-data p {
 	margin: 0px 0px 8px;
+	overflow: hidden;
 }
 
 .link-data h3 {
 	font-size: 16px;
-	margin: 8px 0px;	
+	margin: 8px 0px;
+
+	
 }
 
 .link-image {
@@ -384,6 +388,8 @@ input.ng-pristine {
 	border-radius: 5px;
 	float: left;
 	margin: 5px 15px 0px 0px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .link-image img {
@@ -395,33 +401,43 @@ input.ng-pristine {
 	-webkit-transform: translate(-50%,-50%);
 	-ms-transform: translate(-50%,-50%);
 	transform: translate(-50%,-50%);
+
 }
 
 .link-description {
 	font-size: 12px;
 	margin-left: 80px;
 	padding-top: 3px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 95%
 }
 
 .link-description-p {
-	overflow: hidden;
+	/*overflow: hidden;*/
 	max-width: 95%;
-	position:relative;
+	/*position:relative;*/
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
 .link-description-source {
 	float:left;
+	white-space: nowrap;
 }
+
 
 .link-description-username {
 	float: right;
 	padding-right: 10px;
 }
 
-.profile-link:hover {
+.link-description-username:hover {
 	color: #679df6;
+}
+
+.toComments:hover {
+	color: red;
 }
 
 
@@ -500,6 +516,11 @@ input.ng-pristine {
 .tabs [id^="tab"]:checked + label {
     border-bottom: 4px solid #3b77db;
     color: #3b77db;
+}
+
+.toComments {
+	float: right;
+	margin-right: 20px!important
 }
 
 

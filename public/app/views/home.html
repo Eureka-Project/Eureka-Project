@@ -45,17 +45,18 @@
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
-				<a ng-href="{{link.url}}">
-					<div class="link-data">
+				<a ng-model = "link.url" ng-href="{{link.url}}">
+					<div ng-model = "link.data" class="link-data">
 						<div class="link-image">
-							<img ng-src="{{link.image}}"/>
+							<img ng-model = "link.image" ng-src="{{link.image}}"/>
 						</div>
 						<div class="link-description">
-								<h3>{{link.title}}</h3>
-							<p class="link-description-p">{{link.description}}</p>
-							<p class="link-description-source">{{link.site_name}}</p>
-							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
-								<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+								<h3 ng-model = "link.title">{{link.title}}</h3>
+							<p ng-model ="link.description" class="link-description-p">{{link.description}}</p>
+							<p ng-model="link.site_name" class="link-description-source">{{link.site_name}}</p>
+							<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">
+								<p ng-model="link.username"class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+								<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link.id)" ng-href = "#/comments"><p class="toComments" clickable = 'true' >View Comments</p></a>
 							</a>
 						</div>
 					</div>

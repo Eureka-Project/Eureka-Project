@@ -4,8 +4,7 @@ var usersController = require('../users/usersController.js');
 module.exports = function (app) {
   app.use(usersController.verifyToken);
   app.route('/')
-    // .get(linksController.getPreviousThreeDaysLinks)
-    .get(linksController.getAllLinksByDay)
+    .get(linksController.getPreviousThreeDaysLinks)
     .post(linksController.newLink);
   app.get('/:link_id/delete', linksController.delLink);
 };

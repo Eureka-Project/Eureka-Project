@@ -3,6 +3,8 @@ var _ = require('underscore');
 
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
+var Alchemy = require('alchemy-api');
+var APIkey = require('links-Alchemy-APIkey.js').APIkey;
 
 exports = module.exports = {
 

@@ -7,6 +7,7 @@ var Comments = require('../db/configdb.js').Comments;
 exports = module.exports = {
 
   findComments: Q.nbind(Comments.find, Comments),
+  findComment: Q.nbind(Comments.findById, Comments),
   createComment: Q.nbind(Comments.create, Comments),
   findLink: Q.nbind(Links.findOne, Links),
 
@@ -56,6 +57,18 @@ exports = module.exports = {
       }).fail(function(err){
         console.log(err);
         next(err);
+      });
+  },
+  delComment: function(req,res,next){
+    exports.findComment(req.params.comment_id)
+      .then(function(comment){
+        if (req.user.username === comment.username) {
+          comment.remove();
+          res.status(200).send();
+        }
+        else res.status(403).send();
+      }).catch(function(){
+        res.status(404).send()
       });
   }
 };

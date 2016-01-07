@@ -3,12 +3,15 @@ var _ = require('underscore');
 
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
-var Alchemy = require('alchemy-api');
-var APIkey = require('links-Alchemy-APIkey.js').APIkey;
+var Users = require('../db/configdb.js').Users;
+// var Alchemy = require('alchemy-api');
+// var APIkey = require('./links-Alchemy-APIkey.js').APIkey;
+// var alchemy = new Alchemy(APIkey);
 
 exports = module.exports = {
 
   findLink: Q.nbind(Links.findOne, Links),
+  findUser: Q.nbind(Users.findOne, Users),
   findLinks: Q.nbind(Links.find, Links),
   createLink: Q.nbind(Links.create, Links),
   updateLink: Q.nbind(Links.update, Links),
@@ -72,7 +75,7 @@ exports = module.exports = {
             }
           ],
         };
-        console.log('Links for 3 days before %s:\n', end, data);
+        //console.log('Links for 3 days before %s:\n', end, data);
         res.json(data);
       })
       .fail(function (err) {
@@ -147,8 +150,8 @@ exports = module.exports = {
         //     ],
         //   };
         
-        console.log('All links by day:\n', data);
-        data.links.forEach(function(link){console.log(link)});
+        //console.log('All links by day:\n', data);
+        //data.links.forEach(function(link){console.log(link)});
         res.json(data);
       })
       .fail(function (err) {
@@ -186,6 +189,13 @@ exports = module.exports = {
           return util.getMetaData(url);
         }
       })
+      /*.then(function (data){
+        alchemy.concepts('URL',{maxRetrieve:8},function(err,response){
+          if (err){throw(err)}
+          else console.log(response);
+        });
+        return data;
+      })*/ //Alchemy stuff, not yet working
       .then(function (data) {
         return exports.createLink({
           url: url,
@@ -221,5 +231,26 @@ exports = module.exports = {
           next(err);
         }
       });
+  },
+  delLink : function(req,res,next){
+    exports.findLink({_id:req.params.link_id}).then(function(link){
+      exports.findUser({username:req.user.username}).then(function(user){
+        if (link.userid.toString() === user._id.toString()){
+          link.remove(function(){
+            res.status(200).send();
+            return next ? next() : true;
+          });
+        } else{
+          res.status(401).send();
+          return next ? next() : true;
+        }
+      }).catch(function(){
+        res.status(500).send();
+      return next ? next() :true;
+      })
+    }).catch(function(){
+      res.status(404).send();
+      return next ? next() :true;
+    });
   }
 };

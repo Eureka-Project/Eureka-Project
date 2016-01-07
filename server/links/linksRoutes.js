@@ -7,5 +7,5 @@ module.exports = function (app) {
     // .get(linksController.getPreviousThreeDaysLinks)
     .get(linksController.getAllLinksByDay)
     .post(linksController.newLink);
-
+  app.get('/:link_id/delete', linksController.delLink);
 };

@@ -4,9 +4,9 @@ var _ = require('underscore');
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
 var Users = require('../db/configdb.js').Users;
-// var Alchemy = require('alchemy-api');
-// var APIkey = require('./links-Alchemy-APIkey.js').APIkey;
-// var alchemy = new Alchemy(APIkey);
+var Alchemy = require('alchemy-api');
+var APIkey = require('./links-Alchemy-APIkey.js').APIkey;
+var alchemy = new Alchemy(APIkey);
 
 exports = module.exports = {
 
@@ -15,6 +15,7 @@ exports = module.exports = {
   findLinks: Q.nbind(Links.find, Links),
   createLink: Q.nbind(Links.create, Links),
   updateLink: Q.nbind(Links.update, Links),
+  getConcepts: Q.nbind(alchemy.concepts, alchemy),
 
   // Query the database for all links which were created
   //   between a requested date and two days prior to that date
@@ -189,19 +190,25 @@ exports = module.exports = {
           return util.getMetaData(url);
         }
       })
-      /*.then(function (data){
-        alchemy.concepts('URL',{maxRetrieve:8},function(err,response){
-          if (err){throw(err)}
-          else console.log(response);
+      .then(function (data){
+        return exports.getConcepts(url,{maxRetrieve:8}).then(function(response){
+          var tags = response.concepts.map(function(tag){
+            return tag.text;
+          });
+          data.tags = tags;
+          return data;
+        }).catch(function(err){
+        console.log('alchemy error');
+        console.log(err);
         });
-        return data;
-      })*/ //Alchemy stuff, not yet working
+      })
       .then(function (data) {
         return exports.createLink({
           url: url,
           visits: 0,
           title: data.title,
           description: data.description,
+          tags: data.tags,
           site_name: data.site_name,
           image: (data.image) ? data.image.url : '',
           username: user_name,

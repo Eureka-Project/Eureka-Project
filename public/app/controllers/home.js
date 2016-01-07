@@ -1,6 +1,6 @@
 angular.module('eureka.home', [])
 
-.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth' ,function($scope, $http, $window, $location, Helpers, Auth) {
+.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth' ,function($scope, $http, $window, $location, Helpers, Auth, Global) {
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
 
@@ -120,6 +120,21 @@ angular.module('eureka.home', [])
 			if (!$scope.firstname) $location.path('/login')
 		})
 	}
+
+	$scope.getClickedLinkURL = function(linkUrl, linkImage, linkTitle, linkDescription, linkSiteName, linkUsername, linkIndex, linkID){
+		$window.localStorage.setItem("CommentUrl", linkUrl);
+		$window.localStorage.setItem("CommentImage", linkImage);
+		$window.localStorage.setItem("CommentTitle", linkTitle);
+		$window.localStorage.setItem("CommentDescription", linkDescription);
+		$window.localStorage.setItem("CommentSiteName", linkSiteName);
+		$window.localStorage.setItem("CommentLinkUsername", linkUsername);
+		$window.localStorage.setItem("CommentIndex", linkIndex);
+		$window.localStorage.setItem("CommentId", linkId);
+
+
+	}
+
+
 
 	// Get Link Information When Controller Loads
 	$scope.getLinks();

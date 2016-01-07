@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", function() {
   $(".wrong").hide();
   $("#addLink").hide();
+  $("#logout").hide();
   $("#done").hide();
   //The callbacks for Chrome storage's methods are asynchronous and aren't executed till later
   chrome.storage.sync.get("userData", function(data) { 
@@ -13,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
+  var loginButton = document.getElementById("login");
+  loginButton.addEventListener("submit", function(){
+    var password =  $('#password').val();
+    var username = $('#username').val();
 
-    var getInfo = document.getElementById("login");
-    getInfo.addEventListener("submit", function(){
-      var password =  $('#password').val();
-      var username = $('#username').val();
 
         $.ajax({
           url: "http://localhost:4000/api/users/login",
@@ -31,17 +32,18 @@ document.addEventListener("DOMContentLoaded", function() {
         chrome.storage.sync.set({"userData": res}, function() {
           console.log("Settings saved");
         });
+        $("#please").hide();
         $("#login").hide();
         $("#addLink").show();
-        $("#please").hide();
+        $("#logout").show();
       },
       error: function(err) {
         console.log("error", JSON.stringify(err));
         $(".wrong").show()
       }
-    })
+    });
     event.preventDefault();
-  })
+  });
 
   var addLinkButton = document.getElementById("addLink");
   addLinkButton.addEventListener("click", function() {
@@ -70,7 +72,16 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
       });
-    })
+    });
+  });
+
+  var logoutButton = document.getElementById("logout");
+  logoutButton.addEventListener("click", function() {
+    chrome.storage.sync.remove("userData");
+    $("#please").show();
+    $("#login").show();
+    $("#addLink").hide();
+    $("#logout").hide();
   });
 });
 

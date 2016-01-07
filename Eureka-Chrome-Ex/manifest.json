@@ -17,16 +17,6 @@
       "default_popup": "popup.html"
   },
 
-<<<<<<< HEAD
-  "background": [ 
-  {
-    "persistent": "true",
-    "scripts": ["background.js"]
-  }
-    ],
-
-=======
->>>>>>> 3d9afb51f60fe6b237b82545c7139763f092f802
  "permissions": [
    "activeTab",
    "storage"

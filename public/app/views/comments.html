@@ -1,3 +1,4 @@
+
 <nav>
 	<div class="search">
 		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchText )'>
@@ -25,3 +26,22 @@
 		</div>
 	</div>
 </nav>
+<div class="page-container">
+	<div class="results">
+		</div>
+			<a ng-href="{{link.url}}">
+				<div class="link-data">
+					<div class="link-image">
+						<img ng-src="{{link.image}}"/>
+						</div>
+						<div class="link-description">
+								<h3>{{link.title}}</h3>
+							<p class="link-description-p">{{link.description}}</p>
+							<p class="link-description-source">{{link.site_name}}</p>
+							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
+						</a>
+					</div>
+				</div>
+			</a>
+		</div>
+			

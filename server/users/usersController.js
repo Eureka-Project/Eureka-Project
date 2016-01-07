@@ -120,6 +120,7 @@ exports = module.exports = {
         } else {
           // Create a new user.
           var newUser = {
+            lastSeen: new Date().getTime(),
             username: username,
             password: password,
             firstname: firstname,

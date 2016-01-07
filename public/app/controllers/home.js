@@ -51,7 +51,7 @@ angular.module('eureka.home', [])
 				results = results.concat($scope.links[prop].links)
 			}
 			$scope.allLinks = results;
-			console.log('Links: ', $scope.allLinks)
+			// console.log('Links: ', $scope.allLinks)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -86,6 +86,7 @@ angular.module('eureka.home', [])
 		console.log('linkID: ', linkID)
 		var data = {};
 		data.user_id = $scope.user_id;
+		data.username = $scope.username;
 		data.link_id = linkID;
 		$http({
 			method: 'POST',
@@ -93,7 +94,7 @@ angular.module('eureka.home', [])
 			data: data
 		}).then(function (res) {
 			console.log('success...upvoted')
-			console.log('body: ', res.data)
+			// console.log('body: ', res.data)
 			$scope.getLinks();
 			return res.data;
 		}).catch(function (error) {

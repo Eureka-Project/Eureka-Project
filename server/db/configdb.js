@@ -24,7 +24,7 @@ var userSchema = mongoose.Schema({
 	lastname: String,
 	date: { type: Date, default: Date.now },
   votesLeft: {type: Number, default:20},
-  lastSeen: {type:Number, default:0}
+  lastSeen: {type:Number, default: new Date().getTime()}
 });
 
 userSchema.methods.isPassword = function(guess) {

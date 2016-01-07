@@ -52,11 +52,11 @@ exports = module.exports = {
       for (var i=0;i<secrets.length;i++){
         try {
           req.user = jwt.decode(token, secrets[i].secret);
-          console.log('success');
+          //console.log('success');
           return next();
         }
         catch(error) {
-          console.log('failure');
+          //console.log('failure');
           if (i===secrets.length-1){
             req.user = null;
             return next();

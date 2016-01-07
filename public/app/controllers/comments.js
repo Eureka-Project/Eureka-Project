@@ -68,6 +68,22 @@ angular.module('eureka.comments', [])
 		})
 	}
 
+	$scope.postComment = function(comment) {
+		var data = {};
+		data.text = comment;
+		data.link_id = $scope.link.ID;
+		$http({
+			method: 'POST',
+			url: '/api/comments',
+			data: data
+		}).then(function (res) {
+			console.log('comment posted');
+			return res;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 	$scope.link = {};
 	$scope.link.url = $window.localStorage.getItem("CommentUrl");
 	$scope.link.image = $window.localStorage.getItem("CommentImage");

@@ -5,6 +5,18 @@ angular.module('eureka.comments', [])
  	
  	if (!Auth.isAuth()) $location.path('/login')
 
+
+
+ 	$scope.link = {};
+	$scope.link.url = $window.localStorage.getItem("CommentUrl");
+	$scope.link.image = $window.localStorage.getItem("CommentImage");
+	$scope.link.title = $window.localStorage.getItem("CommentTitle");
+	$scope.link.description = $window.localStorage.getItem("CommentDescription");
+	$scope.link.site_name = $window.localStorage.getItem("CommentSiteName");
+	$scope.link.username = $window.localStorage.getItem("CommentLinkUsername");
+	$scope.link.ID = $window.localStorage.getItem("CommentId");
+
+
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };
 
@@ -58,24 +70,23 @@ angular.module('eureka.comments', [])
 		})
 	}
 
-	$scope.getClickedLink = function() {
-		console.log("looking for link id")
+	$scope.getLinkComments = function() {
+		console.log("looking for link comments")
+		var id = $window.localStorage.getItem("CommentId");
+		console.log("id", id)
 		$http({
 			method: 'GET', 
-			url: '/api/links',
+			url: '/api/comments/'+ id ,
 		}).then(function (res) {
-
+			console.log("succes heres the data", res);
+		}).catch(function (err) {
+			console.log("comments", err)
 		})
 	}
 
-	$scope.link = {};
-	$scope.link.url = $window.localStorage.getItem("CommentUrl");
-	$scope.link.image = $window.localStorage.getItem("CommentImage");
-	$scope.link.title = $window.localStorage.getItem("CommentTitle");
-	$scope.link.description = $window.localStorage.getItem("CommentDescription");
-	$scope.link.site_name = $window.localStorage.getItem("CommentSiteName");
-	$scope.link.username = $window.localStorage.getItem("CommentLinkUsername");
-	$scope.link.ID = $window.localStorage.getItem("CommentID");
+
+
+	
 
 
 
@@ -83,6 +94,7 @@ angular.module('eureka.comments', [])
 
 	// get user and profile info to display when controller loads
 	$scope.getUserInfo();
+	$scope.getLinkComments();
 	
 
  }])

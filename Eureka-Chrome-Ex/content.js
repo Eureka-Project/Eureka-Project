@@ -6,6 +6,13 @@ document.addEventListener("DOMContentLoaded", function(){
   $("#addLink").hide();
   $("#done").hide();
 
+  chrome.storage.sync.get("userData", function(data) { if(Object.keys(data).length) {logged = true} });
+  if (logged) {
+    $("#login").hide();
+    $("#addLink").show();
+    $("#please").hide();
+  }
+
   var getInfo = document.getElementById("login");
   getInfo.addEventListener("submit", function(){
     var password =  $('#password').val();

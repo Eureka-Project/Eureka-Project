@@ -94,9 +94,15 @@ angular.module('eureka.profile', [])
 		})
 	}
 
-	$scope.modalDeleteShow = false;
-	$scope.changeModal = function() {
-		$scope.modalDeleteShow = $scope.modalDeleteShow === false ? true : false;
+	$scope.deleteLink = function(linkId) {
+		$http({
+			method: 'GET',
+			url: '/api/links/' + linkId + '/delete',
+		}).then(function (res) {
+			$scope.getProfileInfo();
+		}).catch(function (error) {
+			console.log(error);
+		})
 	}
 
 

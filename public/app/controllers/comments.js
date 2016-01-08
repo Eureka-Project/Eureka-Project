@@ -5,6 +5,18 @@ angular.module('eureka.comments', [])
  	
  	if (!Auth.isAuth()) $location.path('/login')
 
+ 	$scope.comments = undefined;
+
+ 	$scope.link = {};
+	$scope.link.url = $window.localStorage.getItem("CommentUrl");
+	$scope.link.image = $window.localStorage.getItem("CommentImage");
+	$scope.link.title = $window.localStorage.getItem("CommentTitle");
+	$scope.link.description = $window.localStorage.getItem("CommentDescription");
+	$scope.link.site_name = $window.localStorage.getItem("CommentSiteName");
+	$scope.link.username = $window.localStorage.getItem("CommentLinkUsername");
+	$scope.link.ID = $window.localStorage.getItem("CommentId");
+
+
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };
 
@@ -58,17 +70,24 @@ angular.module('eureka.comments', [])
 		})
 	}
 
-	$scope.getClickedLink = function() {
-		console.log("looking for link id")
+//Get the comments on the link
+	$scope.getLinkComments = function() {
+		console.log("looking for link comments")
+		var id = $window.localStorage.getItem("CommentId");
+		console.log("id", id)
 		$http({
 			method: 'GET', 
-			url: '/api/links',
+			url: '/api/comments/'+ id ,
 		}).then(function (res) {
-
+			console.log("succes heres the data", res);
+			$scope.comments = res.data
+		}).catch(function (err) {
+			console.log("comments", err)
 		})
 	}
 
-	$scope.postComment = function(comment) {
+
+ $scope.postComment = function(comment) {
 		var data = {};
 		data.text = comment;
 		data.link_id = $scope.link.ID;
@@ -78,27 +97,18 @@ angular.module('eureka.comments', [])
 			data: data
 		}).then(function (res) {
 			console.log('comment posted');
+			$scope.getLinkComments();
 			return res;
 		}).catch(function (error) {
 			console.log(error);
 		})
+		$scope.comment = "";
 	}
-
-	$scope.link = {};
-	$scope.link.url = $window.localStorage.getItem("CommentUrl");
-	$scope.link.image = $window.localStorage.getItem("CommentImage");
-	$scope.link.title = $window.localStorage.getItem("CommentTitle");
-	$scope.link.description = $window.localStorage.getItem("CommentDescription");
-	$scope.link.site_name = $window.localStorage.getItem("CommentSiteName");
-	$scope.link.username = $window.localStorage.getItem("CommentLinkUsername");
-	$scope.link.ID = $window.localStorage.getItem("CommentId");
-
-
-
 
 
 	// get user and profile info to display when controller loads
 	$scope.getUserInfo();
+	$scope.getLinkComments();
 	
 
  }])

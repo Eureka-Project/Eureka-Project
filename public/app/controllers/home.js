@@ -102,6 +102,27 @@ angular.module('eureka.home', [])
 		})
 	}
 
+	$scope.undoUpvote = function(linkID) {
+		console.log('submitting undo by', $scope.user_id)
+		console.log('linkID: ', linkID)
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.username = $scope.username;
+		data.link_id = linkID;
+		$http({
+			method: 'POST',
+			url: '/api/upvote/undo',
+			data: data
+		}).then(function (res) {
+			console.log('success...undone')
+			// console.log('body: ', res.data)
+			$scope.getLinks();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 	$scope.search = function(searchText) {
 		Helpers.searchValue = searchText;
 		$location.path('/search')
@@ -135,8 +156,22 @@ angular.module('eureka.home', [])
 
 	}
 
+	$scope.votesLeft = undefined;
+
+	$scope.getVotesLeft = function() {
+		$http({
+			method:'GET', 
+			url:'/api/users/' + $scope.user_id,
+		}).then(function (res) {
+			console.log("user info", res)
+			$scope.votesLeft = res.data.votesLeft;
+		}).catch(function (err) {
+			console.log(err);
+		})
+	}
 
 
+	$scope.getVotesLeft();
 	// Get Link Information When Controller Loads
 	$scope.getLinks();
 	$scope.getUserInfo();

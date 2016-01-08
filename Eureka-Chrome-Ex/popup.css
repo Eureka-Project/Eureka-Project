@@ -4,9 +4,10 @@ body {
   background-color: lightgray;
 }
 
-h1 {
-  text-align: center;
-  color: blue;
+img {
+  width: 60%;
+  display: block;
+  margin: auto;
 }
 
 h3 {

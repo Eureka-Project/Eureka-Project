@@ -27,6 +27,7 @@
 	</div>
 </nav>
 <div class="page-container">
+<div class="page-container">
 	<div class="results">
 		</div>
 			<a ng-href="{{link.url}}">
@@ -45,16 +46,24 @@
 			</a>
 		</br></br>
 		<div>
-			<form>
+			<form name="addComment">
 				<input type="text" placeholder="Write your comment here..." ng-model="comment">
 				<input type="submit" id="submit" value="Post" ng-click="postComment(comment)">
 			</form>
 		</div>
 		</div>
-
-
-
-
+		<br>
+		<div>
+  <div class="comment-dialogbox">
+    <div ng-repeat="each in comments"class="comment-body">
+      <span  class="comment-tip tip-up"></span>
+      <div class="message">
+        <span>{{each.text}}</span>
+        <br>
+        <span class ="link-description-username">By {{username}}</span>
+      </div>
+    </div>
+  </div>
 
 
 

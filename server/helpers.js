@@ -26,8 +26,10 @@ exports = module.exports = {
   lastSeen: function(req, res, next){
     if (req.user && req.user.username){
       Users.findOne({username: req.user.username}, function(err,user){
-        user.lastSeen = new Date().getTime();
-        user.save();
+        if (user){
+          user.lastSeen = new Date().getTime();
+          user.save();
+        }
       });
     }
     return next();

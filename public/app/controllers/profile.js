@@ -94,6 +94,11 @@ angular.module('eureka.profile', [])
 		})
 	}
 
+	$scope.modalDeleteShow = false;
+	$scope.changeModal = function() {
+		$scope.modalDeleteShow = $scope.modalDeleteShow === false ? true : false;
+	}
+
 
 	// get user and profile info to display when controller loads
 	$scope.getUserInfo();

@@ -1,6 +1,6 @@
 angular.module('eureka.home', [])
 
-.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth' ,function($scope, $http, $window, $location, Helpers, Auth, Global) {
+.controller('HomeController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth',function($scope, $http, $window, $location, Helpers, Auth, Global) {
 	// Checking If User Has Cookie
 	if (!Auth.isAuth()) $location.path('/login')
 
@@ -28,6 +28,7 @@ angular.module('eureka.home', [])
 	$scope.links = undefined; // will be defined once 'getLinks' is run
 	$scope.allLinks = undefined; // will be defined once 'getLinks' is run
 	$scope.searchValue = Helpers.searchValue; // defined when 'search' is run
+	$scope.votesLeft = undefined;
 
 
 	$scope.getLinks = function () {
@@ -55,6 +56,18 @@ angular.module('eureka.home', [])
 						link.undo = false;
 					}
 					link.showUndo = false;
+					link.displayUpvoted = function(link){
+						link = this;
+						link.undo = true;
+						link.upvotes++;
+						$scope.upvotesLeft--;
+					}
+					link.showUnvoted = function(){
+						link = this;
+						link.undo = false;
+						link.upvotes--;
+						$scope.upvotesLeft++;
+					}
 				}
 			}
 			$scope.links = res.data.links;
@@ -124,7 +137,7 @@ angular.module('eureka.home', [])
 		}).then(function (res) {
 			console.log('success...upvoted')
 			// console.log('body: ', res.data)
-			$scope.getLinks();
+			// $scope.getLinks();
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -165,6 +178,7 @@ angular.module('eureka.home', [])
 		}).then(function (res) {
 			$scope.firstname = res.data.firstname;
 			$scope.lastname = res.data.lastname;
+			$scope.votesLeft = res.data.votesLeft;
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -185,22 +199,6 @@ angular.module('eureka.home', [])
 
 	}
 
-	$scope.votesLeft = undefined;
-
-	$scope.getVotesLeft = function() {
-		$http({
-			method:'GET', 
-			url:'/api/users/' + $scope.user_id,
-		}).then(function (res) {
-			console.log("user info", res)
-			$scope.votesLeft = res.data.votesLeft;
-		}).catch(function (err) {
-			console.log(err);
-		})
-	}
-
-
-	$scope.getVotesLeft();
 	// Get Link Information When Controller Loads
 	$scope.getLinks();
 	$scope.getUserInfo();

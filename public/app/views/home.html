@@ -21,7 +21,7 @@
 			<div class="nav-dropdown" ng-show="showNavDropdown">
 				<a ng-href="#/profile/{{user_id}}"><li><i class="fa fa-user"></i>Profile</li></a>
 				<li ng-click="signout()"><i class="fa fa-sign-out"></i>Log Out</li>
-				<li><i class = "fa fa-user">Votes Left: {{votesLeft}}</i></li>
+				<li>{{votesLeft}}   Votes Left Today</li>
 			</div>
 			
 		</div>
@@ -54,7 +54,7 @@
 							<img ng-model = "link.image" ng-src="{{link.image}}"/>
 						</div>
 						<div class="link-description">
-								<h3 ng-model = "link.title">{{link.title}} - {{link.site_name}}</h3>
+								<h3 class ='link_title'ng-model = "link.title">{{link.title}} - {{link.site_name}}</h3>
 							<p ng-model ="link.description" class="link-description-p">{{link.description}}</p>
 							<div class = "Link_Comments_User">
 								<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">

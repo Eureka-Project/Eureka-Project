@@ -642,3 +642,7 @@ input.ng-pristine {
     margin-top: 20px;
 }
 
+.deleteButton:hover {
+	color: green;
+}
+

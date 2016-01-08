@@ -78,7 +78,7 @@
 							<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link._id)" ng-href = "#/comments">
 								<p class="toComments" clickable = 'true' >View Comments</p>
 							</a>
-							<a ng-href= "#/profile" ng-click = "deleteLink(link._id)">
+							<a ng-href= "#/profile/{{user_id}}" ng-click = "deleteLink(link._id)">
 								<p class ="deleteButton">Delete</p>
 							</a>
 							</div>

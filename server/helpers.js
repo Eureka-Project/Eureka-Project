@@ -52,15 +52,12 @@ exports = module.exports = {
       for (var i=0;i<secrets.length;i++){
         try {
           req.user = jwt.decode(token, secrets[i].secret);
-          //console.log('success');
           return next();
         }
         catch(error) {
-          //console.log('failure');
           if (i===secrets.length-1){
             req.user = null;
             return next();
-            //res.status(403).send({error: 'Invalid x-access-token'});
           }
         }
       }

@@ -102,7 +102,7 @@ angular.module('eureka.comments', [])
 		}).catch(function (error) {
 			console.log(error);
 		})
-		$scope.addComment.$setPristine();
+		$scope.comment = null;
 	}
 
 

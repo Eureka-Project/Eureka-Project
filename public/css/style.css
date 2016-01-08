@@ -578,6 +578,8 @@ input.ng-pristine {
   margin-left:18%;
 }
 
+
+
 .comment-body .message {
   min-height: 30px;
   border-radius: 3px;
@@ -585,4 +587,8 @@ input.ng-pristine {
   font-size: 14px;
   line-height: 1.5;
   color: #797979;
+}
+
+.votesLeft{
+	margin-right:400px;
 }

@@ -41,7 +41,6 @@ function setSecret() {
       return secrets;
     })
     .fail(function(err) {
-      console.log(err);
     });
 };
 

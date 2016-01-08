@@ -11,9 +11,6 @@
 			<img src="assets/logoTest.png" alt="logoTest" class="logo">
 		</div>
 	</a>
-	<div>
-		<p>{{votesLeft}}</p>
-	</div>
 	<div class="nav-actions">
 		<i ng-click="changeModal()" class="fa fa-plus-circle add-link-icon"></i>
 		<div class="nav-dropdown-link" ng-show="!{{username}}">
@@ -24,7 +21,9 @@
 			<div class="nav-dropdown" ng-show="showNavDropdown">
 				<a ng-href="#/profile/{{user_id}}"><li><i class="fa fa-user"></i>Profile</li></a>
 				<li ng-click="signout()"><i class="fa fa-sign-out"></i>Log Out</li>
+				<li><i class = "fa fa-user">Votes Left: {{votesLeft}}</i></li>
 			</div>
+			
 		</div>
 	</div>
 </nav>
@@ -48,6 +47,7 @@
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
+				<div class='voting' ng-click="undoUpvote( link._id)">undo</div>
 				<a ng-model = "link.url" ng-href="{{link.url}}">
 					<div ng-model = "link.data" class="link-data">
 						<div class="link-image">

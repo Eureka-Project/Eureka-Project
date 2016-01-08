@@ -14,7 +14,7 @@ exports = module.exports = {
   newComment: function (req, res, next) {
     var text = req.body.text;
     var link_id = req.body.link_id;
-    var username = req.body.username;
+    var username = req.user.username;
 
     exports.findLink({_id:link_id})
       .then(function (link) {
@@ -33,10 +33,8 @@ exports = module.exports = {
           // If the database could not create the new Comment,
           //   it is most likely a problem with the mongoose server.
           res.json({});
-          console.log('Failed to create comment in the database:', createdComment);
           throw new Error('Failed to create comment in the database');
         } else {
-          console.log('Created new comment: \n', createdComment)
           res.json(createdComment);
         }
       })
@@ -45,7 +43,6 @@ exports = module.exports = {
         //   log the error and continue to the next function
         //   in the chain.
         if (err.message !== 'Stop promise chain') {
-          console.log(err);
           next(err);
         }
       });
@@ -55,7 +52,6 @@ exports = module.exports = {
       .then(function(comments){
         res.json(comments)
       }).fail(function(err){
-        console.log(err);
         next(err);
       });
   },

@@ -106,15 +106,6 @@ angular.module('eureka.comments', [])
 	}
 
 
-
-
-
-	
-
-
-
-
-
 	// get user and profile info to display when controller loads
 	$scope.getUserInfo();
 	$scope.getLinkComments();

@@ -4,9 +4,10 @@ body {
   background-color: lightgray;
 }
 
-h1 {
-  text-align: center;
-  color: blue;
+img {
+  width: 60%;
+  display: block;
+  margin: auto;
 }
 
 h3 {
@@ -49,6 +50,14 @@ input#submit {
   color: #fff;
   display: block;
   margin: auto;
+}
+
+#spinner {
+  display: block;
+  margin: auto;
+  width: auto;
+  height: auto;
+  max-width: 35px;
 }
 
 #logout {

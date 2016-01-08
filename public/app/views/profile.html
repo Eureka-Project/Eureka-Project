@@ -52,10 +52,14 @@
 	</div>
 	<div class="results" ng-show="showSubmittedLinks">
 		<div class="link-card" ng-repeat="link in profileSubmittedLinks | orderBy: '-upvotes'">
-			<div class='voting' ng-click="upvote( link._id )">
-				<h3>{{link.upvotes}}</h3>
-				<i class="fa fa-arrow-up"></i>
-			</div>
+			<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id ); link.displayUpvoted()">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-up"></i>
+				</div>
+				<div class='undo' ng-show="link.undo" ng-click="undoUpvote( link._id ); link.showUnvoted()" ng-mouseover="link.showUndo = true" ng-mouseleave="link.showUndo = false">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-down" ng-show="link.showUndo"></i>
+				</div>
 			<a ng-href="{{link.url}}">
 				<div class="link-data">
 					<div class="link-image">
@@ -76,10 +80,14 @@
 	</div>
 	<div class="results" ng-show="showUpvotedLinks">
 		<div class="link-card" ng-repeat="link in profileUpvotedLinks | orderBy: '-upvotes'">
-			<div class='voting' ng-click="upvote( link._id )">
-				<h3>{{link.upvotes}}</h3>
-				<i class="fa fa-arrow-up"></i>
-			</div>
+			<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id ); link.displayUpvoted()">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-up"></i>
+				</div>
+				<div class='undo' ng-show="link.undo" ng-click="undoUpvote( link._id ); link.showUnvoted()" ng-mouseover="link.showUndo = true" ng-mouseleave="link.showUndo = false">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-down" ng-show="link.showUndo"></i>
+				</div>
 			<a ng-href="{{link.url}}">
 				<div class="link-data">
 					<div class="link-image">

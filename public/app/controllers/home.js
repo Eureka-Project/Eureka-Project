@@ -48,7 +48,7 @@ angular.module('eureka.home', [])
 					var link = res.data.links[prop].links[i];
 					// console.log('link is: ', link)
 					link.date = date;
-					 var upvotedBy = JSON.parse(link.upvotedBy);
+				  var upvotedBy = JSON.parse(link.upvotedBy);
 					if(upvotedBy[$scope.user_id]){
 						link.undo = true;
 						console.log('FOUND USER ID IN UPVOTEDBY', link.undo)
@@ -61,13 +61,13 @@ angular.module('eureka.home', [])
 						link.undo = true;
 						link.upvotes++;
 						$scope.votesLeft--;
-					}
+					};
 					link.showUnvoted = function(){
 						link = this;
 						link.undo = false;
 						link.upvotes--;
 						$scope.votesLeft++;
-					}
+					};
 				}
 			}
 			$scope.links = res.data.links;

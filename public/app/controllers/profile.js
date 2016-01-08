@@ -53,7 +53,66 @@ angular.module('eureka.profile', [])
 	$scope.profileLastName = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileSubmittedLinks = undefined; // defined when 'getProfileInfo' is run
 	$scope.profileUpvotedLinks = undefined; // defined when 'getProfileInfo' is run
+	$scope.votesLeft = undefined;
 
+	$scope.upvote = function(linkID) {
+		console.log('submitting upvote by', $scope.user_id)
+		console.log('linkID: ', linkID)
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.username = $scope.username;
+		data.link_id = linkID;
+		$http({
+			method: 'POST',
+			url: '/api/upvote',
+			data: data
+		}).then(function (res) {
+			console.log('success...upvoted')
+			// console.log('body: ', res.data)
+			// $scope.getLinks();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
+	$scope.undoUpvote = function(linkID) {
+		console.log('submitting undo by', $scope.user_id)
+		console.log('linkID: ', linkID)
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.username = $scope.username;
+		data.link_id = linkID;
+		$http({
+			method: 'POST',
+			url: '/api/upvote/undo',
+			data: data
+		}).then(function (res) {
+			console.log('success...undone')
+			// console.log('body: ', res.data)
+			// $scope.getLinks();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
+	$scope.resetVotes = function(){
+		console.log('resetting from client')
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.username = $scope.username;
+		console.log('data for reset', data)
+		$http({
+			method: 'POST',
+			url: '/api/users/resetVotes',
+			data: data
+		}).then(function(res){
+			if(res){
+				console.log('vote limit was reset')
+			}
+		})
+	}
 
 	$scope.getUserInfo = function() {
 		console.log('getting user info...');
@@ -69,8 +128,34 @@ angular.module('eureka.profile', [])
 		})
 	}
 
+	$scope.submitLink = function(link) {
+		console.log('submitting link...', link)
+		var data = {};
+		data.url = link;
+		data.username = $scope.firstname + ' ' + $scope.lastname;
+		data.user_id = $scope.user_id;
+		console.log(data)
+		$http({
+			method: 'POST',
+			url: '/api/links',
+			data: data
+		}).then(function (res) {
+			console.log('success...link added')
+			$scope.getProfileInfo();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+		$scope.addLink.$setPristine();
+		$scope.newLink = "";
+		$scope.changeModal();
+	}
+
 	$scope.getProfileInfo = function() {
 		console.log('getting profile info...');
+		// Check if vote limit needs to be reset
+		$scope.resetVotes();
+
 		$http({
 			method: 'GET',
 			url: '/api/users/profile/' + $stateParams.userID,
@@ -78,16 +163,57 @@ angular.module('eureka.profile', [])
 			for (var i = 0; i < res.data.submittedLinks.length; i++) {
 				var link = res.data.submittedLinks[i];
 				link.date = Helpers.lookupDate(link.date);
+				var upvotedBy = JSON.parse(link.upvotedBy);
+				if(upvotedBy[$scope.user_id]){
+					link.undo = true;
+					console.log('FOUND USER ID IN UPVOTEDBY', link.undo)
+				}else{
+					link.undo = false;
+				}
+				link.showUndo = false;
+				link.displayUpvoted = function(link){
+					link = this;
+					link.undo = true;
+					link.upvotes++;
+					$scope.votesLeft--;
+				};
+				link.showUnvoted = function(){
+					link = this;
+					link.undo = false;
+					link.upvotes--;
+					$scope.votesLeft++;
+				};
 			}
 			for (var x = 0; x < res.data.upvotedLinks.length; x++) {
 				var link = res.data.upvotedLinks[x];
 				link.date = Helpers.lookupDate(link.date);
+				var upvotedBy = JSON.parse(link.upvotedBy);
+				if(upvotedBy[$scope.user_id]){
+					link.undo = true;
+					console.log('FOUND USER ID IN UPVOTEDBY', link.undo)
+				}else{
+					link.undo = false;
+				}
+				link.showUndo = false;
+				link.displayUpvoted = function(link){
+					link = this;
+					link.undo = true;
+					link.upvotes++;
+					$scope.votesLeft--;
+				};
+				link.showUnvoted = function(){
+					link = this;
+					link.undo = false;
+					link.upvotes--;
+					$scope.votesLeft++;
+				};
 			}
 			$scope.profileUsername = res.data.username;
 			$scope.profileFirstName = res.data.firstname;
 			$scope.profileLastName = res.data.lastname;
 			$scope.profileSubmittedLinks = res.data.submittedLinks;
 			$scope.profileUpvotedLinks = res.data.upvotedLinks;
+			console.log('progileUpvotedLinks', $scope.profileUpvotedLinks)
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

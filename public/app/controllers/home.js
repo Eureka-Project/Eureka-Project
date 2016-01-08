@@ -158,7 +158,7 @@ angular.module('eureka.home', [])
 		}).then(function (res) {
 			console.log('success...undone')
 			// console.log('body: ', res.data)
-			$scope.getLinks();
+			// $scope.getLinks();
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

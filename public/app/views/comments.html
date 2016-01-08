@@ -60,7 +60,9 @@
       <div class="message">
         <span>{{each.text}}</span>
         <br>
-        <span class ="link-description-username">By {{each.username}}</span>
+        <span class ="link-description-username">By {{each.username}}
+        <i ng-click="deleteComment(each._id)" class="fa fa-close"></i>
+        </span>
       </div>
     </div>
   </div>

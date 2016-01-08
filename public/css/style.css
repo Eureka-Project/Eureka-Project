@@ -87,8 +87,9 @@ nav .search {
 
 nav .search i {
 	width: 10%;
-	float:left;
-	margin: 10px 15px;
+    float: left;
+    margin-top: 8px;
+    margin-left: 15px;
 }
 
 nav .search input {
@@ -109,7 +110,7 @@ nav .search-form {
 	margin: 3px 0px 0px 20px;
 	border-radius: 5px;
 	padding: 0px 8px;
-	width: 70%;
+	width: 200px;
 }
 
 nav .search-form i {

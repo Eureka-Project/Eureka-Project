@@ -237,6 +237,36 @@ exports = module.exports = {
         next(error);
       });
   },
+
+
+  // Reset vote limit if necessary
+  resetVotes: function(req, res){
+    return exports.findUser({username: req.body.username})
+      .then(function(foundUser){
+        if(foundUser){
+          var limitDate = [foundUser.lastVotesReset, foundUser.lastVotesReset];
+          // var limitDate = [1451280708541, 1451280708541];
+          limitDate[0] = new Date(limitDate[0]).getMonth();
+          limitDate[1] = new Date(limitDate[1]).getDate();
+          var votesLeft = foundUser.votesLeft;
+          var tempDate = new Date();
+          currDate = [tempDate.getMonth(tempDate), tempDate.getDate(tempDate)];
+
+          if(limitDate[0] !== currDate[0] || limitDate[1] !== currDate[1]){
+            console.log('resetting votesLeft');
+            foundUser.lastVotesReset = new Date().getTime();
+            foundUser.votesLeft = 19;
+            foundUser.save();
+            // exports.createUser
+            return true;
+          }
+          return false;
+        }else{
+          return false;
+        }
+      })
+  },
+
   deleteUser : function(req,res,next){
     var targetUser = req.params.user_id;
     var targetUserId;
@@ -261,5 +291,6 @@ exports = module.exports = {
       });
     } else res.status(401).send();
   }
+
 
 }

@@ -154,7 +154,7 @@ nav .nav-dropdown-link-username:hover {
 }
 
 .nav-dropdown {
-	width: 140px;
+	width: 153px;
 	box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
 	border: 1px solid #e5e5e5;
 	border-radius: 3px;
@@ -342,6 +342,24 @@ input.ng-pristine {
 	font-size: 20px;
 	float: left;
 	cursor: pointer;
+}
+
+.undo {
+	width: 8%;
+	height: 100%;
+	font-size: 20px;
+	float: left;
+	cursor: pointer;
+	color: #679df6;
+}
+
+.undo i {
+	float: left;
+	margin: -50px 0px 0px 22.5px;
+}
+
+.undo:hover {
+	color: #3b77db;
 }
 
 .voting:hover {

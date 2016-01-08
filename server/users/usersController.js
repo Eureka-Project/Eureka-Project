@@ -163,7 +163,9 @@ exports = module.exports = {
           firstname: user.firstname,
           lastname: user.lastname,
           username: user.username,
-          user_id: user._id
+          user_id: user._id,
+          votesLeft: user.votesLeft,
+          lastSeen: user.lastSeen
         });
       })
       .fail(function(error) {

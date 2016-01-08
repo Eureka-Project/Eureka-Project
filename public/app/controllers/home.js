@@ -60,13 +60,13 @@ angular.module('eureka.home', [])
 						link = this;
 						link.undo = true;
 						link.upvotes++;
-						$scope.upvotesLeft--;
+						$scope.votesLeft--;
 					}
 					link.showUnvoted = function(){
 						link = this;
 						link.undo = false;
 						link.upvotes--;
-						$scope.upvotesLeft++;
+						$scope.votesLeft++;
 					}
 				}
 			}

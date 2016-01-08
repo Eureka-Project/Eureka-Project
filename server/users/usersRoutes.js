@@ -14,4 +14,5 @@ module.exports = function (app) {
   app.get('/profile/:user_id', usersController.getProfileInfo);
 
   app.post('/resetVotes', usersController.resetVotes);
+  app.get('/:user_id/delete', usersController.deleteUser);
 };

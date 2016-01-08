@@ -3,8 +3,12 @@ var jwt = require('jwt-simple');
 var mongoose = require('mongoose');
 
 var Users = require('../db/configdb.js').Users;
+var Links= require('../db/configdb.js').Links;
+var Comments = require('../db/configdb.js').Comments;
+var Votes = require('../db/configdb.js').Upvotes;
 var Links = require('../links/linksController.js');
 var Upvotes = require('../upvotes/upvotesController.js');
+
 
 var secrets = require('../secrets/secretsController.js');
 
@@ -12,9 +16,12 @@ exports = module.exports = {
 
   // Promise version of Mongoose's 'Model.findOne()' method.
   findUser: Q.nbind(Users.findOne, Users),
-  
   // Promise version of Mongoose's 'Model.create()' method.
   createUser: Q.nbind(Users.create, Users),
+  findLinks: Q.nbind(Links.find, Links),
+  findComments: Q.nbind(Comments.find, Comments),
+  findUpvotes: Q.nbind(Upvotes.find, Upvotes),
+
 
   // Return a unique token based on a user document from the database.
   // When decoded later, it will serve as a conditions object for a
@@ -228,6 +235,7 @@ exports = module.exports = {
       });
   },
 
+
   // Reset vote limit if necessary
   resetVotes: function(req, res){
     return exports.findUser({username: req.body.username})
@@ -255,5 +263,31 @@ exports = module.exports = {
         }
       })
   },
+
+  deleteUser : function(req,res,next){
+    var targetUser = req.params.user_id;
+    var targetUserId;
+    if (req.user.username === targetUser){
+      //get the target user's ID
+      exports.findUser({username:targetUser}).then(function(user){
+        targetUserId = user._id;
+        user.remove();
+      }).then(function(){
+        exports.findLinks({userid:targetUserId}).then(function(links){
+          links.remove();
+        })
+      }).then(function(){
+        exports.findComments({username:targetUser}).then(function(comments){
+          comments.remove();
+        })
+      }).then(function(){
+        exports.findUpvotes({user_id:targetUserId}).then(function(upvotes){
+          upvotes.remove();
+        });
+      });
+      res.status(200).send();
+    } else res.status(401).send();
+  }
+
 
 }

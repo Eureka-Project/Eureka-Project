@@ -87,8 +87,9 @@ nav .search {
 
 nav .search i {
 	width: 10%;
-	float:left;
-	margin: 10px 15px;
+    float: left;
+    margin-top: 8px;
+    margin-left: 15px;
 }
 
 nav .search input {
@@ -109,7 +110,7 @@ nav .search-form {
 	margin: 3px 0px 0px 20px;
 	border-radius: 5px;
 	padding: 0px 8px;
-	width: 70%;
+	width: 200px;
 }
 
 nav .search-form i {
@@ -154,7 +155,7 @@ nav .nav-dropdown-link-username:hover {
 }
 
 .nav-dropdown {
-	width: 140px;
+	width: 154px;
 	box-shadow: 0 3px 8px rgba(0, 0, 0, .3);
 	border: 1px solid #e5e5e5;
 	border-radius: 3px;
@@ -344,6 +345,24 @@ input.ng-pristine {
 	cursor: pointer;
 }
 
+.undo {
+	width: 8%;
+	height: 100%;
+	font-size: 20px;
+	float: left;
+	cursor: pointer;
+	color: #679df6;
+}
+
+.undo i {
+	float: left;
+	margin: -50px 0px 0px 22.5px;
+}
+
+.undo:hover {
+	color: #3b77db;
+}
+
 .voting:hover {
 	color: #999999;
 }
@@ -377,6 +396,7 @@ input.ng-pristine {
 .link-data h3 {
 	font-size: 16px;
 	margin: 8px 0px;
+	/*overflow: scroll;*/
 
 	
 }
@@ -431,6 +451,7 @@ input.ng-pristine {
 .link-description-username {
 	float: right;
 	padding-right: 10px;
+  padding-bottom: 10px;
 }
 
 .link-description-username:hover {
@@ -570,9 +591,9 @@ input.ng-pristine {
 .comment-dialogbox .comment-body {
   position: relative;
   max-width: 300px;
-  height: auto;
+  /*height: auto;*/
   margin: 20px 20px;
-  padding: 10px;
+  padding: 20px;
   background-color: #DADADA;
   border-radius: 3px;
   border: 5px solid #ccc;
@@ -581,7 +602,7 @@ input.ng-pristine {
 
 
 
-.comment-body .message {
+.message {
   min-height: 30px;
   border-radius: 3px;
   font-family: Arial;

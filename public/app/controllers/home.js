@@ -156,8 +156,22 @@ angular.module('eureka.home', [])
 
 	}
 
+	$scope.votesLeft = undefined;
+
+	$scope.getVotesLeft = function() {
+		$http({
+			method:'GET', 
+			url:'/api/users/' + $scope.user_id,
+		}).then(function (res) {
+			console.log("user info", res)
+			$scope.votesLeft = res.data.votesLeft;
+		}).catch(function (err) {
+			console.log(err);
+		})
+	}
 
 
+	$scope.getVotesLeft();
 	// Get Link Information When Controller Loads
 	$scope.getLinks();
 	$scope.getUserInfo();

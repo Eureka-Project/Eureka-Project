@@ -56,16 +56,19 @@
 						<div class="link-description">
 								<h3 ng-model = "link.title">{{link.title}} - {{link.site_name}}</h3>
 							<p ng-model ="link.description" class="link-description-p">{{link.description}}</p>
-							<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">
-								<p ng-model="link.username"class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
-							</a>
+							<div class = "Link_Comments_User">
+								<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">
+									<p ng-model="link.username"class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+								</a>
 							<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link._id)" ng-href = "#/comments">
 								<p class="toComments" clickable = 'true' >View Comments</p>
 							</a>
-							<a  class = "siteTags" ng-repeat="tag in link.tags">
-								<p class = "tagFont">{{tag}}</p>
-							</a>
-							
+							</div>
+							<div class="siteTagsContainer">
+								<div  class = "siteTags" ng-repeat="tag in link.tags">
+									<p class = "tagFont">{{tag}}</p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</a>

@@ -22,7 +22,8 @@
 			<div class="nav-dropdown" ng-show="showNavDropdown">
 				<a ng-href="#/profile/{{user_id}}"><li><i class="fa fa-user"></i>Profile</li></a>
 				<li ng-click="signout()"><i class="fa fa-sign-out"></i>Log Out</li>
-				<li>{{votesLeft}}   Votes Left Today</li>
+				<li>{{votesLeft}} Votes Left </li>
+
 			</div>
 			
 		</div>
@@ -44,11 +45,14 @@
 		<div class="links-day" ng-repeat="day in links">
 			<h4 class="date-header">{{day.date}}</h4>
 			<div class="link-card" ng-hide="day.links.length < 1" ng-repeat="link in day.links | orderBy: '-upvotes'">
-				<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id )">
+				<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id ); link.displayUpvoted()">
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
-				<div class='voting' ng-show="link.undo" ng-click="undoUpvote( link._id )">undo</div>
+				<div class='undo' ng-show="link.undo" ng-click="undoUpvote( link._id ); link.showUnvoted()" ng-mouseover="link.showUndo = true" ng-mouseleave="link.showUndo = false">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-down" ng-show="link.showUndo"></i>
+				</div>
 				<a ng-model = "link.url" ng-href="{{link.url}}">
 					<div ng-model = "link.data" class="link-data">
 						<div class="link-image">

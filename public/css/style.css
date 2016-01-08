@@ -345,6 +345,24 @@ input.ng-pristine {
 	cursor: pointer;
 }
 
+.undo {
+	width: 8%;
+	height: 100%;
+	font-size: 20px;
+	float: left;
+	cursor: pointer;
+	color: #679df6;
+}
+
+.undo i {
+	float: left;
+	margin: -50px 0px 0px 22.5px;
+}
+
+.undo:hover {
+	color: #3b77db;
+}
+
 .voting:hover {
 	color: #999999;
 }
@@ -433,6 +451,7 @@ input.ng-pristine {
 .link-description-username {
 	float: right;
 	padding-right: 10px;
+  padding-bottom: 10px;
 }
 
 .link-description-username:hover {
@@ -572,9 +591,9 @@ input.ng-pristine {
 .comment-dialogbox .comment-body {
   position: relative;
   max-width: 300px;
-  height: auto;
+  /*height: auto;*/
   margin: 20px 20px;
-  padding: 10px;
+  padding: 20px;
   background-color: #DADADA;
   border-radius: 3px;
   border: 5px solid #ccc;
@@ -583,7 +602,7 @@ input.ng-pristine {
 
 
 
-.comment-body .message {
+.message {
   min-height: 30px;
   border-radius: 3px;
   font-family: Arial;

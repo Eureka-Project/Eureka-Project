@@ -6,7 +6,7 @@ var helpers = require('./server/helpers.js');
 
 module.exports = app = express();
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 4000));
 
 // Set up express formatting.
 app.use(bodyParser.urlencoded({extended: true}));
@@ -18,20 +18,27 @@ app.use(express.static(__dirname + '/public'));
 // Decode the client's token (if it exists) for all http requests.
 app.use(helpers.decodeToken);
 
+// Update the user's last-seen status.
+app.use(helpers.lastSeen);
+
+
 // Initialize routers.
 var usersRouter = express.Router();
 var linksRouter = express.Router();
 var upvotesRouter = express.Router();
+var commentsRouter = express.Router();
 
 // Configure routers.
 require('./server/users/usersRoutes.js')(usersRouter);
 require('./server/links/linksRoutes.js')(linksRouter);
 require('./server/upvotes/upvotesRoutes.js')(upvotesRouter);
+require('./server/comments/commentsRoutes.js')(commentsRouter);
 
 // Set up route forwarding.
 app.use('/api/users', usersRouter);
 app.use('/api/upvote', upvotesRouter);
 app.use('/api/links', linksRouter);
+app.use('/api/comments', commentsRouter);
 
 // Handle uncaught errors.
 app.use(helpers.errorLogger);

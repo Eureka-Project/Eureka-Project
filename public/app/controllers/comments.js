@@ -1,8 +1,21 @@
-angular.module('eureka.profile', [])
+angular.module('eureka.comments', [])
 
-.controller('ProfileController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth', '$stateParams' ,function($scope, $http, $window, $location, Helpers, Auth, $stateParams) {
-	// Checking If User Has Cookie
-	if (!Auth.isAuth()) $location.path('/login')
+ .controller('CommentsController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth', '$stateParams' ,function($scope, $http, $window, $location, Helpers, Auth, $stateParams) { 
+
+ 	
+ 	if (!Auth.isAuth()) $location.path('/login')
+
+ 	$scope.comments = undefined;
+
+ 	$scope.link = {};
+	$scope.link.url = $window.localStorage.getItem("CommentUrl");
+	$scope.link.image = $window.localStorage.getItem("CommentImage");
+	$scope.link.title = $window.localStorage.getItem("CommentTitle");
+	$scope.link.description = $window.localStorage.getItem("CommentDescription");
+	$scope.link.site_name = $window.localStorage.getItem("CommentSiteName");
+	$scope.link.username = $window.localStorage.getItem("CommentLinkUsername");
+	$scope.link.ID = $window.localStorage.getItem("CommentId");
+
 
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };
@@ -25,19 +38,7 @@ angular.module('eureka.profile', [])
 		$location.path('/search')
 	}
 
-	// toggle tabs on profile page
-	$scope.showSubmittedLinks = true;
-	$scope.showUpvotedLinks = false;
-
-	$scope.showUpvotedLinksContent = function() {
-		$scope.showSubmittedLinks = false;
-		$scope.showUpvotedLinks = true;
-	}
-
-	$scope.showSubmittedLinksContent = function() {
-		$scope.showSubmittedLinks = true;
-		$scope.showUpvotedLinks = false;
-	}
+	
 
 	// data being temporarily stored
 	$scope.username = JSON.parse($window.localStorage.getItem('eureka')).username;
@@ -69,46 +70,45 @@ angular.module('eureka.profile', [])
 		})
 	}
 
-	$scope.getProfileInfo = function() {
-		console.log('getting profile info...');
+//Get the comments on the link
+	$scope.getLinkComments = function() {
+		console.log("looking for link comments")
+		var id = $window.localStorage.getItem("CommentId");
+		console.log("id", id)
 		$http({
-			method: 'GET',
-			url: '/api/users/profile/' + $stateParams.userID,
+			method: 'GET', 
+			url: '/api/comments/'+ id ,
 		}).then(function (res) {
-			for (var i = 0; i < res.data.submittedLinks.length; i++) {
-				var link = res.data.submittedLinks[i];
-				link.date = Helpers.lookupDate(link.date);
-			}
-			for (var x = 0; x < res.data.upvotedLinks.length; x++) {
-				var link = res.data.upvotedLinks[x];
-				link.date = Helpers.lookupDate(link.date);
-			}
-			$scope.profileUsername = res.data.username;
-			$scope.profileFirstName = res.data.firstname;
-			$scope.profileLastName = res.data.lastname;
-			$scope.profileSubmittedLinks = res.data.submittedLinks;
-			$scope.profileUpvotedLinks = res.data.upvotedLinks;
-			return res.data;
-		}).catch(function (error) {
-			console.log(error);
+			console.log("success, here's the data:", res);
+			$scope.comments = res.data
+		}).catch(function (err) {
+			console.log("comments", err)
 		})
 	}
 
-	$scope.deleteLink = function(linkId) {
+
+ $scope.postComment = function(comment) {
+		var data = {};
+		data.text = comment;
+		data.link_id = $scope.link.ID;
 		$http({
-			method: 'GET',
-			url: '/api/links/' + linkId + '/delete',
+			method: 'POST',
+			url: '/api/comments',
+			data: data
 		}).then(function (res) {
-			$scope.getProfileInfo();
+			console.log('comment posted');
+			$scope.getLinkComments();
+			return res;
 		}).catch(function (error) {
 			console.log(error);
 		})
+		$scope.comment = "";
 	}
 
 
 	// get user and profile info to display when controller loads
 	$scope.getUserInfo();
-	$scope.getProfileInfo();
+	$scope.getLinkComments();
+	
 
-
-}]);
+ }])

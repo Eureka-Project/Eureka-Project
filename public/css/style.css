@@ -344,6 +344,24 @@ input.ng-pristine {
 	cursor: pointer;
 }
 
+.undo {
+	width: 8%;
+	height: 100%;
+	font-size: 20px;
+	float: left;
+	cursor: pointer;
+	color: #679df6;
+}
+
+.undo i {
+	float: left;
+	margin: -50px 0px 0px 22.5px;
+}
+
+.undo:hover {
+	color: #3b77db;
+}
+
 .voting:hover {
 	color: #999999;
 }

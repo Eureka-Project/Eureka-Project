@@ -51,6 +51,7 @@ angular.module('eureka.home', [])
 					}else{
 						link.undo = false;
 					}
+					link.showUndo = false;
 				}
 			}
 			$scope.links = res.data.links;

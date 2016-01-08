@@ -47,7 +47,10 @@
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
-				<div class='voting' ng-show="link.undo" ng-click="undoUpvote( link._id )">undo</div>
+				<div class='undo' ng-show="link.undo" ng-click="undoUpvote( link._id )" ng-mouseover="link.showUndo = true" ng-mouseleave="link.showUndo = false">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-down" ng-show="link.showUndo"></i>
+				</div>
 				<a ng-model = "link.url" ng-href="{{link.url}}">
 					<div ng-model = "link.data" class="link-data">
 						<div class="link-image">

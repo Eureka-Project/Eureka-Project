@@ -97,11 +97,12 @@ angular.module('eureka.comments', [])
 			data: data
 		}).then(function (res) {
 			console.log('comment posted');
-			$scope.getLinkComments()
+			$scope.getLinkComments();
 			return res;
 		}).catch(function (error) {
 			console.log(error);
 		})
+		$scope.comment = "";
 	}
 
 

@@ -79,7 +79,7 @@ angular.module('eureka.comments', [])
 			method: 'GET', 
 			url: '/api/comments/'+ id ,
 		}).then(function (res) {
-			console.log("succes heres the data", res);
+			console.log("success, here's the data:", res);
 			$scope.comments = res.data
 		}).catch(function (err) {
 			console.log("comments", err)

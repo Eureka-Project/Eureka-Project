@@ -41,11 +41,11 @@
 		<div class="links-day" ng-repeat="day in links">
 			<h4 class="date-header">{{day.date}}</h4>
 			<div class="link-card" ng-hide="day.links.length < 1" ng-repeat="link in day.links | orderBy: '-upvotes'">
-				<div class='voting' ng-click="upvote( link._id )">
+				<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id )">
 					<h3>{{link.upvotes}}</h3>
 					<i class="fa fa-arrow-up"></i>
 				</div>
-				<div class='voting' ng-click="undoUpvote( link._id)">undo</div>
+				<div class='voting' ng-show="link.undo" ng-click="undoUpvote( link._id )">undo</div>
 				<a ng-model = "link.url" ng-href="{{link.url}}">
 					<div ng-model = "link.data" class="link-data">
 						<div class="link-image">

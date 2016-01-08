@@ -220,6 +220,17 @@ angular.module('eureka.profile', [])
 		})
 	}
 
+	$scope.deleteLink = function(linkId) {
+		$http({
+			method: 'GET',
+			url: '/api/links/' + linkId + '/delete',
+		}).then(function (res) {
+			$scope.getProfileInfo();
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 
 	// get user and profile info to display when controller loads
 	$scope.getUserInfo();

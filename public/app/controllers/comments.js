@@ -5,7 +5,7 @@ angular.module('eureka.comments', [])
  	
  	if (!Auth.isAuth()) $location.path('/login')
 
-
+ 	$scope.comments = undefined;
 
  	$scope.link = {};
 	$scope.link.url = $window.localStorage.getItem("CommentUrl");
@@ -70,6 +70,7 @@ angular.module('eureka.comments', [])
 		})
 	}
 
+//Get the comments on the link
 	$scope.getLinkComments = function() {
 		console.log("looking for link comments")
 		var id = $window.localStorage.getItem("CommentId");
@@ -79,10 +80,31 @@ angular.module('eureka.comments', [])
 			url: '/api/comments/'+ id ,
 		}).then(function (res) {
 			console.log("succes heres the data", res);
+			$scope.comments = res.data
 		}).catch(function (err) {
 			console.log("comments", err)
 		})
 	}
+
+
+ $scope.postComment = function(comment) {
+		var data = {};
+		data.text = comment;
+		data.link_id = $scope.link.ID;
+		$http({
+			method: 'POST',
+			url: '/api/comments',
+			data: data
+		}).then(function (res) {
+			console.log('comment posted');
+			$scope.getLinkComments()
+			return res;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
+
 
 
 

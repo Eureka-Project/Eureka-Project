@@ -46,7 +46,7 @@
 			</a>
 		</br></br>
 		<div>
-			<form>
+			<form name = "addComment" novalidate>
 				<input type="text" placeholder="Write your comment here..." ng-model="comment">
 				<input type="submit" id="submit" value="Post" ng-click="postComment(comment)">
 			</form>
@@ -54,8 +54,18 @@
 		</div>
 		<br>
 		<div>
-	<div ng-repeat="each in comments">{{each.text}} by {{each.username}}</div>
 
+
+  <div class="comment-dialogbox">
+    <div ng-repeat="each in comments"class="comment-body">
+      <span  class="comment-tip tip-up"></span>
+      <div class="message">
+        <span>{{each.text}}</span>
+        <br>
+        <span class ="link-description-username">By {{username}}</span>
+      </div>
+    </div>
+  </div>
 
 
 

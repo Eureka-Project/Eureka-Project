@@ -151,7 +151,6 @@ exports = module.exports = {
         //     ],
         //   };
         
-        res.json(data);
       })
       .fail(function (err) {
         next(err);

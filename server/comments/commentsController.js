@@ -14,7 +14,7 @@ exports = module.exports = {
   newComment: function (req, res, next) {
     var text = req.body.text;
     var link_id = req.body.link_id;
-    var username = req.body.username;
+    var username = req.user.username;
 
     exports.findLink({_id:link_id})
       .then(function (link) {

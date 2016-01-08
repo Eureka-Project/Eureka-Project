@@ -17,6 +17,7 @@ nav {
 	color: #000;
 	text-align: center;
 	border-bottom: 1px solid #e5e5e5;
+	z-index: 100;
 }
 
 .logo {
@@ -56,11 +57,10 @@ button:hover {
 	margin: 0px auto;
 	padding-top: 70px;
 	text-align: center;
+	margin-top:10px;
 }
 
-.results {
 
-}
 
 
 

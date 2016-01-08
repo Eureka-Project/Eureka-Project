@@ -52,6 +52,14 @@ input#submit {
   margin: auto;
 }
 
+#spinner {
+  display: block;
+  margin: auto;
+  width: auto;
+  height: auto;
+  max-width: 35px;
+}
+
 #logout {
   width: 150px;
   font-size: 2em;

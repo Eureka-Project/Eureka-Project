@@ -3,6 +3,7 @@
 document.addEventListener("DOMContentLoaded", function() {
   $(".wrong").hide();
   $("#addLink").hide();
+  $("#spinner").hide();
   $("#logout").hide();
   $("#done").hide();
   //The callbacks for Chrome storage's methods are asynchronous and aren't executed till later
@@ -19,28 +20,31 @@ document.addEventListener("DOMContentLoaded", function() {
   loginButton.addEventListener("submit", function(){
     var password =  $('#password').val();
     var username = $('#username').val();
-
-
-        $.ajax({
-          url: "http://localhost:4000/api/users/login",
-          type: "POST", 
-          data: {
-            "username": username, 
-            "password": password
-          },
+    $("#spinner").show();
+    $("#please").hide();
+    $("#login").hide();
+      $.ajax({
+        url: "http://localhost:4000/api/users/login",
+        type: "POST", 
+        data: {
+          "username": username, 
+          "password": password
+        },
 
       success: function(res) {
         chrome.storage.sync.set({"userData": res}, function() {
           console.log("Settings saved");
         });
-        $("#please").hide();
-        $("#login").hide();
         $("#addLink").show();
+        $("#spinner").hide();
         $("#logout").show();
       },
       error: function(err) {
         console.log("error", JSON.stringify(err));
-        $(".wrong").show()
+        $(".wrong").show();
+        $("#please").show();
+        $("#login").show();
+        $("#spinner").hide();
       }
     });
     event.preventDefault();
@@ -48,9 +52,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var addLinkButton = document.getElementById("addLink");
   addLinkButton.addEventListener("click", function() {
-
+    $("#addLink").hide();
+    $("#spinner").show();
     chrome.tabs.getSelected(null, function(tab) {
-      
       chrome.storage.sync.get("userData", function(data) {
         
         $.ajax({
@@ -65,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
               "x-access-token": data.userData.token
             },
             success: function(res) {
-              $("#addLink").hide();
+              $("#spinner").hide();
               $("#done").show();
             },
             error: function(err) {

@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var logoutButton = document.getElementById("logout");
   logoutButton.addEventListener("click", function() {
+    $("#spinner").hide();
     chrome.storage.sync.remove("userData");
     $("#please").show();
     $("#login").show();

@@ -91,7 +91,7 @@ angular.module('eureka.comments', [])
 	$scope.link.description = $window.localStorage.getItem("CommentDescription");
 	$scope.link.site_name = $window.localStorage.getItem("CommentSiteName");
 	$scope.link.username = $window.localStorage.getItem("CommentLinkUsername");
-	$scope.link.ID = $window.localStorage.getItem("CommentID");
+	$scope.link.ID = $window.localStorage.getItem("CommentId");
 
 
 

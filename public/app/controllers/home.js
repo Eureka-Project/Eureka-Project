@@ -130,7 +130,7 @@ angular.module('eureka.home', [])
 		$window.localStorage.setItem("CommentSiteName", linkSiteName);
 		$window.localStorage.setItem("CommentLinkUsername", linkUsername);
 		$window.localStorage.setItem("CommentIndex", linkIndex);
-		$window.localStorage.setItem("CommentId", linkId);
+		$window.localStorage.setItem("CommentId", linkID);
 
 
 	}

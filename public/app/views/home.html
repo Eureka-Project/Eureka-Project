@@ -56,7 +56,7 @@
 							<p ng-model="link.site_name" class="link-description-source">{{link.site_name}}</p>
 							<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">
 								<p ng-model="link.username"class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
-								<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link.id)" ng-href = "#/comments"><p class="toComments" clickable = 'true' >View Comments</p></a>
+								<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link._id)" ng-href = "#/comments"><p class="toComments" clickable = 'true' >View Comments</p></a>
 							</a>
 						</div>
 					</div>

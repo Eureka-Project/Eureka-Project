@@ -191,7 +191,7 @@ exports = module.exports = {
         //It occurred to me after writing this that 
         //it should probably go in linksUtil.js.
         //Too late now.
-        return exports.getConcepts(url,{maxRetrieve:8}).then(function(response){
+        return exports.getConcepts(url,{maxRetrieve:5}).then(function(response){
           var tags = response.concepts.map(function(tag){
             return tag.text;
           });

@@ -122,6 +122,7 @@ angular.module('eureka.profile', [])
 		}).then(function (res) {
 			$scope.firstname = res.data.firstname;
 			$scope.lastname = res.data.lastname;
+			$scope.votesLeft = res.data.votesLeft;
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);

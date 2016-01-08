@@ -112,6 +112,9 @@ exports = module.exports = {
     var password = req.body.password;
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
+    if (!username || !password){
+      return next(); //quietly fail
+    }
 
     // See if another user is already using the requested username.
     exports.findUser({ username: username })
@@ -242,6 +245,7 @@ exports = module.exports = {
       exports.findUser({username:targetUser}).then(function(user){
         targetUserId = user._id;
         user.remove();
+        res.status(200).send();
       }).then(function(){
         exports.findLinks({userid:targetUserId}).then(function(links){
           links.remove();
@@ -255,7 +259,6 @@ exports = module.exports = {
           upvotes.remove();
         });
       });
-      res.status(200).send();
     } else res.status(401).send();
   }
 

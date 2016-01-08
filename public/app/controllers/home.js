@@ -32,6 +32,9 @@ angular.module('eureka.home', [])
 
 	$scope.getLinks = function () {
 		console.log('getting links...');
+		// Check if vote limit needs to be reset
+		$scope.resetVotes();
+
 		$http({
 			method: 'GET',
 			url: '/api/links'
@@ -88,6 +91,23 @@ angular.module('eureka.home', [])
 		$scope.addLink.$setPristine();
 		$scope.newLink = "";
 		$scope.changeModal();
+	}
+
+	$scope.resetVotes = function(){
+		console.log('resetting from client')
+		var data = {};
+		data.user_id = $scope.user_id;
+		data.username = $scope.username;
+		console.log('data for reset', data)
+		$http({
+			method: 'POST',
+			url: '/api/users/resetVotes',
+			data: data
+		}).then(function(res){
+			if(res){
+				console.log('vote limit was reset')
+			}
+		})
 	}
 
 	$scope.upvote = function(linkID) {

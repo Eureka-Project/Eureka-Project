@@ -23,15 +23,18 @@ exports = module.exports = {
     return exports.findUser({username: req.username})
       .then(function(foundUser){
         if(foundUser){
-          var limitDate = [foundUser.lastSeen, foundUser.lastSeen];
+          var limitDate = [foundUser.lastVotesReset, foundUser.lastVotesReset];
           limitDate[0] = new Date(limitDate[0]).getMonth();
           limitDate[1] = new Date(limitDate[1]).getDate();
           var votesLeft = foundUser.votesLeft;
           var tempDate = new Date();
           currDate = [tempDate.getMonth(tempDate), tempDate.getDate(tempDate)];
+          console.log('lastVotesReset', limitDate)
+          console.log('currDate', currDate)
 
           if(limitDate[0] !== currDate[0] || limitDate[1] !== currDate[1]){
             console.log('resetting votesLeft');
+            foundUser.lastVotesReset = new Date().getTime();
             foundUser.votesLeft = 19;
             foundUser.save();
             // exports.createUser

@@ -24,6 +24,7 @@ var userSchema = mongoose.Schema({
 	lastname: String,
 	date: { type: Date, default: Date.now },
   votesLeft: {type: Number, default:20},
+  lastVotesReset: {type:Number, default: new Date().getTime()},
   lastSeen: {type:Number, default: new Date().getTime()}
 });
 

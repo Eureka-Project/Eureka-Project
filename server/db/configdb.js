@@ -69,6 +69,7 @@ var linkSchema = mongoose.Schema({
   image: { type: String, default: '' },
 	visits: { type: Number, default: 0 },
   upvotes: { type: Number, default: 0 },
+  upvotedBy: {type: String, default: '{}'},
   userid: { type: String, default: '' },
   username: { type: String, default: '' },
 	date: { type: Date, default: Date.now },

@@ -40,7 +40,6 @@ exports.isSafeUrl = function(url) {
   var deferred = Q.defer();
   var testUrl = safeBrowsingUrl + '&url=' + url;
 
-  console.log("Checking %s for malicious content", url);
 
   exports.get(testUrl)
   	.then(function(res) {
@@ -65,7 +64,6 @@ exports.isSafeUrl = function(url) {
 // Get open-graph data for a url.
 exports.getMetaData = function(url, options){
   var deferred = Q.defer();
-  console.log('Getting meta data for %s', url);
 
   exports.getHTML(url)
   	.then(function(html){
@@ -74,7 +72,6 @@ exports.getMetaData = function(url, options){
 	    deferred.resolve(data);
 	  })
   	.fail(function(err) {
-  		console.log('Failed to get meta data for %s\n', url, err);
       deferred.reject(err);
     })
 
@@ -274,9 +271,3 @@ exports.formatMetaData = function(data, html) {
 
 	return data;
 }
-
-// Tests:
-// Should be good:
-// exports.isSafeUrl('http://google.com/');
-// Should be bad:
-// exports.isSafeUrl('http://ianfette.org/');

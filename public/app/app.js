@@ -4,7 +4,8 @@ var app = angular.module('eureka', [
   'eureka.auth',
   'eureka.home',
   'eureka.profile',
-  'ui.router'
+  'ui.router',
+  'eureka.comments'
 ])
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -16,6 +17,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       url: "/home",
       templateUrl: "app/views/home.html",
       controller: "HomeController"
+    })
+    .state('comments', {
+      url: "/comments:link", 
+      templateUrl: "app/views/comments.html", 
+      controller: 'CommentsController'
     })
     .state('search', {
       url: "/search",

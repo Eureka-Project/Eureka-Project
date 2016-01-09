@@ -1,0 +1,72 @@
+
+<nav>
+	<div class="search">
+		<form name="searchForm" class="search-form" ng-submit='searchForm.$dirty && search( searchText )'>
+			<i class="fa fa-search"></i>
+			<input type="text" ng-model="searchText" placeholder="Search..."/>
+		</form>
+		<a ng-href="#/popular/mostUpvoted"><i class="fa fa-trophy"></i></a>
+	</div>
+	<a ng-href="#/home">
+		<div class="title">
+			<img src="assets/logoTest.png" alt="logoTest" class="logo">
+		</div>
+	</a>
+	<div class="nav-actions">
+		<i ng-click="changeModal()" class="fa fa-plus-circle add-link-icon"></i>
+		<div class="nav-dropdown-link" ng-show="!{{username}}">
+			<div class="nav-dropdown-link-username" ng-click="showNavDropdownContent()">
+				<p>{{firstname}} {{lastname}}</p>
+				<i class="fa fa-chevron-circle-down"></i>
+			</div>
+			<div class="nav-dropdown" ng-show="showNavDropdown">
+				<a ng-href="#/profile/{{user_id}}"><li><i class="fa fa-user"></i>Profile</li></a>
+				<li ng-click="signout()"><i class="fa fa-sign-out"></i>Log Out</li>
+				<li>{{votesLeft}} Votes Left </li>
+			</div>
+		</div>
+	</div>
+</nav>
+<div class="page-container">
+<div class="page-container">
+	<div class="results">
+		</div>
+			<a ng-href="{{link.url}}">
+				<div class="link-data">
+					<div class="link-image">
+						<img ng-src="{{link.image}}"/>
+						</div>
+						<div class="link-description">
+								<h3>{{link.title}}</h3>
+							<p class="link-description-p">{{link.description}}</p>
+							<p class="link-description-source">{{link.site_name}}</p>
+							<a class="profile-link" ng-href="#/profile/{{link.userid}}">
+						</a>
+					</div>
+				</div>
+			</a>
+		</br></br>
+		<div>
+			<form name="addComment">
+				<input type="text" placeholder="Write your comment here..." ng-model="comment">
+				<input type="submit" id="submit" value="Post" ng-click="postComment(comment)">
+			</form>
+		</div>
+		</div>
+		<br>
+		<div>
+  <div class="comment-dialogbox">
+    <div ng-repeat="each in comments"class="comment-body">
+      <div class="message">
+        <span>{{each.text}}</span>
+        <br>
+        <span class ="link-description-username">By {{each.username}}
+        <i ng-click="deleteComment(each._id)" class="fa fa-close"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+
+			

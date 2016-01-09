@@ -161,10 +161,10 @@ describe('Link Submission',function(){
                     (occurrences === 0) && done();
                   }
                 });
-              },2000);
+              },500);
             }
           });
-        },2000);
+        },500);
       }
     });
   });

@@ -5,6 +5,7 @@ var request = require ('supertest');
 var server = require('../server.js');
 var userSpec;
 var linksSpec;
+var commentsSpec;
 
 var url = 'http://localhost:4000';
 describe('Server runs', function(){
@@ -19,3 +20,4 @@ describe('Server runs', function(){
 });
 userSpec = require('./userSpec.js');
 linksSpec = require('./linksSpec.js');
+commentsSpec = require('./commentsSpec.js');

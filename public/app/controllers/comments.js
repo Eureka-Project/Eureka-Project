@@ -80,7 +80,10 @@ angular.module('eureka.comments', [])
 			url: '/api/comments/'+ id ,
 		}).then(function (res) {
 			console.log("success, here's the data:", res);
-			$scope.comments = res.data
+			$scope.comments = res.data;
+			for(var i = 0; i < $scope.comments.length; i++){
+
+			}
 		}).catch(function (err) {
 			console.log("comments", err)
 		})
@@ -103,6 +106,19 @@ angular.module('eureka.comments', [])
 			console.log(error);
 		})
 		$scope.comment = "";
+	}
+
+	$scope.deleteComment = function(comment_id) {
+		$http({
+			method: 'GET',
+			url: '/api/comments/' + comment_id + '/delete',
+		}).then(function (res) {
+			console.log('comment deleted');
+			$scope.getLinkComments();
+			return res;
+		}).catch(function (error) {
+			console.log(error);
+		})
 	}
 
 

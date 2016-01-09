@@ -122,6 +122,7 @@ angular.module('eureka.profile', [])
 		}).then(function (res) {
 			$scope.firstname = res.data.firstname;
 			$scope.lastname = res.data.lastname;
+			$scope.votesLeft = res.data.votesLeft;
 			return res.data;
 		}).catch(function (error) {
 			console.log(error);
@@ -215,6 +216,17 @@ angular.module('eureka.profile', [])
 			$scope.profileUpvotedLinks = res.data.upvotedLinks;
 			console.log('progileUpvotedLinks', $scope.profileUpvotedLinks)
 			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
+	$scope.deleteLink = function(linkId) {
+		$http({
+			method: 'GET',
+			url: '/api/links/' + linkId + '/delete',
+		}).then(function (res) {
+			$scope.getProfileInfo();
 		}).catch(function (error) {
 			console.log(error);
 		})

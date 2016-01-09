@@ -20,4 +20,4 @@ describe('Server runs', function(){
 });
 userSpec = require('./userSpec.js');
 linksSpec = require('./linksSpec.js');
-commentsSpec = require('.commentsSpec.js');
+commentsSpec = require('./commentsSpec.js');

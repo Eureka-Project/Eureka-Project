@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "5.0.0",
+    "npm": "3.3.6"
+  },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "grunt"
   },
   "repository": {
     "type": "git",
@@ -42,8 +47,5 @@
     "q": "^1.4.1",
     "request": "^2.67.0",
     "supertest": "^1.1.0"
-  },
-  "scripts": {
-    "postinstall": "grunt"
   }
 }

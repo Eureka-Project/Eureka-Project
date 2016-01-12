@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // Connect to the online mongolab server:
-mongoose.connect('mongodb://hackstallion:hackstalliondev@dksato.com:27017/eureka');
+mongoose.connect('mongodb://hackstallion:hackstallion@ds043615.mongolab.com:43615/eureka-share');
 
 // Connect locally:
 // mongoose.connect('localhost:27018');

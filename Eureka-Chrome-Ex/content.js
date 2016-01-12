@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
     $("#please").hide();
     $("#login").hide();
       $.ajax({
-        url: "http://localhost:4000/api/users/login",
+        url: "https://eureka-share.herokuapp.com/api/users/login",
         type: "POST", 
         data: {
           "username": username, 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
       chrome.storage.sync.get("userData", function(data) {
         
         $.ajax({
-            url: "http://localhost:4000/api/links",
+            url: "https://eureka-share.herokuapp.com/api/links",
             type: "POST",
             data: {
                     "username": data.userData.fullname,

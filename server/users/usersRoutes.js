@@ -12,4 +12,7 @@ module.exports = function (app) {
   app.get('/signedin', usersController.getUserInfo);
   app.get('/:user_id', usersController.getUserInfo);
   app.get('/profile/:user_id', usersController.getProfileInfo);
+
+  app.post('/resetVotes', usersController.resetVotes);
+  app.get('/:user_id/delete', usersController.deleteUser);
 };

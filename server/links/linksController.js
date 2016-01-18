@@ -3,13 +3,19 @@ var _ = require('underscore');
 
 var util = require('./linksUtil.js');
 var Links = require('../db/configdb.js').Links;
+var Users = require('../db/configdb.js').Users;
+var Alchemy = require('alchemy-api');
+var APIkey = require('./links-Alchemy-APIkey.js').APIkey;
+var alchemy = new Alchemy(APIkey);
 
 exports = module.exports = {
 
   findLink: Q.nbind(Links.findOne, Links),
+  findUser: Q.nbind(Users.findOne, Users),
   findLinks: Q.nbind(Links.find, Links),
   createLink: Q.nbind(Links.create, Links),
   updateLink: Q.nbind(Links.update, Links),
+  getConcepts: Q.nbind(alchemy.concepts, alchemy),
 
   // Query the database for all links which were created
   //   between a requested date and two days prior to that date
@@ -70,7 +76,7 @@ exports = module.exports = {
             }
           ],
         };
-        console.log('Links for 3 days before %s:\n', end, data);
+        //console.log('Links for 3 days before %s:\n', end, data);
         res.json(data);
       })
       .fail(function (err) {
@@ -145,8 +151,6 @@ exports = module.exports = {
         //     ],
         //   };
         
-        console.log('All links by day:\n', data);
-        res.json(data);
       })
       .fail(function (err) {
         next(err);
@@ -158,7 +162,8 @@ exports = module.exports = {
   newLink: function (req, res, next) {
     var url = req.body.url;
     var user_id = req.body.user_id;
-    var user_name = req.body.username;
+    var user_name = req.body.username; //actually fullname, not "username"
+
     if ( ! util.isValidUrl(url) ) {
       return next(new Error('Not a valid url'));
     }
@@ -182,12 +187,28 @@ exports = module.exports = {
           return util.getMetaData(url);
         }
       })
+      .then(function (data){
+        //It occurred to me after writing this that 
+        //it should probably go in linksUtil.js.
+        //Too late now.
+        return exports.getConcepts(url,{maxRetrieve:5}).then(function(response){
+          var tags = response.concepts.map(function(tag){
+            return tag.text;
+          });
+          data.tags = tags;
+          return data;
+        }).catch(function(err){
+        console.log('alchemy error');
+        console.log(err);
+        });
+      })
       .then(function (data) {
         return exports.createLink({
           url: url,
           visits: 0,
           title: data.title,
           description: data.description,
+          tags: data.tags,
           site_name: data.site_name,
           image: (data.image) ? data.image.url : '',
           username: user_name,
@@ -217,52 +238,30 @@ exports = module.exports = {
           next(err);
         }
       });
+  },
+  delLink : function(req,res){
+    //delete a link
+    exports.findLink({_id:req.params.link_id}).then(function(link){
+      //link id to delete specified in the url.
+      exports.findUser({username:req.user.username}).then(function(user){
+        //wouldn't it be nice if the username was stored in the link object?
+        //It's not, so we have to look up the logged-in user's id.
+        if (link.userid.toString() === user._id.toString()){
+          link.remove(function(){
+            res.status(200).send();
+            //successful deletion.
+          });
+        } else{
+          res.status(401).send();
+          //link belongs to a different user
+        }
+      }).catch(function(){
+        res.status(500).send();
+        //user who is doing the deleting not found in DB
+      })
+    }).catch(function(){
+      res.status(404).send();
+      //link not found
+    });
   }
-
-  // allLinks: function (req, res, next) {
-  //   exports.findLinks({})
-  //     .then(function (links) {
-  //       res.json(links);
-  //     })
-  //     .fail(function (err) {
-  //       next(err);
-  //     });
-  // },
-
-  // getTodaysLinks: function(req, res, next) {
-  //   var end = new Date();
-  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   exports.findLinks({date: {"$gte": start, "$lt": end} })
-  //     .then(function (links) {
-  //       var data = {
-  //         links: [{
-  //           date: start,
-  //           links: links
-  //         }],
-  //       };
-  //       res.json(data);
-  //     })
-  //     .fail(function (err) {
-  //       next(err);
-  //     });
-  // },
-
-  // getLinksForDate: function(date) {
-  //   var end = date;
-  //   var start = new Date(end.getYear(), end.getMonth(), end.getDate());
-  //   exports.findLinks({date: {"$gte": start, "$lt": end} })
-  //     .then(function (links) {
-  //       var data = {
-  //         links: [{
-  //           date: start,
-  //           links: links
-  //         }],
-  //       };
-  //      return data;
-  //     })
-  //     .fail(function (err) {
-  //       console.log(err);
-  //     })
-  // },
-
 };

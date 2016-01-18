@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
-var Q        = require('q');
 var bcrypt   = require('bcrypt-nodejs');
 
 // Connect to the online mongolab server:
-mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb');
+mongoose.connect('mongodb://hackstallion:hackstalliondev@dksato.com:27017/eureka');
 
 // Connect locally:
 // mongoose.connect('localhost:27018');
@@ -11,9 +10,9 @@ mongoose.connect('mongodb://eureka:Eureka@ds033145.mongolab.com:33145/eurekadb')
 // dbpath="server/db/db"; ! [ -d "${dbpath}" ] && mkdir -p "${dbpath}"; mongod --port 27018 --dbpath "${dbpath}" --wiredTigerJournalCompressor snappy --wiredTigerCollectionBlockCompressor snappy --cpu
 
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB Connection Error:'));
 db.once('open', function(callback) {
-	console.log('connection made');
+	console.log('Connected to MongoDB');
 });
 
 var SALT_WORK_FACTOR  = 10;
@@ -24,6 +23,9 @@ var userSchema = mongoose.Schema({
 	firstname: String,
 	lastname: String,
 	date: { type: Date, default: Date.now },
+  votesLeft: {type: Number, default:20},
+  lastVotesReset: {type:Number, default: new Date().getTime()},
+  lastSeen: {type:Number, default: new Date().getTime()}
 });
 
 userSchema.methods.isPassword = function(guess) {
@@ -68,10 +70,12 @@ var linkSchema = mongoose.Schema({
   image: { type: String, default: '' },
 	visits: { type: Number, default: 0 },
   upvotes: { type: Number, default: 0 },
+  upvotedBy: {type: String, default: '{}'},
   userid: { type: String, default: '' },
   username: { type: String, default: '' },
-	date: { type: Date, default: Date.now }
-
+	date: { type: Date, default: Date.now },
+  tags: Array,
+  commentCount: {type: Number, default: 0}
 });
 
 var upvoteSchema = mongoose.Schema({
@@ -94,14 +98,21 @@ var tokenSchema = mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
+var commentSchema = mongoose.Schema({
+  username: { type: String, default: '' },
+  text: String,
+  date: Number,
+  link_id: String
+})
+
 var models = {
 
   Links: mongoose.model('Url', linkSchema),
 	// Links: mongoose.model('Link', linkSchema),
 	Users: mongoose.model('User', userSchema),
 	Upvotes: mongoose.model('Upvote', upvoteSchema),
-  Secrets: mongoose.model('Secret', secretSchema)
-
+  Secrets: mongoose.model('Secret', secretSchema),
+  Comments: mongoose.model('Comment', commentSchema)
 };
 
 module.exports = models;

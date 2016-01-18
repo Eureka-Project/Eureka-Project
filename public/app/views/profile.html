@@ -21,6 +21,8 @@
 			<div class="nav-dropdown" ng-show="showNavDropdown">
 				<a ng-href="#/profile/{{user_id}}"><li><i class="fa fa-user"></i>Profile</li></a>
 				<li ng-click="signout()"><i class="fa fa-sign-out"></i>Log Out</li>
+				<li>{{votesLeft}}   Votes Left Today</li>
+
 			</div>
 		</div>
 	</div>
@@ -36,12 +38,15 @@
 		</form>
 	</div>
 </div>
+
+
 <div class="page-container">
 	<div class="profile-info">
 		<h1>{{profileFirstName}} {{profileLastName}}</h1>
 		<p>{{profileUsername}}</p>
 	</div>
 	<br>
+	
 	<div class="tabs" ng-show="profileUsername">
 		<input type="radio" name="tabs" id="tab1" checked>
 		<label ng-click="showSubmittedLinksContent()" for="tab1">Submitted Links</label>
@@ -50,22 +55,38 @@
 	</div>
 	<div class="results" ng-show="showSubmittedLinks">
 		<div class="link-card" ng-repeat="link in profileSubmittedLinks | orderBy: '-upvotes'">
-			<div class='voting' ng-click="upvote( link._id )">
-				<h3>{{link.upvotes}}</h3>
-				<i class="fa fa-arrow-up"></i>
-			</div>
+			<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id ); link.displayUpvoted()">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-up"></i>
+				</div>
+				<div class='undo' ng-show="link.undo" ng-click="undoUpvote( link._id ); link.showUnvoted()" ng-mouseover="link.showUndo = true" ng-mouseleave="link.showUndo = false">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-down" ng-show="link.showUndo"></i>
+				</div>
 			<a ng-href="{{link.url}}">
 				<div class="link-data">
 					<div class="link-image">
 						<img ng-src="{{link.image}}"/>
 					</div>
 					<div class="link-description">
-							<h3>{{link.title}}</h3>
+							<h3>{{link.title}} - {{link.site_name}}</h3>
 						<p class="link-description-p">{{link.description}}</p>
-						<p class="link-description-source">{{link.site_name}} - {{link.date}}</p>
-						<a class="profile-link" ng-href="#/profile/{{link.userid}}">
-							<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
-						</a>
+						<div class = "Link_Comments_User">
+								<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">
+									<p ng-model="link.username"class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+								</a>
+							<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link._id)" ng-href = "#/comments">
+								<p class="toComments" clickable = 'true' >View Comments</p>
+							</a>
+							<a ng-href= "#/profile/{{user_id}}" ng-click = "deleteLink(link._id)">
+								<p class ="deleteButton">Delete</p>
+							</a>
+							</div>
+							<div class="siteTagsContainer">
+								<div  class = "siteTags" ng-repeat="tag in link.tags">
+									<p class = "tagFont">{{tag}}</p>
+								</div>
+							</div>
 					</div>
 				</div>
 			</a>
@@ -74,23 +95,35 @@
 	</div>
 	<div class="results" ng-show="showUpvotedLinks">
 		<div class="link-card" ng-repeat="link in profileUpvotedLinks | orderBy: '-upvotes'">
-			<div class='voting' ng-click="upvote( link._id )">
-				<h3>{{link.upvotes}}</h3>
-				<i class="fa fa-arrow-up"></i>
-			</div>
+			<div class='voting' ng-hide="link.undo" ng-click="upvote( link._id ); link.displayUpvoted()">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-up"></i>
+				</div>
+				<div class='undo' ng-show="link.undo" ng-click="undoUpvote( link._id ); link.showUnvoted()" ng-mouseover="link.showUndo = true" ng-mouseleave="link.showUndo = false">
+					<h3>{{link.upvotes}}</h3>
+					<i class="fa fa-arrow-down" ng-show="link.showUndo"></i>
+				</div>
 			<a ng-href="{{link.url}}">
 				<div class="link-data">
 					<div class="link-image">
 						<img ng-src="{{link.image}}"/>
 					</div>
 					<div class="link-description">
-							<h3>{{link.title}}</h3>
+							<h3 class ='link_title'>{{link.title}} - {{link.site_name}}</h3>
 						<p class="link-description-p">{{link.description}}</p>
-						<p class="link-description-source">{{link.site_name}} - {{link.date}}</p>
-						<a class="profile-link" ng-href="#/profile/{{link.userid}}">
-							<p class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
-						</a>
-					</div>
+						<div class = "Link_Comments_User">
+								<a ng-link="link.userid" class="profile-link" ng-href="#/profile/{{link.userid}}">
+									<p ng-model="link.username"class="link-description-username" ng-hide="!link.username">Submitted by {{link.username}}</p>
+								</a>
+							<a ng-click="getClickedLinkURL(link.url, link.image, link.title, link.description, link.site_name, link.username, $index, link._id)" ng-href = "#/comments">
+								<p class="toComments" clickable = 'true' >View Comments</p>
+							</a>
+							</div>
+							<div class="siteTagsContainer">
+								<div  class = "siteTags" ng-repeat="tag in link.tags">
+									<p class = "tagFont">{{tag}}</p>
+								</div>
+							</div>
 				</div>
 			</a>
 		</div>

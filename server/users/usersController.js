@@ -3,8 +3,12 @@ var jwt = require('jwt-simple');
 var mongoose = require('mongoose');
 
 var Users = require('../db/configdb.js').Users;
+var Links= require('../db/configdb.js').Links;
+var Comments = require('../db/configdb.js').Comments;
+var Votes = require('../db/configdb.js').Upvotes;
 var Links = require('../links/linksController.js');
 var Upvotes = require('../upvotes/upvotesController.js');
+
 
 var secrets = require('../secrets/secretsController.js');
 
@@ -12,20 +16,25 @@ exports = module.exports = {
 
   // Promise version of Mongoose's 'Model.findOne()' method.
   findUser: Q.nbind(Users.findOne, Users),
-  
   // Promise version of Mongoose's 'Model.create()' method.
   createUser: Q.nbind(Users.create, Users),
+  findLinks: Q.nbind(Links.find, Links),
+  findComments: Q.nbind(Comments.find, Comments),
+  findUpvotes: Q.nbind(Upvotes.find, Upvotes),
+
 
   // Return a unique token based on a user document from the database.
   // When decoded later, it will serve as a conditions object for a
   //   database query.
   genToken: function(user) {
-    return jwt.encode({
-      _id: user._id,
-      username: user.username,
-      firstname: user.firstname,
-      lastname: user.lastname,
-    }, secrets.today);
+    return secrets.then(function(secrets){
+      return (jwt.encode({
+        _id: user._id,
+        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
+      }, secrets[secrets.length-1].secret));
+    });
   },
 
   // Check whether the previously decoded token (stored as 'req.user')
@@ -38,12 +47,16 @@ exports = module.exports = {
         .then(function(foundUser) {
           if (foundUser) {
             if(req.makeNewToken === true) {
-              return res.json({
-                username: foundUser.username,
-                user_id: foundUser._id,
-                token: exports.genToken(foundUser)
-              }); 
-            }
+              exports.genToken(foundUser).then(function(token){
+                res.json({
+                  username: foundUser.username,
+                  user_id: foundUser._id,
+                  token: token
+                }); 
+              }).fail(function(){
+                res.status(403).send();
+              });
+            };
             next();
           } else {
             res.status(403).send();
@@ -72,10 +85,13 @@ exports = module.exports = {
           throw new Error('Incorrect password');
         } else {
           // Success
-          res.json({
-            username: user.username,
-            user_id: user._id,
-            token: exports.genToken(user)
+          exports.genToken(user).then(function(token){
+            res.json({
+              username: user.username,
+              user_id: user._id,
+              fullname: user.firstname + ' ' + user.lastname,
+              token: token
+            });
           });
         }
       })
@@ -96,6 +112,9 @@ exports = module.exports = {
     var password = req.body.password;
     var firstname = req.body.firstname;
     var lastname = req.body.lastname;
+    if (!username || !password){
+      return next(); //quietly fail
+    }
 
     // See if another user is already using the requested username.
     exports.findUser({ username: username })
@@ -103,40 +122,29 @@ exports = module.exports = {
         if (user) {
           // Found a user with the same username.
           // Abort signup and respond that the username is taken.
-          next(new Error('Username already taken. :('));
+          return next(new Error('Username already taken. :('));
         } else {
           // Create a new user.
-          return exports.createUser({
+          var newUser = {
+            lastSeen: new Date().getTime(),
             username: username,
             password: password,
             firstname: firstname,
             lastname: lastname
+          };
+          exports.createUser(newUser).then(function(){
+            exports.findUser({username:username}).then(function(newUserRecord){
+              exports.genToken(newUserRecord).then(function(token){
+                var responseVal = {
+                  username: newUserRecord.username,
+                  user_id: newUserRecord._id,
+                  token: token
+                };
+                res.json(responseVal);
+              });
+            });
           });
         }
-      })
-      .then(function(user) {
-        // Send back the new document's username and ObjectId
-        //   as well as a unique token for the document.
-
-        // user example: {
-        //   date: Fri Dec 18 2015 19:12:33 GMT-0600 (CST),
-        //   _id: 5674af012e5833104b30ef0f,
-        //   lastname: 'test2',
-        //   firstname: 'test2',
-        //   password:
-        //     '$2a$10$5kWIkSPNOPvf3fFH8fkxUek9PMAy4saUj5LC2D.pbyD1NO7I7P.X.',
-        //   username: 'test2',
-        //   __v: 0
-        // }
-
-        res.json({
-          username: user.username,
-          user_id: user._id,
-          token: exports.genToken(user)
-        });
-      })
-      .fail(function(error) {
-        next(error);
       });
   },
 
@@ -165,7 +173,9 @@ exports = module.exports = {
           firstname: user.firstname,
           lastname: user.lastname,
           username: user.username,
-          user_id: user._id
+          user_id: user._id,
+          votesLeft: user.votesLeft,
+          lastSeen: user.lastSeen
         });
       })
       .fail(function(error) {
@@ -226,6 +236,61 @@ exports = module.exports = {
       .fail(function(error) {
         next(error);
       });
+  },
+
+
+  // Reset vote limit if necessary
+  resetVotes: function(req, res){
+    return exports.findUser({username: req.body.username})
+      .then(function(foundUser){
+        if(foundUser){
+          var limitDate = [foundUser.lastVotesReset, foundUser.lastVotesReset];
+          // var limitDate = [1451280708541, 1451280708541];
+          limitDate[0] = new Date(limitDate[0]).getMonth();
+          limitDate[1] = new Date(limitDate[1]).getDate();
+          var votesLeft = foundUser.votesLeft;
+          var tempDate = new Date();
+          currDate = [tempDate.getMonth(tempDate), tempDate.getDate(tempDate)];
+
+          if(limitDate[0] !== currDate[0] || limitDate[1] !== currDate[1]){
+            console.log('resetting votesLeft');
+            foundUser.lastVotesReset = new Date().getTime();
+            foundUser.votesLeft = 19;
+            foundUser.save();
+            // exports.createUser
+            return true;
+          }
+          return false;
+        }else{
+          return false;
+        }
+      })
+  },
+
+  deleteUser : function(req,res,next){
+    var targetUser = req.params.user_id;
+    var targetUserId;
+    if (req.user.username === targetUser){
+      //get the target user's ID
+      exports.findUser({username:targetUser}).then(function(user){
+        targetUserId = user._id;
+        user.remove();
+        res.status(200).send();
+      }).then(function(){
+        exports.findLinks({userid:targetUserId}).then(function(links){
+          links.remove();
+        })
+      }).then(function(){
+        exports.findComments({username:targetUser}).then(function(comments){
+          comments.remove();
+        })
+      }).then(function(){
+        exports.findUpvotes({user_id:targetUserId}).then(function(upvotes){
+          upvotes.remove();
+        });
+      });
+    } else res.status(401).send();
   }
+
 
 }

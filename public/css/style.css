@@ -244,6 +244,82 @@ form input[type="submit"]:hover {
 	color: #fff;
 }
 
+.demo-landing-page-container {
+	padding-top: 10%;
+	width: 376px;
+	text-align: center;
+	margin: 0px auto;
+}
+
+.demo-landing-redirect-button-one {
+	border: 1px solid #a0a0a0;
+	background-color: transparent;
+	color: #a0a0a0;
+	margin: 8px;
+	padding: 15px;
+	width: 172px;
+	border-radius: 3px;
+	font-size: 18px;
+	float: left;
+}
+
+.demo-landing-redirect-button-one:hover {
+	border: 1px solid #a0a0a0;
+	background-color: #a0a0a0;
+	color: #fff;
+}
+
+.demo-landing-redirect-button-two {
+	border: 1px solid #a0a0a0;
+	background-color: transparent;
+	color: #a0a0a0;
+	margin: 8px;
+	padding: 15px;
+	width: 172px;
+	border-radius: 3px;
+	font-size: 18px;
+	float: right;
+}
+
+.demo-landing-redirect-button-two:hover {
+	border: 1px solid #a0a0a0;
+	background-color: #a0a0a0;
+	color: #fff;
+}
+
+.demo-landing-demo-user-button {
+	background-color: transparent;
+	border: 1px solid #679df6;
+	color: #679df6;
+	margin: 8px;
+	padding: 15px;
+	width: 360px;
+	border-radius: 3px;
+	font-size: 18px;
+}
+
+.demo-landing-demo-user-button:hover {
+	background-color: #679df6;
+	color: #fff;
+}
+
+.demo-landing-page-container p {
+	margin-top: 30px;
+	color: #4c4c4c;
+	font-size: 16px;
+	font-weight: 300;
+}
+
+.fa-github {
+	color: #a0a0a0;
+	margin-top: 40px;
+	font-size: 80px;
+}
+
+.fa-github:hover {
+	color: #679df6;
+}
+
 input.ng-invalid {
     border: 1px solid #cc0000;
     box-shadow: 0px 2px 4px rgba(0,0,0,0.1);

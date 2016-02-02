@@ -2,7 +2,7 @@ angular.module('eureka.profile', [])
 
 .controller('ProfileController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth', '$stateParams' ,function($scope, $http, $window, $location, Helpers, Auth, $stateParams) {
 	// Checking If User Has Cookie
-	if (!Auth.isAuth()) $location.path('/login')
+	if (!Auth.isAuth()) $location.path('/demoLanding')
 
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };

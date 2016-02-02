@@ -42,6 +42,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
       templateUrl: "app/views/mostUpvoted.html",
       controller: "HomeController"
     })
+    .state('demoLanding', {
+      url: "/demoLanding",
+      templateUrl: "app/views/demoLanding.html",
+      controller: "AuthController"
+    })
     $httpProvider.interceptors.push('AttachTokens');
 });
 

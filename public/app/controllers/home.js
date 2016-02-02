@@ -2,7 +2,7 @@ angular.module('eureka.home', [])
 
 .controller('HomeController', ['$scope', '$http', '$window', '$location', 'Helpers', 'Auth' ,function($scope, $http, $window, $location, Helpers, Auth) {
 	// Checking If User Has Cookie
-	if (!Auth.isAuth()) $location.path('/login')
+	if (!Auth.isAuth()) $location.path('/demoLanding')
 
 	// Enables user to signout
 	$scope.signout = function () { Auth.signout() };

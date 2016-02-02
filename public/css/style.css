@@ -33,20 +33,6 @@ a:hover {
 	color: #000;
 }
 
-button {
-	background-color: #cecece;
-	color: #fff;
-	font-size: 16px;
-	padding: 8px;
-	margin: 8px;
-	width: 290px;
-	border: none;
-}
-
-button:hover {
-	background-color: #a0a0a0;
-}
-
 .fa {
 	margin: 5px;
 }
@@ -194,6 +180,7 @@ nav .nav-dropdown-link-username:hover {
 	background-color: #fff;
 	width: 500px;
 	margin: 42px auto;
+	padding-bottom: 40px;
 	border: 1px solid #e5e5e5;
 	border-radius: 5px;
 }
@@ -228,7 +215,33 @@ form input[type="submit"]:hover {
 }
 
 .signup-login-button {
-	margin-bottom: 40px;
+	background-color: #cecece;
+	color: #fff;
+	font-size: 16px;
+	padding: 8px;
+	margin: 8px;
+	width: 290px;
+	border: none;
+}
+
+.signup-login-button:hover {
+	background-color: #a0a0a0;
+}
+
+
+.demo-user-button {
+	background-color: transparent;
+	border: 1px solid #679df6;
+	color: #679df6;
+	font-size: 16px;
+	padding: 8px;
+	width: 290px;
+	margin: 8px;
+}
+
+.demo-user-button:hover {
+	background-color: #679df6;
+	color: #fff;
 }
 
 input.ng-invalid {

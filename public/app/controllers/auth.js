@@ -40,4 +40,20 @@ angular.module('eureka.auth', [])
 		});
 	}
 
+	$scope.demoLogin = function () {
+		Auth.login({ username: 'DemoUser', password: '1234'})
+		.then(function (data) {
+			console.log('success...signing in now...');
+			$window.localStorage.setItem('eureka', JSON.stringify(data));
+			$scope.loginErr = false;
+			$location.path('/home');
+		})
+		.catch(function (error) {
+			$window.localStorage.removeItem('com.eureka');
+			$scope.loginErr = true;
+			$scope.loginTxt = error.data.error;
+			console.error('Message: ', error.data.error);
+		});
+	}
+
 }]);

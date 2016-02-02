@@ -101,6 +101,24 @@ angular.module('eureka.home', [])
 		})
 	}
 
+	$scope.delete = function(linkID) {
+		console.log('deleting linkID: ', linkID)
+		var data = {};
+		data.link_id = linkID;
+		$http({
+			method: 'POST',
+			url: '/api/links/delete',
+			data: data
+		}).then(function (res) {
+			console.log('success...deleted')
+			console.log('body: ', res.data)
+			$scope.getLinks();
+			return res.data;
+		}).catch(function (error) {
+			console.log(error);
+		})
+	}
+
 	$scope.search = function(searchText) {
 		Helpers.searchValue = searchText;
 		$location.path('/search')

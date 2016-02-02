@@ -10,6 +10,7 @@ exports = module.exports = {
   findLinks: Q.nbind(Links.find, Links),
   createLink: Q.nbind(Links.create, Links),
   updateLink: Q.nbind(Links.update, Links),
+  deleteExistingLink: Q.nbind(Links.remove, Links),
 
   // Query the database for all links which were created
   //   between a requested date and two days prior to that date
@@ -145,7 +146,7 @@ exports = module.exports = {
         //     ],
         //   };
         
-        console.log('All links by day:\n', data);
+        // console.log('All links by day:\n', data);
         res.json(data);
       })
       .fail(function (err) {
@@ -206,6 +207,34 @@ exports = module.exports = {
         } else {
           console.log('Created new link: \n', createdLink)
           res.json(createdLink);
+        }
+      })
+      .fail(function (err) {
+        // Unless the error requests to stop the promise chain,
+        //   log the error and continue to the next function
+        //   in the chain.
+        if (err.message !== 'Stop promise chain') {
+          console.log(err);
+          next(err);
+        }
+      });
+  },
+
+  // Delete a link from the database.
+  // Receive the 'link_id' from the client.
+  deleteLink: function (req, res, next) {
+    console.log('made it here', req.body.link_id)
+    var link_id = req.body.link_id;
+    exports.findLink({_id: link_id})
+      .then(function (match) {
+        if (match) {
+          console.log('deleting:\n', match);
+          exports.deleteExistingLink({_id: link_id})
+          res.status(200).send({success: link_id + ' deleted' })
+          // Stop the promise chain (go to '.fail()')
+          throw new Error('Stop promise chain');
+        } else {
+          return res.status(400).send({error: 'no link found'})
         }
       })
       .fail(function (err) {

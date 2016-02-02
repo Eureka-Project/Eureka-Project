@@ -502,6 +502,16 @@ input.ng-pristine {
     color: #3b77db;
 }
 
+.delete-link {
+	color: transparent;
+	float: right;
+	font-size: 6px;
+	cursor: pointer;
+}
+
+.delete-link:hover {
+	color: red;
+}
 
 
 

@@ -31,19 +31,23 @@ exports = module.exports = {
   // Check whether the previously decoded token (stored as 'req.user')
   //   is valid by seeing if it matches a document in the database.
   verifyToken: function (req, res, next) {
+
+    // added to fix token issue (temp fix)
+    req.user = req.params.user_id
+
     if ( ! req.user ) {
       res.status(403).send();
     } else {
       exports.findUser(req.user)
         .then(function(foundUser) {
           if (foundUser) {
-            if(req.makeNewToken === true) {
-              return res.json({
-                username: foundUser.username,
-                user_id: foundUser._id,
-                token: exports.genToken(foundUser)
-              }); 
-            }
+            // if(req.makeNewToken === true) {
+            //   return res.json({
+            //     username: foundUser.username,
+            //     user_id: foundUser._id,
+            //     token: jwt.encode(user, 'MakerSquare')
+            //   }); 
+            // }
             next();
           } else {
             res.status(403).send();
@@ -75,7 +79,7 @@ exports = module.exports = {
           res.json({
             username: user.username,
             user_id: user._id,
-            token: exports.genToken(user)
+            token: jwt.encode(user, 'MakerSquare')
           });
         }
       })
@@ -132,7 +136,7 @@ exports = module.exports = {
         res.json({
           username: user.username,
           user_id: user._id,
-          token: exports.genToken(user)
+          token: jwt.encode(user, 'MakerSquare')
         });
       })
       .fail(function(error) {

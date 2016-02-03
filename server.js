@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
 // Decode the client's token (if it exists) for all http requests.
-app.use(helpers.decodeToken);
+// app.use(helpers.decodeToken);
 
 // Initialize routers.
 var usersRouter = express.Router();

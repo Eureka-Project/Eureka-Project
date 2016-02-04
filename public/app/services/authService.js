@@ -30,7 +30,7 @@ angular.module('eureka.authService', [])
 
 	var signout = function () {
 		$window.localStorage.removeItem('eureka');
-		$location.path('/login');
+		$location.path('/demoLanding');
 	};
 
 	// exports

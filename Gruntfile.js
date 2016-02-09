@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-    watch: {
+    // watch: {
       // scripts: {
       //   files: [
       //   	'public/app/**/*.js',
@@ -21,11 +21,11 @@ module.exports = function(grunt) {
       //   ]
       // },
 
-      css: {
-        files: 'public/*.css',
-        tasks: ['cssmin']
-      }
-    },
+    //   css: {
+    //     files: 'public/css/*.css',
+    //     tasks: ['cssmin']
+    //   }
+    // },
 
 		// concat: {
 		// 	options: {
@@ -65,7 +65,7 @@ module.exports = function(grunt) {
 		cssmin: {
       		fuglycss: {
         		files: {
-        			'public/dist.style.min.css': ['public/style.css']
+        			'public/dist.style.min.css': ['public/css/style.css']
         		}
       		}
     	},
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-watch');
+	// grunt.loadNpmTasks('grunt-contrib-watch');
 	// grunt.loadNpmTasks('grunt-contrib-uglify');
 	// grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -85,6 +85,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 
 
-	grunt.registerTask('default', ['cssmin', 'watch']);
+	grunt.registerTask('default', ['cssmin']);
 
 };

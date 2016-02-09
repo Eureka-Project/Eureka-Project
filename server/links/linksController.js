@@ -151,6 +151,8 @@ exports = module.exports = {
         //     ],
         //   };
         
+        // console.log('All links by day:\n', data);
+        res.json(data);
       })
       .fail(function (err) {
         next(err);

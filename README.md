@@ -11,6 +11,8 @@ TO BEGIN:
 
 1) Send the files to Heroku, and the Grunt file will run when deployed. 
 
-2) Start upvoting!
+2) Start upvoting!  
+
+![Eureka-Screenshot](https://github.com/Eureka-Project/Eureka-Project/blob/master/eureka_screenshot.png)
 
 
